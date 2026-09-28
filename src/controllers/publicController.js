@@ -397,7 +397,45 @@ exports.about = async (req, res) => {
   const aboutPurpose = await AboutSettings.getPurpose();
   const aboutOnboarding = await AboutSettings.getOnboarding();
   const storyMilestones = await AboutSettings.getMilestones();
-  const aboutStatements = await Team.aboutStatements();
+  let aboutStatements = await Team.aboutStatements();
+  if (!aboutStatements || aboutStatements.length === 0) {
+    aboutStatements = await db.prepare(`
+      SELECT * FROM team_members 
+      WHERE (group_name IN ('founding', 'the_face') OR show_on_about = 1) AND is_active = 1 
+      ORDER BY display_order ASC, id ASC
+    `).all();
+  }
+  if (!aboutStatements || aboutStatements.length === 0) {
+    aboutStatements = [
+      {
+        id: 1,
+        name: 'Dr. Heena Shaikh (PT)',
+        role: 'Founder',
+        designation: 'Founder & Director',
+        qualification: 'BPT, MPT',
+        photo: '/images/team/founder-1.png',
+        statement: 'PhysioEdvance was born out of a genuine need to simplify physiotherapy education. Our mission, "Help students to help themselves," guides every single note, video, and resource we create. We aim to empower BPT students across India to learn independently, build strong clinical foundations, and excel in their exams and practice.'
+      },
+      {
+        id: 2,
+        name: 'Zainuddeen Nawaz',
+        role: 'Co-Founder',
+        designation: 'Co-Founder',
+        qualification: 'Founding Member',
+        photo: '/images/team/founder-2.png',
+        statement: 'Building PhysioEdvance means creating a sustainable, compliant, and accessible digital home for physiotherapy learning. We are committed to maintaining the highest standards of academic integrity, technology, and user privacy for our growing student community.'
+      },
+      {
+        id: 3,
+        name: 'Dr. Neha Samapriya (PT)',
+        role: 'Founding Member',
+        designation: 'Founding Member & Lead Advisor',
+        qualification: 'BPT, MPT',
+        photo: '/images/team/founder-3.png',
+        statement: 'Quality physiotherapy education requires bridging classroom theory with real-world clinical application. At PhysioEdvance, we curate evidence-informed content designed to clarify complex medical concepts and build true clinical confidence.'
+      }
+    ];
+  }
   const visionMission = await SiteSettings.getVisionMission();
 
   console.log(`[About Controller] Rendering /about with ${aboutStatements.length} leadership statements and ${storyMilestones.length} milestones`);

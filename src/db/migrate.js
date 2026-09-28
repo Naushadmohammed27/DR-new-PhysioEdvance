@@ -362,10 +362,12 @@ async function migrate() {
       console.warn('Instructor password sync notice:', e.message);
     }
 
-    // Clean up any legacy Page 1 titles
+    // Clean up any legacy Page 1 titles & ensure About leadership statements flag
     try {
       await db.pool.query("UPDATE notes SET title = 'Rural Community Physiotherapy Study Notes' WHERE LOWER(TRIM(title)) = 'page 1'");
       await db.pool.query("UPDATE courses SET title = 'Rural Community Physiotherapy Study Notes' WHERE LOWER(TRIM(title)) = 'page 1'");
+      await db.pool.query("UPDATE team_members SET show_on_about = 1 WHERE (group_name IN ('founding', 'the_face') OR designation LIKE '%Founder%') AND (show_on_about IS NULL OR show_on_about = 0)");
+      await db.pool.query("UPDATE team_members SET statement = bio WHERE (statement IS NULL OR TRIM(statement) = '') AND (bio IS NOT NULL AND TRIM(bio) != '')");
     } catch (e) { /* ignore */ }
 
   } finally {
