@@ -891,7 +891,7 @@ const HomepageSection = {
         { section_key: 'curriculum', name: 'Curriculum Cards', description: 'Year 1-4 & elective subjects syllabus tabs with quick links', icon: 'ri-graduation-cap-line', admin_link: '/admin/curriculum', display_order: 1 },
         { section_key: 'learning_journey', name: 'Learning Journey', description: '5 interactive learning pillars (MCQs, LAQs & SAQs, Case Discussion, Live Classes, Reference Books)', icon: 'ri-route-line', admin_link: '/admin/learning-journey', display_order: 2 },
         { section_key: 'vision_mission', name: 'Vision & Mission', description: 'Educational vision, core mission statement, and student empowerment cards', icon: 'ri-compass-3-line', admin_link: '/admin/vision-mission', display_order: 3 },
-        { section_key: 'founders', name: 'Expert Teachers & Team', description: 'Featured certified physiotherapists & founder leadership showcase', icon: 'ri-user-star-line', admin_link: '/admin/team', display_order: 4 },
+        { section_key: 'founders', name: 'Team', description: 'Featured certified physiotherapists & founder leadership showcase', icon: 'ri-user-star-line', admin_link: '/admin/team', display_order: 4 },
         { section_key: 'blog', name: 'Blog', description: 'Clinical articles, student tips, and physiotherapy insights', icon: 'ri-article-line', admin_link: '/admin/blog', display_order: 5 },
         { section_key: 'live_sessions', name: 'Live Sessions', description: 'Interactive live classes, webinars, and case discussions', icon: 'ri-vidicon-line', admin_link: '/admin/live-sessions', display_order: 6 },
         { section_key: 'notes', name: 'Study Notes', description: 'High-yield study notes, PDFs, and revision materials', icon: 'ri-file-text-line', admin_link: '/admin/notes', display_order: 7 },
@@ -979,5 +979,179 @@ const HomepageSection = {
   }
 };
 
-module.exports = { Notes, Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection };
+// ============ ABOUT PAGE SETTINGS & MILESTONES ============
+const AboutSettings = {
+  async initMilestonesTable() {
+    await db.prepare(`
+      CREATE TABLE IF NOT EXISTS about_milestones (
+        id SERIAL PRIMARY KEY,
+        year TEXT NOT NULL,
+        title TEXT NOT NULL,
+        description TEXT NOT NULL,
+        display_order INTEGER DEFAULT 1,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `).run();
+
+    const countRow = await db.prepare(`SELECT COUNT(*) as c FROM about_milestones`).get();
+    const count = Number(countRow ? countRow.c : 0);
+    if (count === 0) {
+      const defaults = [
+        { year: '2019', title: 'THE SEED', description: 'A thought took root – "What if we could create something meaningful for physiotherapy education?" It was just an idea, shared in conversations with my mentor and my students. The seed of PhysioEdvance was planted.', display_order: 1 },
+        { year: '2021', title: 'THE DREAM WAS SHARED', description: 'I shared this dream with my fiancé (now my husband). I didn\'t have all the answers, but I had the vision. And sometimes, all you need is someone who says, "Let\'s figure it out." The dream became a shared conversation.', display_order: 2 },
+        { year: '2022', title: 'THE TURNING POINT', description: 'Life tested me in the toughest way. In the midst of loss and uncertainty, my husband said, "You have a lot to do in your life. Start working on your website." With a pen, paper and a lot of faith, I started writing, planning and discussing with my mentor. The dream slowly turned into a plan.', display_order: 3 },
+        { year: '2024', title: 'THE WHITEBOARD', description: 'I had my first baby, Hamdan, in my arms. The plan was in front of me – on a whiteboard. Everything I had been thinking for years was finally taking shape. I knew one thing for sure – I couldn\'t do it alone. I needed a team.', display_order: 4 },
+        { year: '2024–25', title: 'THE PEOPLE WHO SAID YES', description: 'Met mentors and students across Mangalore and Mysore, and my husband & co-founder joined hands. Together, we built a team that believes.', display_order: 5 },
+        { year: '2026', title: 'THE DREAM IS ALIVE', description: 'Today, PhysioEdvance is taking shape. Our website is being built, content is being created, and our team is growing. My little ones have grown alongside this dream, and my one-year-old princess is now part of this journey too.', display_order: 6 }
+      ];
+      for (const m of defaults) {
+        await db.prepare(`INSERT INTO about_milestones (year, title, description, display_order) VALUES (?, ?, ?, ?)`).run(m.year, m.title, m.description, m.display_order);
+      }
+    }
+  },
+
+  async getSectionsOrder() {
+    const defaultOrder = JSON.stringify(['purpose_vision', 'leadership_messages', 'onboarding_steps', 'story_journey', 'core_offers', 'vision_mission']);
+    const raw = await SiteSettings.get('about_sections_order', defaultOrder);
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      return ['purpose_vision', 'leadership_messages', 'onboarding_steps', 'story_journey', 'core_offers', 'vision_mission'];
+    } catch (e) {
+      return ['purpose_vision', 'leadership_messages', 'onboarding_steps', 'story_journey', 'core_offers', 'vision_mission'];
+    }
+  },
+
+  async updateSectionsOrder(newOrderArray) {
+    await SiteSettings.set('about_sections_order', JSON.stringify(newOrderArray));
+  },
+
+  async moveSectionUp(sectionKey) {
+    const order = await this.getSectionsOrder();
+    const idx = order.indexOf(sectionKey);
+    if (idx > 0) {
+      const temp = order[idx - 1];
+      order[idx - 1] = order[idx];
+      order[idx] = temp;
+      await this.updateSectionsOrder(order);
+    }
+  },
+
+  async moveSectionDown(sectionKey) {
+    const order = await this.getSectionsOrder();
+    const idx = order.indexOf(sectionKey);
+    if (idx >= 0 && idx < order.length - 1) {
+      const temp = order[idx + 1];
+      order[idx + 1] = order[idx];
+      order[idx] = temp;
+      await this.updateSectionsOrder(order);
+    }
+  },
+
+  async getHero() {
+    return {
+      badge: await SiteSettings.get('about_hero_badge', 'About PhysioEdvance'),
+      title: await SiteSettings.get('about_hero_title', 'Empowering the Next Generation of Physiotherapists'),
+      subtitle: await SiteSettings.get('about_hero_subtitle', 'PhysioEdvance is a dedicated digital learning ecosystem created specifically for BPT & MPT physiotherapy students across India.')
+    };
+  },
+
+  async updateHero({ badge, title, subtitle }) {
+    if (badge !== undefined) await SiteSettings.set('about_hero_badge', badge);
+    if (title !== undefined) await SiteSettings.set('about_hero_title', title);
+    if (subtitle !== undefined) await SiteSettings.set('about_hero_subtitle', subtitle);
+  },
+
+  async getPurpose() {
+    return {
+      badge: await SiteSettings.get('about_purpose_badge', 'Our Purpose & Vision'),
+      title: await SiteSettings.get('about_purpose_title', 'About PhysioEdvance'),
+      subtitle: await SiteSettings.get('about_purpose_subtitle', 'Connecting knowledge with understanding, and understanding with clinical practice.'),
+      narrative1: await SiteSettings.get('about_purpose_narrative1', 'PhysioEdvance is an edtech platform dedicated to physiotherapy education, created with one clear purpose—to make quality physiotherapy learning more accessible, structured, understandable, and relevant to today\'s students.'),
+      narrative2: await SiteSettings.get('about_purpose_narrative2', 'Physiotherapy is a constantly evolving healthcare profession. New research, clinical approaches, technologies, and evidence continue to shape the way physiotherapists learn and practice. Yet, for many students, learning physiotherapy can still feel fragmented.'),
+      narrative3: await SiteSettings.get('about_purpose_narrative3', 'PhysioEdvance was created to bring that learning journey together. We envision PhysioEdvance as a one-stop learning ecosystem where physiotherapy students can learn, understand, revise, explore, and advance throughout their academic journey.'),
+      narrative4: await SiteSettings.get('about_purpose_narrative4', 'From foundational subjects to core physiotherapy education, from theoretical concepts to clinical application, our goal is to create educational content that connects knowledge with understanding and understanding with practice.'),
+      card1_title: await SiteSettings.get('about_purpose_card1_title', 'Structured Academic Ecosystem'),
+      card1_desc: await SiteSettings.get('about_purpose_card1_desc', 'Covering complete BPT Year 1 to 4 subjects with organized modules and notes.'),
+      card2_title: await SiteSettings.get('about_purpose_card2_title', 'Interactive 3D Visual Learning'),
+      card2_desc: await SiteSettings.get('about_purpose_card2_desc', '360° rotatable WebGL models for deep spatial understanding of joints and biomechanics.'),
+      card3_title: await SiteSettings.get('about_purpose_card3_title', 'Bridging Theory & Clinical Practice'),
+      card3_desc: await SiteSettings.get('about_purpose_card3_desc', 'Empowering students to transition smoothly from textbook concepts to clinical confidence.')
+    };
+  },
+
+  async updatePurpose(data) {
+    for (const key of Object.keys(data)) {
+      await SiteSettings.set(`about_purpose_${key}`, data[key]);
+    }
+  },
+
+  async getOnboarding() {
+    return {
+      step1_title: await SiteSettings.get('about_step1_title', 'Click Login'),
+      step1_desc: await SiteSettings.get('about_step1_desc', 'Click the Login button on the top navigation bar or go directly to /auth/login.'),
+      step2_title: await SiteSettings.get('about_step2_title', 'Enter Credentials'),
+      step2_desc: await SiteSettings.get('about_step2_desc', 'Enter your registered Email & Password or use secure Face Recognition authentication.'),
+      step3_title: await SiteSettings.get('about_step3_title', 'Select BPT Subject'),
+      step3_desc: await SiteSettings.get('about_step3_desc', 'Browse BPT Year 1 to 4 subjects (Anatomy, Physiology, Neurology, Orthopedics, Electrotherapy).'),
+      step4_title: await SiteSettings.get('about_step4_title', 'Start Learning'),
+      step4_desc: await SiteSettings.get('about_step4_desc', 'Interact with 3D rotatable models, watch MP4 video streams, read study notes & solve quizzes!')
+    };
+  },
+
+  async updateOnboarding(data) {
+    for (const key of Object.keys(data)) {
+      await SiteSettings.set(`about_${key}`, data[key]);
+    }
+  },
+
+  async getMilestones() {
+    await this.initMilestonesTable();
+    return db.prepare(`SELECT * FROM about_milestones ORDER BY display_order ASC, id ASC`).all();
+  },
+
+  async addMilestone({ year, title, description }) {
+    await this.initMilestonesTable();
+    const maxRow = await db.prepare(`SELECT MAX(display_order) as m FROM about_milestones`).get();
+    const nextOrder = (maxRow && maxRow.m) ? maxRow.m + 1 : 1;
+    await db.prepare(`INSERT INTO about_milestones (year, title, description, display_order) VALUES (?, ?, ?, ?)`).run(year, title, description, nextOrder);
+  },
+
+  async updateMilestone(id, { year, title, description, display_order }) {
+    await this.initMilestonesTable();
+    await db.prepare(`UPDATE about_milestones SET year = ?, title = ?, description = ?, display_order = ? WHERE id = ?`).run(year, title, description, display_order, id);
+  },
+
+  async deleteMilestone(id) {
+    await this.initMilestonesTable();
+    await db.prepare(`DELETE FROM about_milestones WHERE id = ?`).run(id);
+  },
+
+  async moveMilestoneUp(id) {
+    await this.initMilestonesTable();
+    const current = await db.prepare(`SELECT * FROM about_milestones WHERE id = ?`).get(id);
+    if (!current) return;
+    const prev = await db.prepare(`SELECT * FROM about_milestones WHERE display_order <= ? AND id != ? ORDER BY display_order DESC, id DESC LIMIT 1`).get(current.display_order, id);
+    if (prev) {
+      const tempOrder = current.display_order;
+      await db.prepare(`UPDATE about_milestones SET display_order = ? WHERE id = ?`).run(prev.display_order, current.id);
+      await db.prepare(`UPDATE about_milestones SET display_order = ? WHERE id = ?`).run(tempOrder, prev.id);
+    }
+  },
+
+  async moveMilestoneDown(id) {
+    await this.initMilestonesTable();
+    const current = await db.prepare(`SELECT * FROM about_milestones WHERE id = ?`).get(id);
+    if (!current) return;
+    const next = await db.prepare(`SELECT * FROM about_milestones WHERE display_order >= ? AND id != ? ORDER BY display_order ASC, id ASC LIMIT 1`).get(current.display_order, id);
+    if (next) {
+      const tempOrder = current.display_order;
+      await db.prepare(`UPDATE about_milestones SET display_order = ? WHERE id = ?`).run(next.display_order, current.id);
+      await db.prepare(`UPDATE about_milestones SET display_order = ? WHERE id = ?`).run(tempOrder, next.id);
+    }
+  }
+};
+
+module.exports = { Notes, Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection, AboutSettings };
+
 

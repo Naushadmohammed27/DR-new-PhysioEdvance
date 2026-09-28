@@ -21,7 +21,43 @@
           </a>
         </li>
 
-        <!-- 2. Subjects Mega Menu -->
+        <!-- 2. About Us -->
+        <li class="nav-item">
+          <a class="nav-link <%= currentPath.startsWith('/about') ? 'active' : '' %>" href="/about">
+            <span>About Us</span>
+          </a>
+        </li>
+
+        <!-- 3. Team Dropdown -->
+        <li class="nav-item dropdown pe-team-dropdown">
+          <a class="nav-link dropdown-toggle <%= currentPath.startsWith('/the-team') ? 'active' : '' %>"
+             href="/the-team" id="teamDropdown" role="button" aria-expanded="false" onclick="window.location.href='/the-team';">
+            <span>Team</span>
+            <i class="ri-arrow-down-s-line pe-nav-caret"></i>
+          </a>
+          <ul class="dropdown-menu pe-subjects-menu shadow-xl border-0 rounded-4 p-2" aria-labelledby="teamDropdown" style="min-width: 250px;">
+            <li>
+              <a class="dropdown-item py-2.5 px-3 rounded-3 fw-semibold text-dark d-flex align-items-center justify-content-between" href="/the-team#the-face">
+                <span><i class="ri-star-fill text-warning me-2"></i>1. The Face</span>
+                <i class="ri-arrow-right-s-line text-muted"></i>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item py-2.5 px-3 rounded-3 fw-semibold text-dark d-flex align-items-center justify-content-between" href="/the-team#core-members">
+                <span><i class="ri-team-line text-primary me-2"></i>2. Core Members</span>
+                <i class="ri-arrow-right-s-line text-muted"></i>
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item py-2.5 px-3 rounded-3 fw-semibold text-dark d-flex align-items-center justify-content-between" href="/the-team#expert-advisors">
+                <span><i class="ri-award-line text-info me-2"></i>3. Expert Advisors</span>
+                <i class="ri-arrow-right-s-line text-muted"></i>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- 4. Subjects Mega Menu -->
         <li class="nav-item dropdown pe-subjects-dropdown">
           <a class="nav-link dropdown-toggle <%= currentPath.startsWith('/subjects') || currentPath.startsWith('/courses') ? 'active' : '' %>"
              href="/subjects" id="subjectsDropdown" role="button" aria-expanded="false" onclick="window.location.href='/subjects';">
@@ -129,7 +165,7 @@
           </ul>
         </li>
 
-        <!-- 3. Learning Module Dropdown -->
+        <!-- 5. Learning Module Dropdown -->
         <li class="nav-item dropdown pe-learning-dropdown">
           <a class="nav-link dropdown-toggle <%= currentPath.startsWith('/learning-modules') ? 'active' : '' %>"
              href="/learning-modules" id="learningDropdown" role="button" aria-expanded="false" onclick="window.location.href='/learning-modules';">
@@ -178,14 +214,14 @@
           </ul>
         </li>
 
-        <!-- 4. Live Discussion -->
+        <!-- 6. Live Discussion -->
         <li class="nav-item">
           <a class="nav-link <%= currentPath.startsWith('/live-discussion') ? 'active' : '' %>" href="/live-discussion">
             <span>Live Discussion</span>
           </a>
         </li>
 
-        <!-- 5. Live Classes -->
+        <!-- 7. Live Classes -->
         <li class="nav-item">
           <a class="nav-link <%= currentPath.startsWith('/live-sessions') ? 'active' : '' %>" href="/live-sessions">
             <span>Live Classes</span>
@@ -193,68 +229,10 @@
           </a>
         </li>
 
-        <!-- 6. Teams Dropdown -->
-        <li class="nav-item dropdown pe-team-dropdown">
-          <a class="nav-link dropdown-toggle <%= currentPath.startsWith('/the-team') ? 'active' : '' %>"
-             href="/the-team" id="teamDropdown" role="button" aria-expanded="false" onclick="window.location.href='/the-team';">
-            <span>Teams</span>
-            <i class="ri-arrow-down-s-line pe-nav-caret"></i>
-          </a>
-          <ul class="dropdown-menu pe-subjects-menu shadow-xl border-0 rounded-4 p-2" aria-labelledby="teamDropdown" style="min-width: 260px;">
-            <% if (typeof teamNavGroups === 'undefined' || teamNavGroups.teaching_staff) { %>
-              <li>
-                <a class="dropdown-item py-2.5 px-3 rounded-3 fw-medium text-dark d-flex align-items-center justify-content-between" href="/the-team#teaching-staff">
-                  <span>Teaching Staff</span>
-                  <i class="ri-arrow-right-s-line text-muted"></i>
-                </a>
-              </li>
-            <% } %>
-            <% if (typeof teamNavGroups === 'undefined' || teamNavGroups.non_teaching_staff) { %>
-              <li>
-                <a class="dropdown-item py-2.5 px-3 rounded-3 fw-medium text-dark d-flex align-items-center justify-content-between" href="/the-team#non-teaching-staff">
-                  <span>Non-Teaching Staff</span>
-                  <i class="ri-arrow-right-s-line text-muted"></i>
-                </a>
-              </li>
-            <% } %>
-            <% if (typeof teamNavGroups === 'undefined' || teamNavGroups.subject_experts) { %>
-              <li>
-                <a class="dropdown-item py-2.5 px-3 rounded-3 fw-medium text-dark d-flex align-items-center justify-content-between" href="/the-team#subject-experts">
-                  <span>Experts for all Subjects</span>
-                  <i class="ri-arrow-right-s-line text-muted"></i>
-                </a>
-              </li>
-            <% } %>
-            <% if (typeof teamNavGroups === 'undefined' || teamNavGroups.technical_assistance) { %>
-              <li>
-                <a class="dropdown-item py-2.5 px-3 rounded-3 fw-medium text-dark d-flex align-items-center justify-content-between" href="/the-team#technical-assistance">
-                  <span>Technical Assistance</span>
-                  <i class="ri-arrow-right-s-line text-muted"></i>
-                </a>
-              </li>
-            <% } %>
-            <% if (typeof teamNavGroups === 'undefined' || teamNavGroups.other_staff) { %>
-              <li>
-                <a class="dropdown-item py-2.5 px-3 rounded-3 fw-medium text-dark d-flex align-items-center justify-content-between" href="/the-team#other-staff">
-                  <span>Other Staff</span>
-                  <i class="ri-arrow-right-s-line text-muted"></i>
-                </a>
-              </li>
-            <% } %>
-          </ul>
-        </li>
-
-        <!-- 7. Blog -->
+        <!-- 8. Blog -->
         <li class="nav-item">
           <a class="nav-link <%= currentPath.startsWith('/blog') ? 'active' : '' %>" href="/blog">
             <span>Blog</span>
-          </a>
-        </li>
-
-        <!-- 8. About -->
-        <li class="nav-item">
-          <a class="nav-link <%= currentPath.startsWith('/about') ? 'active' : '' %>" href="/about">
-            <span>About</span>
           </a>
         </li>
 

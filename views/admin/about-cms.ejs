@@ -1,0 +1,394 @@
+<style>
+  .pe-cms-card {
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .pe-cms-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  }
+  .pe-section-rank-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #0a5dc2;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+</style>
+
+<div class="container-fluid py-4">
+  
+  <!-- Header -->
+  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+    <div>
+      <span class="badge bg-primary-subtle text-primary font-weight-bold text-uppercase px-3 py-1.5 rounded-pill mb-1">
+        <i class="ri-settings-4-line me-1"></i> Content & Layout Manager
+      </span>
+      <h2 class="fw-bold mb-0 text-dark">About Us Page CMS</h2>
+      <p class="text-muted small mb-0">Manage layout section ordering (shuffle sections up/down), hero text, purpose narrative, onboarding steps, and story milestones.</p>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <a href="/about" target="_blank" class="btn btn-outline-primary rounded-pill px-3.5 py-2 fw-semibold">
+        <i class="ri-external-link-line me-1"></i> Live View /about
+      </a>
+    </div>
+  </div>
+
+  <% if (typeof success !== 'undefined' && success && success.length > 0) { %>
+    <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm border-0 mb-4" role="alert">
+      <i class="ri-checkbox-circle-fill me-2 fs-5 align-middle"></i> <%= success %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% } %>
+
+  <!-- Segmented Tabs Navigation -->
+  <ul class="nav nav-pills pe-hero-segmented-tabs mb-4 flex-wrap" id="aboutCmsTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active rounded-pill px-4" id="order-tab" data-bs-toggle="pill" data-bs-target="#tab-order" type="button" role="tab">
+        <i class="ri-shuffle-line me-1.5"></i> 1. Section Order (Shuffle Up/Down)
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link rounded-pill px-4" id="hero-tab" data-bs-toggle="pill" data-bs-target="#tab-hero" type="button" role="tab">
+        <i class="ri-layout-top-line me-1.5"></i> 2. Hero Header
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link rounded-pill px-4" id="purpose-tab" data-bs-toggle="pill" data-bs-target="#tab-purpose" type="button" role="tab">
+        <i class="ri-compass-3-line me-1.5"></i> 3. Purpose & Vision
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link rounded-pill px-4" id="onboarding-tab" data-bs-toggle="pill" data-bs-target="#tab-onboarding" type="button" role="tab">
+        <i class="ri-login-circle-line me-1.5"></i> 4. Easy 4-Step Access
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link rounded-pill px-4" id="milestones-tab" data-bs-toggle="pill" data-bs-target="#tab-milestones" type="button" role="tab">
+        <i class="ri-history-line me-1.5"></i> 5. Story Milestones
+      </button>
+    </li>
+  </ul>
+
+  <!-- Tab Content Containers -->
+  <div class="tab-content" id="aboutCmsTabsContent">
+    
+    <!-- TAB 1: SECTION ORDER MANAGER (SHUFFLE UP/DOWN) -->
+    <div class="tab-pane fade show active" id="tab-order" role="tabpanel">
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
+          <div>
+            <h4 class="fw-bold mb-1 text-dark"><i class="ri-shuffle-line text-primary me-2"></i> Section Layout Order</h4>
+            <p class="text-muted small mb-0">Re-order sections on the public <code>/about</code> page by moving sections Up or Down. Changes take effect live immediately.</p>
+          </div>
+        </div>
+
+        <% 
+          const sectionLabels = {
+            purpose_vision: { name: 'Our Purpose & Vision', desc: 'Main intro narrative card & 3 highlight cards', icon: 'ri-compass-3-line' },
+            leadership_messages: { name: 'Leadership Messages', desc: 'Verified statements from founders & directors', icon: 'ri-user-star-line' },
+            onboarding_steps: { name: 'Easy 4-Step Student & Faculty Access', desc: '4-step onboarding card access', icon: 'ri-login-circle-line' },
+            story_journey: { name: 'The Story Behind PhysioEdvance', desc: 'Interactive 2019-2026 timeline milestones & founder banner', icon: 'ri-history-line' },
+            core_offers: { name: 'What PhysioEdvance Offers', desc: 'Core feature cards grid', icon: 'ri-rocket-line' },
+            vision_mission: { name: 'Our Vision & Mission', desc: 'Core vision & commitment cards', icon: 'ri-shield-star-line' }
+          };
+
+          const currentOrder = (typeof sectionsOrder !== 'undefined' && Array.isArray(sectionsOrder)) ? sectionsOrder : Object.keys(sectionLabels);
+        %>
+
+        <div class="d-flex flex-column gap-3 mt-3">
+          <% currentOrder.forEach((secKey, idx) => { 
+              const info = sectionLabels[secKey] || { name: secKey, desc: 'About Page Section', icon: 'ri-layout-grid-line' };
+          %>
+            <div class="card border border-light-subtle rounded-4 p-3 bg-light-subtle pe-cms-card">
+              <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="d-flex align-items-center gap-3">
+                  <span class="pe-section-rank-badge shadow-sm"><%= idx + 1 %></span>
+                  <div class="rounded-circle p-2.5 bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; font-size: 1.25rem;">
+                    <i class="<%= info.icon %>"></i>
+                  </div>
+                  <div>
+                    <h5 class="fw-bold text-dark mb-0.5" style="font-size: 1.1rem;"><%= info.name %></h5>
+                    <span class="text-muted small"><%= info.desc %></span>
+                  </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                  <form action="/admin/about-cms/sections/<%= secKey %>/move-up" method="POST" class="m-0">
+                    <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill px-3" <%= idx === 0 ? 'disabled' : '' %> title="Move Up">
+                      <i class="ri-arrow-up-line me-1"></i> Move Up
+                    </button>
+                  </form>
+                  <form action="/admin/about-cms/sections/<%= secKey %>/move-down" method="POST" class="m-0">
+                    <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill px-3" <%= idx === currentOrder.length - 1 ? 'disabled' : '' %> title="Move Down">
+                      <i class="ri-arrow-down-line me-1"></i> Move Down
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: HERO HEADER -->
+    <div class="tab-pane fade" id="tab-hero" role="tabpanel">
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <h4 class="fw-bold mb-3 text-dark"><i class="ri-layout-top-line text-primary me-2"></i> Edit About Hero Section</h4>
+        <form action="/admin/about-cms/hero" method="POST">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Hero Badge Tag</label>
+            <input type="text" name="badge" class="form-control form-control-lg rounded-3" value="<%= (typeof aboutHero !== 'undefined' && aboutHero.badge) ? aboutHero.badge : 'About PhysioEdvance' %>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Hero Main Title (Supports HTML tags like &lt;span class="pe-hero-title-gradient"&gt;...&lt;/span&gt;)</label>
+            <input type="text" name="title" class="form-control form-control-lg rounded-3" value="<%= (typeof aboutHero !== 'undefined' && aboutHero.title) ? aboutHero.title : 'Empowering the Next Generation of Physiotherapists' %>" required>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-bold">Hero Subtitle Text</label>
+            <textarea name="subtitle" class="form-control rounded-3" rows="3" required><%= (typeof aboutHero !== 'undefined' && aboutHero.subtitle) ? aboutHero.subtitle : 'PhysioEdvance is a dedicated digital learning ecosystem created specifically for BPT & MPT physiotherapy students across India.' %></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary rounded-pill px-4 py-2.5 fw-bold text-white shadow-sm">
+            <i class="ri-save-line me-1.5"></i> Save Hero Changes
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 3: PURPOSE & VISION -->
+    <div class="tab-pane fade" id="tab-purpose" role="tabpanel">
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <h4 class="fw-bold mb-3 text-dark"><i class="ri-compass-3-line text-primary me-2"></i> Edit Purpose & Vision Section</h4>
+        <form action="/admin/about-cms/purpose" method="POST">
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Section Badge</label>
+              <input type="text" name="badge" class="form-control rounded-3" value="<%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.badge) ? aboutPurpose.badge : 'Our Purpose & Vision' %>">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Section Title</label>
+              <input type="text" name="title" class="form-control rounded-3" value="<%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.title) ? aboutPurpose.title : 'About PhysioEdvance' %>">
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-bold">Section Subtitle</label>
+            <input type="text" name="subtitle" class="form-control rounded-3" value="<%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.subtitle) ? aboutPurpose.subtitle : 'Connecting knowledge with understanding, and understanding with clinical practice.' %>">
+          </div>
+
+          <h5 class="fw-bold mt-4 mb-3 text-primary border-bottom pb-2">Main Narrative Paragraphs</h5>
+          <div class="mb-3">
+            <label class="form-label fw-bold small">Paragraph 1</label>
+            <textarea name="narrative1" class="form-control rounded-3" rows="2"><%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.narrative1) ? aboutPurpose.narrative1 : '' %></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold small">Paragraph 2</label>
+            <textarea name="narrative2" class="form-control rounded-3" rows="2"><%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.narrative2) ? aboutPurpose.narrative2 : '' %></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold small">Paragraph 3</label>
+            <textarea name="narrative3" class="form-control rounded-3" rows="2"><%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.narrative3) ? aboutPurpose.narrative3 : '' %></textarea>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-bold small">Paragraph 4</label>
+            <textarea name="narrative4" class="form-control rounded-3" rows="2"><%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.narrative4) ? aboutPurpose.narrative4 : '' %></textarea>
+          </div>
+
+          <h5 class="fw-bold mt-4 mb-3 text-primary border-bottom pb-2">Right Stack Highlight Cards</h5>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Card 1 Title</label>
+              <input type="text" name="card1_title" class="form-control rounded-3" value="<%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.card1_title) ? aboutPurpose.card1_title : '' %>">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Card 1 Description</label>
+              <input type="text" name="card1_desc" class="form-control rounded-3" value="<%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.card1_desc) ? aboutPurpose.card1_desc : '' %>">
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Card 2 Title</label>
+              <input type="text" name="card2_title" class="form-control rounded-3" value="<%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.card2_title) ? aboutPurpose.card2_title : '' %>">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Card 2 Description</label>
+              <input type="text" name="card2_desc" class="form-control rounded-3" value="<%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.card2_desc) ? aboutPurpose.card2_desc : '' %>">
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Card 3 Title</label>
+              <input type="text" name="card3_title" class="form-control rounded-3" value="<%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.card3_title) ? aboutPurpose.card3_title : '' %>">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Card 3 Description</label>
+              <input type="text" name="card3_desc" class="form-control rounded-3" value="<%= (typeof aboutPurpose !== 'undefined' && aboutPurpose.card3_desc) ? aboutPurpose.card3_desc : '' %>">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary rounded-pill px-4 py-2.5 fw-bold text-white shadow-sm">
+            <i class="ri-save-line me-1.5"></i> Save Purpose & Vision Changes
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 4: ONBOARDING STEPS -->
+    <div class="tab-pane fade" id="tab-onboarding" role="tabpanel">
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <h4 class="fw-bold mb-3 text-dark"><i class="ri-login-circle-line text-primary me-2"></i> Edit Easy 4-Step Onboarding Access</h4>
+        <form action="/admin/about-cms/onboarding" method="POST">
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Step 1 Title</label>
+              <input type="text" name="step1_title" class="form-control rounded-3" value="<%= (typeof aboutOnboarding !== 'undefined' && aboutOnboarding.step1_title) ? aboutOnboarding.step1_title : 'Click Login' %>">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Step 1 Description</label>
+              <input type="text" name="step1_desc" class="form-control rounded-3" value="<%= (typeof aboutOnboarding !== 'undefined' && aboutOnboarding.step1_desc) ? aboutOnboarding.step1_desc : '' %>">
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Step 2 Title</label>
+              <input type="text" name="step2_title" class="form-control rounded-3" value="<%= (typeof aboutOnboarding !== 'undefined' && aboutOnboarding.step2_title) ? aboutOnboarding.step2_title : 'Enter Credentials' %>">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Step 2 Description</label>
+              <input type="text" name="step2_desc" class="form-control rounded-3" value="<%= (typeof aboutOnboarding !== 'undefined' && aboutOnboarding.step2_desc) ? aboutOnboarding.step2_desc : '' %>">
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Step 3 Title</label>
+              <input type="text" name="step3_title" class="form-control rounded-3" value="<%= (typeof aboutOnboarding !== 'undefined' && aboutOnboarding.step3_title) ? aboutOnboarding.step3_title : 'Select BPT Subject' %>">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Step 3 Description</label>
+              <input type="text" name="step3_desc" class="form-control rounded-3" value="<%= (typeof aboutOnboarding !== 'undefined' && aboutOnboarding.step3_desc) ? aboutOnboarding.step3_desc : '' %>">
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Step 4 Title</label>
+              <input type="text" name="step4_title" class="form-control rounded-3" value="<%= (typeof aboutOnboarding !== 'undefined' && aboutOnboarding.step4_title) ? aboutOnboarding.step4_title : 'Start Learning' %>">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold">Step 4 Description</label>
+              <input type="text" name="step4_desc" class="form-control rounded-3" value="<%= (typeof aboutOnboarding !== 'undefined' && aboutOnboarding.step4_desc) ? aboutOnboarding.step4_desc : '' %>">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary rounded-pill px-4 py-2.5 fw-bold text-white shadow-sm">
+            <i class="ri-save-line me-1.5"></i> Save Onboarding Steps
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- TAB 5: STORY MILESTONES -->
+    <div class="tab-pane fade" id="tab-milestones" role="tabpanel">
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-3">
+          <div>
+            <h4 class="fw-bold mb-1 text-dark"><i class="ri-history-line text-primary me-2"></i> Story Milestones Manager</h4>
+            <p class="text-muted small mb-0">Add, edit, delete, or re-order milestones for "The Story Behind PhysioEdvance".</p>
+          </div>
+        </div>
+
+        <!-- Milestones List -->
+        <% if (typeof storyMilestones !== 'undefined' && storyMilestones.length > 0) { %>
+          <div class="d-flex flex-column gap-3 mb-4">
+            <% storyMilestones.forEach((m, mIdx) => { %>
+              <div class="card border border-light-subtle rounded-4 p-3 bg-light-subtle pe-cms-card">
+                <form action="/admin/about-cms/milestones/<%= m.id %>/update" method="POST">
+                  <div class="row g-3 align-items-center mb-2">
+                    <div class="col-md-2">
+                      <label class="form-label fw-bold small">Year Tag</label>
+                      <input type="text" name="year" class="form-control rounded-3 fw-bold text-primary" value="<%= m.year %>" required>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label fw-bold small">Milestone Title</label>
+                      <input type="text" name="title" class="form-control rounded-3 fw-bold" value="<%= m.title %>" required>
+                    </div>
+                    <div class="col-md-2">
+                      <label class="form-label fw-bold small">Order Rank</label>
+                      <input type="number" name="display_order" class="form-control rounded-3" value="<%= m.display_order %>">
+                    </div>
+                    <div class="col-md-4 text-md-end pt-md-4">
+                      <button type="submit" class="btn btn-sm btn-success rounded-pill px-3 me-1">
+                        <i class="ri-save-line me-1"></i> Save
+                      </button>
+                      <button type="submit" formaction="/admin/about-cms/milestones/<%= m.id %>/move-up" class="btn btn-sm btn-outline-primary rounded-pill px-2 me-1" <%= mIdx === 0 ? 'disabled' : '' %> title="Move Up">
+                        <i class="ri-arrow-up-line"></i>
+                      </button>
+                      <button type="submit" formaction="/admin/about-cms/milestones/<%= m.id %>/move-down" class="btn btn-sm btn-outline-primary rounded-pill px-2 me-1" <%= mIdx === storyMilestones.length - 1 ? 'disabled' : '' %> title="Move Down">
+                        <i class="ri-arrow-down-line"></i>
+                      </button>
+                      <button type="submit" formaction="/admin/about-cms/milestones/<%= m.id %>/delete" class="btn btn-sm btn-outline-danger rounded-pill px-2" onclick="return confirm('Delete this milestone?')" title="Delete">
+                        <i class="ri-delete-bin-line"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="mb-1">
+                    <label class="form-label fw-bold small">Description Text</label>
+                    <textarea name="description" class="form-control rounded-3" rows="2" required><%= m.description %></textarea>
+                  </div>
+                </form>
+              </div>
+            <% }) %>
+          </div>
+        <% } %>
+
+        <!-- Add New Milestone Form -->
+        <div class="card border border-primary-subtle rounded-4 p-4 bg-primary-subtle">
+          <h5 class="fw-bold text-primary mb-3"><i class="ri-add-circle-line me-1.5"></i> Add New Story Milestone</h5>
+          <form action="/admin/about-cms/milestones/new" method="POST">
+            <div class="row g-3 mb-3">
+              <div class="col-md-3">
+                <label class="form-label fw-bold small">Year Tag (e.g. 2027)</label>
+                <input type="text" name="year" class="form-control rounded-3" placeholder="2027" required>
+              </div>
+              <div class="col-md-9">
+                <label class="form-label fw-bold small">Milestone Title</label>
+                <input type="text" name="title" class="form-control rounded-3" placeholder="EXPANSION & BEYOND" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Description</label>
+              <textarea name="description" class="form-control rounded-3" rows="2" placeholder="Detail story..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary rounded-pill px-4 py-2.5 fw-bold text-white shadow-sm">
+              <i class="ri-add-line me-1"></i> Add Milestone
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeTab = urlParams.get('tab');
+    if (activeTab) {
+      const tabButton = document.querySelector(`#aboutCmsTabs button[data-bs-target="#tab-${activeTab}"]`);
+      if (tabButton) {
+        const bsTab = new bootstrap.Tab(tabButton);
+        bsTab.show();
+      }
+    }
+  });
+</script>

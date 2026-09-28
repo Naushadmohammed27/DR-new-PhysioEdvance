@@ -1,7 +1,7 @@
 const Course = require('../models/Course');
 const User = require('../models/User');
 const db = require('../db/connection');
-const { Notes, Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection } = require('../models/Content');
+const { Notes, Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection, AboutSettings } = require('../models/Content');
 const PermissionService = require('../services/permissionService');
 
 exports.dashboard = async (req, res) => {
@@ -2271,5 +2271,151 @@ exports.deleteLiveDiscussion = async (req, res) => {
     req.flash('error', `Failed to delete discussion: ${err.message}`);
   }
   res.redirect('/admin/live-discussions');
+};
+
+// ==========================================
+// ABOUT US PAGE CMS
+// ==========================================
+exports.aboutCmsIndex = async (req, res) => {
+  try {
+    const sectionsOrder = await AboutSettings.getSectionsOrder();
+    const aboutHero = await AboutSettings.getHero();
+    const aboutPurpose = await AboutSettings.getPurpose();
+    const aboutOnboarding = await AboutSettings.getOnboarding();
+    const storyMilestones = await AboutSettings.getMilestones();
+
+    res.render('admin/about-cms', {
+      title: 'About Us Page CMS',
+      layout: 'layouts/admin',
+      sectionsOrder,
+      aboutHero,
+      aboutPurpose,
+      aboutOnboarding,
+      storyMilestones,
+      currentPath: '/admin/about-cms'
+    });
+  } catch (err) {
+    console.error('Error loading About CMS:', err);
+    req.flash('error', `Failed to load About CMS: ${err.message}`);
+    res.redirect('/admin/dashboard');
+  }
+};
+
+exports.moveAboutSectionUp = async (req, res) => {
+  try {
+    await AboutSettings.moveSectionUp(req.params.secKey);
+    req.flash('success', `Section moved up successfully.`);
+  } catch (err) {
+    console.error('Error moving section up:', err);
+    req.flash('error', `Failed to move section: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=order');
+};
+
+exports.moveAboutSectionDown = async (req, res) => {
+  try {
+    await AboutSettings.moveSectionDown(req.params.secKey);
+    req.flash('success', `Section moved down successfully.`);
+  } catch (err) {
+    console.error('Error moving section down:', err);
+    req.flash('error', `Failed to move section: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=order');
+};
+
+exports.updateAboutHero = async (req, res) => {
+  try {
+    const { badge, title, subtitle } = req.body;
+    await AboutSettings.updateHero({ badge, title, subtitle });
+    req.flash('success', 'About Hero section updated successfully.');
+  } catch (err) {
+    console.error('Error updating About Hero:', err);
+    req.flash('error', `Failed to update Hero: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=hero');
+};
+
+exports.updateAboutPurpose = async (req, res) => {
+  try {
+    await AboutSettings.updatePurpose(req.body);
+    req.flash('success', 'Purpose & Vision section updated successfully.');
+  } catch (err) {
+    console.error('Error updating Purpose & Vision:', err);
+    req.flash('error', `Failed to update Purpose & Vision: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=purpose');
+};
+
+exports.updateAboutOnboarding = async (req, res) => {
+  try {
+    await AboutSettings.updateOnboarding(req.body);
+    req.flash('success', 'Easy Access Onboarding Steps updated successfully.');
+  } catch (err) {
+    console.error('Error updating Onboarding steps:', err);
+    req.flash('error', `Failed to update Onboarding: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=onboarding');
+};
+
+exports.addAboutMilestone = async (req, res) => {
+  try {
+    const { year, title, description } = req.body;
+    await AboutSettings.addMilestone({ year: (year || '').trim(), title: (title || '').trim(), description: (description || '').trim() });
+    req.flash('success', 'New story milestone added successfully.');
+  } catch (err) {
+    console.error('Error adding milestone:', err);
+    req.flash('error', `Failed to add milestone: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=milestones');
+};
+
+exports.updateAboutMilestone = async (req, res) => {
+  try {
+    const { year, title, description, display_order } = req.body;
+    await AboutSettings.updateMilestone(req.params.id, {
+      year: year ? year.trim() : '',
+      title: title ? title.trim() : '',
+      description: description ? description.trim() : '',
+      display_order: parseInt(display_order, 10) || 1
+    });
+    req.flash('success', 'Milestone updated successfully.');
+  } catch (err) {
+    console.error('Error updating milestone:', err);
+    req.flash('error', `Failed to update milestone: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=milestones');
+};
+
+exports.deleteAboutMilestone = async (req, res) => {
+  try {
+    await AboutSettings.deleteMilestone(req.params.id);
+    req.flash('success', 'Milestone deleted successfully.');
+  } catch (err) {
+    console.error('Error deleting milestone:', err);
+    req.flash('error', `Failed to delete milestone: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=milestones');
+};
+
+exports.moveAboutMilestoneUp = async (req, res) => {
+  try {
+    await AboutSettings.moveMilestoneUp(req.params.id);
+    req.flash('success', 'Milestone moved up.');
+  } catch (err) {
+    console.error('Error moving milestone up:', err);
+    req.flash('error', `Failed to move milestone: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=milestones');
+};
+
+exports.moveAboutMilestoneDown = async (req, res) => {
+  try {
+    await AboutSettings.moveMilestoneDown(req.params.id);
+    req.flash('success', 'Milestone moved down.');
+  } catch (err) {
+    console.error('Error moving milestone down:', err);
+    req.flash('error', `Failed to move milestone: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=milestones');
 };
 

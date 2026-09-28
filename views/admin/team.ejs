@@ -81,11 +81,11 @@
 
 <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
   <div>
-    <h3 class="fw-bold text-dark mb-1"><i class="ri-user-star-line me-2 text-primary"></i>Expert Teachers & Faculty Management</h3>
-    <p class="text-muted small mb-0">Add, edit, and manage expert teachers, clinical professors, advisory board members, and team display visibility.</p>
+    <h3 class="fw-bold text-dark mb-1"><i class="ri-user-star-line me-2 text-primary"></i>Team Management</h3>
+    <p class="text-muted small mb-0">Add, edit, and manage team members across The Face, Core Members, and Expert Advisors.</p>
   </div>
   <a href="/admin/team/new" class="btn btn-primary rounded-pill px-4 py-2.5 fw-bold shadow-sm text-white">
-    <i class="ri-user-add-fill me-1"></i> + Add Expert Teacher / Faculty
+    <i class="ri-user-add-fill me-1"></i> + Add Team Member
   </a>
 </div>
 
@@ -128,14 +128,9 @@
         <div class="col-md-6">
           <label class="form-label font-weight-bold">Staff Group Section <span class="text-danger">*</span></label>
           <select name="group_name" class="form-select form-select-lg" required>
-            <option value="teaching_staff" selected>🎓 Teaching Staff (Academic Faculty / Teacher)</option>
-            <option value="non_teaching_staff">💼 Non-Teaching Staff (Admin & Operations Worker)</option>
-            <option value="subject_experts">🔬 Experts for all subjects (Subject Specialist)</option>
-            <option value="technical_assistance">💻 Technical Assistance (Platform Support Worker)</option>
-            <option value="other_staff">👥 Other Staff & Collaborators</option>
-            <option value="founding">🏆 Founding / Leadership Board</option>
-            <option value="advisory">🏛️ Advisory Board Member</option>
-            <option value="legal_business">⚖️ Legal & Business Advisory</option>
+            <option value="the_face">🌟 1. The Face (Founders, Leadership & Visionaries)</option>
+            <option value="core_members" selected>🎓 2. Core Members (Academic Faculty & Core Team)</option>
+            <option value="expert_advisors">🔬 3. Expert Advisors (Advisory Board & Subject Specialists)</option>
           </select>
         </div>
 
@@ -193,101 +188,65 @@
   </div>
 </div>
 
-<!-- ============ STAFF GROUP VISIBILITY CONTROL PANEL (5 GROUPS) ============ -->
+<!-- ============ STAFF GROUP VISIBILITY CONTROL PANEL (3 SECTIONS) ============ -->
 <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white border overflow-hidden">
   <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
     <h5 class="mb-0 fw-bold text-dark"><i class="ri-toggle-line text-primary me-2"></i>Staff Group Visibility</h5>
-    <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 font-weight-bold">5 Staff Sections</span>
+    <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 font-weight-bold">3 Team Sections</span>
   </div>
   <div class="card-body p-4">
     <form action="/admin/team/toggle-groups" method="POST" id="toggleGroupsForm">
       <div class="row g-3">
-        <!-- 1. Teaching Staff -->
-        <div class="col-md-4 col-sm-6">
-          <div class="p-3 border rounded-3 bg-white d-flex align-items-center justify-content-between shadow-sm">
-            <div class="d-flex align-items-center gap-3">
-              <div class="rounded-3 p-2 bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
-                <i class="ri-book-open-line fs-5"></i>
-              </div>
-              <div>
-                <h6 class="fw-bold text-dark mb-0" style="font-size:0.92rem;">Teaching Staff</h6>
-                <small class="text-muted">Academic Faculty</small>
-              </div>
-            </div>
-            <div class="form-check form-switch fs-5 mb-0">
-              <input class="form-check-input" type="checkbox" name="teaching_staff" value="1" <%= (typeof groupStatuses !== 'undefined' && groupStatuses.teaching_staff) ? 'checked' : '' %> onchange="document.getElementById('toggleGroupsForm').submit()">
-            </div>
-          </div>
-        </div>
-
-        <!-- 2. Non-Teaching Staff -->
-        <div class="col-md-4 col-sm-6">
-          <div class="p-3 border rounded-3 bg-white d-flex align-items-center justify-content-between shadow-sm">
-            <div class="d-flex align-items-center gap-3">
-              <div class="rounded-3 p-2 bg-secondary-subtle text-secondary d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
-                <i class="ri-user-settings-line fs-5"></i>
-              </div>
-              <div>
-                <h6 class="fw-bold text-dark mb-0" style="font-size:0.92rem;">Non - Teaching staff</h6>
-                <small class="text-muted">Admin & Operations</small>
-              </div>
-            </div>
-            <div class="form-check form-switch fs-5 mb-0">
-              <input class="form-check-input" type="checkbox" name="non_teaching_staff" value="1" <%= (typeof groupStatuses !== 'undefined' && groupStatuses.non_teaching_staff) ? 'checked' : '' %> onchange="document.getElementById('toggleGroupsForm').submit()">
-            </div>
-          </div>
-        </div>
-
-        <!-- 3. Experts for all Subjects -->
-        <div class="col-md-4 col-sm-6">
-          <div class="p-3 border rounded-3 bg-white d-flex align-items-center justify-content-between shadow-sm">
-            <div class="d-flex align-items-center gap-3">
-              <div class="rounded-3 p-2 bg-info-subtle text-info d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
-                <i class="ri-microscope-line fs-5"></i>
-              </div>
-              <div>
-                <h6 class="fw-bold text-dark mb-0" style="font-size:0.92rem;">Experts for all subjects</h6>
-                <small class="text-muted">Subject Specialists</small>
-              </div>
-            </div>
-            <div class="form-check form-switch fs-5 mb-0">
-              <input class="form-check-input" type="checkbox" name="subject_experts" value="1" <%= (typeof groupStatuses !== 'undefined' && groupStatuses.subject_experts) ? 'checked' : '' %> onchange="document.getElementById('toggleGroupsForm').submit()">
-            </div>
-          </div>
-        </div>
-
-        <!-- 4. Technical Assistance -->
-        <div class="col-md-4 col-sm-6">
+        <!-- 1. The Face -->
+        <div class="col-md-4">
           <div class="p-3 border rounded-3 bg-white d-flex align-items-center justify-content-between shadow-sm">
             <div class="d-flex align-items-center gap-3">
               <div class="rounded-3 p-2 bg-warning-subtle text-warning d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
-                <i class="ri-computer-line fs-5"></i>
+                <i class="ri-star-fill fs-5"></i>
               </div>
               <div>
-                <h6 class="fw-bold text-dark mb-0" style="font-size:0.92rem;">Technical Assistance</h6>
-                <small class="text-muted">Platform Support</small>
+                <h6 class="fw-bold text-dark mb-0" style="font-size:0.92rem;">1. The Face</h6>
+                <small class="text-muted">Founders & Leadership</small>
               </div>
             </div>
             <div class="form-check form-switch fs-5 mb-0">
-              <input class="form-check-input" type="checkbox" name="technical_assistance" value="1" <%= (typeof groupStatuses !== 'undefined' && groupStatuses.technical_assistance) ? 'checked' : '' %> onchange="document.getElementById('toggleGroupsForm').submit()">
+              <input class="form-check-input" type="checkbox" name="the_face" value="1" <%= (typeof groupStatuses === 'undefined' || groupStatuses.the_face !== false) ? 'checked' : '' %> onchange="document.getElementById('toggleGroupsForm').submit()">
             </div>
           </div>
         </div>
 
-        <!-- 5. Other Staff -->
-        <div class="col-md-4 col-sm-6">
+        <!-- 2. Core Members -->
+        <div class="col-md-4">
           <div class="p-3 border rounded-3 bg-white d-flex align-items-center justify-content-between shadow-sm">
             <div class="d-flex align-items-center gap-3">
-              <div class="rounded-3 p-2 bg-light-subtle text-dark border d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
-                <i class="ri-group-line fs-5"></i>
+              <div class="rounded-3 p-2 bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
+                <i class="ri-team-line fs-5"></i>
               </div>
               <div>
-                <h6 class="fw-bold text-dark mb-0" style="font-size:0.92rem;">Other staff</h6>
-                <small class="text-muted">Collaborators</small>
+                <h6 class="fw-bold text-dark mb-0" style="font-size:0.92rem;">2. Core Members</h6>
+                <small class="text-muted">Faculty & Core Staff</small>
               </div>
             </div>
             <div class="form-check form-switch fs-5 mb-0">
-              <input class="form-check-input" type="checkbox" name="other_staff" value="1" <%= (typeof groupStatuses !== 'undefined' && groupStatuses.other_staff) ? 'checked' : '' %> onchange="document.getElementById('toggleGroupsForm').submit()">
+              <input class="form-check-input" type="checkbox" name="core_members" value="1" <%= (typeof groupStatuses === 'undefined' || groupStatuses.core_members !== false) ? 'checked' : '' %> onchange="document.getElementById('toggleGroupsForm').submit()">
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Expert Advisors -->
+        <div class="col-md-4">
+          <div class="p-3 border rounded-3 bg-white d-flex align-items-center justify-content-between shadow-sm">
+            <div class="d-flex align-items-center gap-3">
+              <div class="rounded-3 p-2 bg-info-subtle text-info d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
+                <i class="ri-award-line fs-5"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold text-dark mb-0" style="font-size:0.92rem;">3. Expert Advisors</h6>
+                <small class="text-muted">Specialists & Advisory</small>
+              </div>
+            </div>
+            <div class="form-check form-switch fs-5 mb-0">
+              <input class="form-check-input" type="checkbox" name="expert_advisors" value="1" <%= (typeof groupStatuses === 'undefined' || groupStatuses.expert_advisors !== false) ? 'checked' : '' %> onchange="document.getElementById('toggleGroupsForm').submit()">
             </div>
           </div>
         </div>
@@ -335,15 +294,18 @@
             <td>
               <% 
                 const groupLabels = {
-                  'teaching_staff': 'Teaching Staff',
-                  'teaching': 'Teaching Staff',
-                  'non_teaching_staff': 'Non-Teaching Staff',
-                  'subject_experts': 'Subject Experts',
-                  'technical_assistance': 'Technical Assistance',
-                  'other_staff': 'Other Staff',
-                  'founding': 'Founding / Leadership',
-                  'advisory': 'Advisory Board',
-                  'legal_business': 'Legal & Business'
+                  'the_face': '1. The Face',
+                  'founding': '1. The Face',
+                  'core_members': '2. Core Members',
+                  'teaching_staff': '2. Core Members',
+                  'teaching': '2. Core Members',
+                  'non_teaching_staff': '2. Core Members',
+                  'expert_advisors': '3. Expert Advisors',
+                  'subject_experts': '3. Expert Advisors',
+                  'advisory': '3. Expert Advisors',
+                  'technical_assistance': '3. Expert Advisors',
+                  'legal_business': '3. Expert Advisors',
+                  'other_staff': '3. Expert Advisors'
                 };
               %>
               <span class="badge bg-light text-dark border text-capitalize px-3 py-1.5 rounded-pill font-weight-semibold">

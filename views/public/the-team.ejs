@@ -2,7 +2,7 @@
 <section class="pe-team-hero text-center py-5 text-white" style="background: linear-gradient(135deg, #0a5dc2 0%, #0369a1 100%);">
   <div class="container py-4 text-center">
     <span class="badge bg-warning text-dark font-weight-bold text-uppercase px-3 py-1.5 rounded-pill mb-3" style="font-size: 0.8rem;">
-      <i class="ri-team-line me-1"></i> Our Faculty & Staff
+      <i class="ri-team-line me-1"></i> Our People & Faculty
     </span>
     <h1 class="text-white fw-bold display-5 mb-3">The Team Behind PhysioEdvance</h1>
     <p class="text-white-75 mx-auto lead" style="max-width:680px; font-size: 1.1rem;">
@@ -12,35 +12,35 @@
   </div>
 </section>
 
-<!-- ============ 1. FIRST FIXED SECTION: FOUNDING MEMBERS ============ -->
-<% if (typeof founding !== 'undefined' && founding.length > 0) { %>
-<section id="founding-members" class="pe-section bg-white py-5">
+<!-- ============ 1. THE FACE ============ -->
+<% if (typeof theFace !== 'undefined' && theFace.length > 0) { %>
+<section id="the-face" class="pe-section bg-white py-5 border-bottom">
   <div class="container">
     <div class="pe-section-head text-center mb-5">
       <span class="badge bg-primary text-white font-weight-bold px-3 py-1.5 rounded-pill mb-2" style="font-size: 0.8rem;">
-        <i class="ri-star-line me-1"></i> Leadership & Founders
+        <i class="ri-star-fill me-1 text-warning"></i> Leadership & Visionaries
       </span>
-      <h2 class="fw-bold text-dark display-6">Founding Members</h2>
-      <p class="text-muted">The visionaries who built PhysioEdvance from the ground up.</p>
+      <h2 class="fw-bold text-dark display-6">1. The Face</h2>
+      <p class="text-muted" style="max-width: 600px; margin: 0 auto;">The visionary founders and leaders driving PhysioEdvance.</p>
     </div>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
-      <% founding.forEach(m => { %>
+      <% theFace.forEach(m => { %>
         <div class="col">
           <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white transition-all pe-pro-card border">
             <div class="position-relative d-inline-block mx-auto mb-3">
-              <img src="<%= m.photo %>" alt="<%= m.name %>" class="rounded-circle border border-4 border-warning shadow-sm" style="width: 115px; height: 115px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(m.name) %>&background=0a5dc2&color=fff&size=256'">
-              <span class="position-absolute bottom-0 end-0 bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm" style="width: 28px; height: 28px; font-size: 0.8rem;" title="Founder">
+              <img src="<%= m.photo || '/images/team/default-avatar.png' %>" alt="<%= m.name %>" class="rounded-circle border border-4 border-warning shadow-sm" style="width: 115px; height: 115px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(m.name) %>&background=0a5dc2&color=fff&size=256'">
+              <span class="position-absolute bottom-0 end-0 bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm" style="width: 28px; height: 28px; font-size: 0.8rem;" title="Founder / Leader">
                 <i class="ri-star-fill"></i>
               </span>
             </div>
             <h5 class="fw-bold text-dark mb-1"><%= m.name %></h5>
-            <div class="text-primary font-weight-bold small mb-1"><%= m.designation %></div>
+            <div class="text-primary font-weight-bold small mb-1"><%= m.designation || m.role || 'Leadership' %></div>
             <% if (m.qualification) { %>
               <div class="text-muted small mb-2"><i class="ri-graduation-cap-line me-1"></i><%= m.qualification %></div>
             <% } %>
             <% if (m.bio) { %>
-              <p class="text-secondary small mb-0 mt-2" style="font-size: 0.85rem;"><%= m.bio %></p>
+              <p class="text-secondary small mb-0 mt-2" style="font-size: 0.85rem; white-space: pre-line;"><%= m.bio %></p>
             <% } %>
           </div>
         </div>
@@ -50,35 +50,35 @@
 </section>
 <% } %>
 
-<!-- ============ 2. IN-BETWEEN SECTION: TEACHING STAFF (ADMIN MANAGED) ============ -->
-<% if (typeof teachingStaff !== 'undefined' && teachingStaff.length > 0) { %>
-<section id="teaching-staff" class="pe-section bg-light py-5">
+<!-- ============ 2. CORE MEMBERS ============ -->
+<% if (typeof coreMembers !== 'undefined' && coreMembers.length > 0) { %>
+<section id="core-members" class="pe-section bg-light py-5 border-bottom">
   <div class="container">
     <div class="pe-section-head text-center mb-5">
       <span class="badge bg-primary-subtle text-primary font-weight-bold px-3 py-1.5 rounded-pill mb-2" style="font-size: 0.8rem;">
-        <i class="ri-book-open-line me-1"></i> Academic Faculty
+        <i class="ri-book-open-line me-1"></i> Academic Faculty & Core Team
       </span>
-      <h2 class="fw-bold text-dark display-6">Teaching Staff</h2>
-      <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Professors, clinical instructors, and educators guiding your BPT curriculum.</p>
+      <h2 class="fw-bold text-dark display-6">2. Core Members</h2>
+      <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Professors, clinical instructors, and core operational staff guiding student success.</p>
     </div>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
-      <% teachingStaff.forEach(m => { %>
+      <% coreMembers.forEach(m => { %>
         <div class="col">
-          <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white transition-all pe-pro-card">
+          <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white transition-all pe-pro-card border">
             <div class="position-relative d-inline-block mx-auto mb-3">
-              <img src="<%= m.photo || '/images/team/default-avatar.png' %>" alt="<%= m.name %>" class="rounded-circle border border-3 border-primary shadow-sm" style="width: 110px; height: 110px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(m.name) %>&background=0a5dc2&color=fff&size=256'">
-              <span class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm" style="width: 28px; height: 28px; font-size: 0.8rem;" title="Teaching Staff">
-                <i class="ri-graduation-cap-fill"></i>
+              <img src="<%= m.photo || '/images/team/default-avatar.png' %>" alt="<%= m.name %>" class="rounded-circle border border-3 border-primary shadow-sm" style="width: 105px; height: 105px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(m.name) %>&background=0a5dc2&color=fff&size=256'">
+              <span class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm" style="width: 26px; height: 26px; font-size: 0.78rem;" title="Core Member">
+                <i class="ri-user-heart-fill"></i>
               </span>
             </div>
             <h5 class="fw-bold text-dark mb-1"><%= m.name %></h5>
-            <div class="text-primary font-weight-semibold small mb-1"><%= m.designation || 'Instructor' %></div>
+            <div class="text-primary font-weight-semibold small mb-1"><%= m.designation || 'Core Faculty' %></div>
             <% if (m.qualification) { %>
               <div class="text-muted small mb-2"><i class="ri-award-line text-warning me-1"></i><%= m.qualification %></div>
             <% } %>
             <% if (m.bio) { %>
-              <p class="text-secondary small mb-0 mt-2 line-clamp-2" style="font-size: 0.85rem;"><%= m.bio %></p>
+              <p class="text-secondary small mb-0 mt-2 line-clamp-2" style="font-size: 0.85rem; white-space: pre-line;"><%= m.bio %></p>
             <% } %>
           </div>
         </div>
@@ -88,149 +88,35 @@
 </section>
 <% } %>
 
-<!-- ============ 3. IN-BETWEEN SECTION: NON-TEACHING STAFF (ADMIN MANAGED) ============ -->
-<% if (typeof nonTeachingStaff !== 'undefined' && nonTeachingStaff.length > 0) { %>
-<section id="non-teaching-staff" class="pe-section bg-white py-5">
-  <div class="container">
-    <div class="pe-section-head text-center mb-5">
-      <span class="badge bg-secondary-subtle text-secondary font-weight-bold px-3 py-1.5 rounded-pill mb-2" style="font-size: 0.8rem;">
-        <i class="ri-user-settings-line me-1"></i> Operations & Admin
-      </span>
-      <h2 class="fw-bold text-dark display-6">Non-Teaching Staff</h2>
-      <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Administrative coordinators ensuring smooth student support.</p>
-    </div>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
-      <% nonTeachingStaff.forEach(m => { %>
-        <div class="col">
-          <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white transition-all pe-pro-card border">
-            <div class="position-relative d-inline-block mx-auto mb-3">
-              <img src="<%= m.photo || '/images/team/default-avatar.png' %>" alt="<%= m.name %>" class="rounded-circle border" style="width: 90px; height: 90px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(m.name) %>&background=64748b&color=fff&size=256'">
-            </div>
-            <h6 class="fw-bold text-dark mb-1"><%= m.name %></h6>
-            <div class="text-muted small mb-1"><%= m.designation %></div>
-          </div>
-        </div>
-      <% }) %>
-    </div>
-  </div>
-</section>
-<% } %>
-
-<!-- ============ 4. IN-BETWEEN SECTION: EXPERTS FOR ALL THE SUBJECTS (ADMIN MANAGED) ============ -->
-<% if (typeof subjectExperts !== 'undefined' && subjectExperts.length > 0) { %>
-<section id="subject-experts" class="pe-section bg-light py-5">
+<!-- ============ 3. EXPERT ADVISORS ============ -->
+<% if (typeof expertAdvisors !== 'undefined' && expertAdvisors.length > 0) { %>
+<section id="expert-advisors" class="pe-section bg-white py-5 border-bottom">
   <div class="container">
     <div class="pe-section-head text-center mb-5">
       <span class="badge bg-info-subtle text-info font-weight-bold px-3 py-1.5 rounded-pill mb-2" style="font-size: 0.8rem;">
-        <i class="ri-microscope-line me-1"></i> Subject Matter Experts
+        <i class="ri-award-line me-1"></i> Advisory Board & Subject Specialists
       </span>
-      <h2 class="fw-bold text-dark display-6">Experts for All Subjects</h2>
-      <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Specialist clinicians authoring subject notes and practical guides.</p>
+      <h2 class="fw-bold text-dark display-6">3. Expert Advisors</h2>
+      <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Clinical experts, subject matter specialists, and strategic advisory board members.</p>
     </div>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
-      <% subjectExperts.forEach(m => { %>
+      <% expertAdvisors.forEach(m => { %>
         <div class="col">
-          <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white transition-all pe-pro-card">
+          <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white transition-all pe-pro-card border">
             <div class="position-relative d-inline-block mx-auto mb-3">
               <img src="<%= m.photo || '/images/team/default-avatar.png' %>" alt="<%= m.name %>" class="rounded-circle border border-3 border-info shadow-sm" style="width: 100px; height: 100px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(m.name) %>&background=0ea5e9&color=fff&size=256'">
               <span class="position-absolute bottom-0 end-0 bg-info text-white rounded-circle d-flex align-items-center justify-content-center border border-2 border-white shadow-sm" style="width: 26px; height: 26px; font-size: 0.75rem;">
-                <i class="ri-star-fill"></i>
+                <i class="ri-shield-star-fill"></i>
               </span>
             </div>
             <h5 class="fw-bold text-dark mb-1"><%= m.name %></h5>
-            <div class="text-info font-weight-semibold small mb-1"><%= m.designation %></div>
+            <div class="text-info font-weight-semibold small mb-1"><%= m.designation || 'Specialist Advisor' %></div>
             <% if (m.qualification) { %>
               <div class="text-muted small mb-2"><%= m.qualification %></div>
             <% } %>
-          </div>
-        </div>
-      <% }) %>
-    </div>
-  </div>
-</section>
-<% } %>
-
-<!-- ============ 5. IN-BETWEEN SECTION: TECHNICAL ASSISTANCE (ADMIN MANAGED) ============ -->
-<% if (typeof technicalAssistance !== 'undefined' && technicalAssistance.length > 0) { %>
-<section id="technical-assistance" class="pe-section bg-white py-5">
-  <div class="container">
-    <div class="pe-section-head text-center mb-5">
-      <span class="badge bg-warning-subtle text-warning font-weight-bold px-3 py-1.5 rounded-pill mb-2" style="font-size: 0.8rem;">
-        <i class="ri-computer-line me-1"></i> Platform & Digital Support
-      </span>
-      <h2 class="fw-bold text-dark display-6">Technical Assistance</h2>
-      <p class="text-muted" style="max-width: 600px; margin: 0 auto;">Engineering and technical team managing digital library systems.</p>
-    </div>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 justify-content-center">
-      <% technicalAssistance.forEach(m => { %>
-        <div class="col">
-          <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white transition-all pe-pro-card border">
-            <div class="position-relative d-inline-block mx-auto mb-3">
-              <img src="<%= m.photo || '/images/team/default-avatar.png' %>" alt="<%= m.name %>" class="rounded-circle border border-3 border-warning shadow-sm" style="width: 100px; height: 100px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(m.name) %>&background=f59e0b&color=fff&size=256'">
-            </div>
-            <h5 class="fw-bold text-dark mb-1"><%= m.name %></h5>
-            <div class="text-warning font-weight-semibold small mb-1"><%= m.designation %></div>
-            <% if (m.qualification) { %>
-              <div class="text-muted small mb-2"><%= m.qualification %></div>
-            <% } %>
-          </div>
-        </div>
-      <% }) %>
-    </div>
-  </div>
-</section>
-<% } %>
-
-<!-- ============ 6. IN-BETWEEN SECTION: OTHER STAFF (ADMIN MANAGED) ============ -->
-<% if (typeof otherStaff !== 'undefined' && otherStaff.length > 0) { %>
-<section id="other-staff" class="pe-section bg-light py-5">
-  <div class="container">
-    <div class="pe-section-head text-center mb-5">
-      <span class="badge bg-secondary text-white font-weight-bold px-3 py-1.5 rounded-pill mb-2" style="font-size: 0.8rem;">
-        <i class="ri-group-line me-1"></i> Support Staff
-      </span>
-      <h3 class="fw-bold text-dark display-6">Other Staff & Collaborators</h3>
-    </div>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 justify-content-center">
-      <% otherStaff.forEach(m => { %>
-        <div class="col">
-          <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white">
-            <h6 class="fw-bold text-dark mb-1"><%= m.name %></h6>
-            <div class="text-muted small"><%= m.designation %></div>
-          </div>
-        </div>
-      <% }) %>
-    </div>
-  </div>
-</section>
-<% } %>
-
-<!-- ============ 7. LAST FIXED SECTION: OUR EXPERT ADVISORS (ADVISORY BOARD) ============ -->
-<% if (typeof advisory !== 'undefined' && advisory.length > 0) { %>
-<section id="advisory-board" class="pe-section bg-white py-5">
-  <div class="container">
-    <div class="pe-section-head text-center mb-5">
-      <span class="badge bg-info text-white font-weight-bold px-3 py-1.5 rounded-pill mb-2" style="font-size: 0.8rem;">
-        <i class="ri-award-line me-1"></i> Advisory Board
-      </span>
-      <h2 class="fw-bold text-dark display-6">Our Expert Advisors</h2>
-      <p class="text-muted">Clinical and academic experts guiding the quality of PhysioEdvance.</p>
-    </div>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 justify-content-center">
-      <% advisory.forEach(m => { %>
-        <div class="col">
-          <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white transition-all pe-pro-card border">
-            <div class="position-relative d-inline-block mx-auto mb-3">
-              <img src="<%= m.photo %>" alt="<%= m.name %>" class="rounded-circle border border-3 border-info shadow-sm" style="width: 100px; height: 100px; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<%= encodeURIComponent(m.name) %>&background=0a5dc2&color=fff&size=256'">
-            </div>
-            <h5 class="fw-bold text-dark mb-1"><%= m.name %></h5>
-            <div class="text-info font-weight-bold small mb-1"><%= m.designation %></div>
-            <% if (m.qualification) { %>
-              <div class="text-muted small mb-2"><%= m.qualification %></div>
+            <% if (m.bio) { %>
+              <p class="text-secondary small mb-0 mt-2 line-clamp-2" style="font-size: 0.85rem; white-space: pre-line;"><%= m.bio %></p>
             <% } %>
           </div>
         </div>

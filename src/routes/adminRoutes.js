@@ -211,5 +211,21 @@ router.post('/team/:id/toggle-active', requirePermission('SETTINGS', 'EDIT'), ad
 router.post('/team/:id/reorder', requirePermission('SETTINGS', 'EDIT'), adminController.reorderTeamMember);
 router.post('/team/:id/delete', requirePermission('SETTINGS', 'EDIT'), adminController.deleteTeamMember);
 
+// ==========================================
+// ABOUT US PAGE CMS
+// ==========================================
+router.get('/about-cms', requirePermission('SETTINGS', 'VIEW'), adminController.aboutCmsIndex);
+router.post('/about-cms/sections/:secKey/move-up', requirePermission('SETTINGS', 'EDIT'), adminController.moveAboutSectionUp);
+router.post('/about-cms/sections/:secKey/move-down', requirePermission('SETTINGS', 'EDIT'), adminController.moveAboutSectionDown);
+router.post('/about-cms/hero', requirePermission('SETTINGS', 'EDIT'), adminController.updateAboutHero);
+router.post('/about-cms/purpose', requirePermission('SETTINGS', 'EDIT'), adminController.updateAboutPurpose);
+router.post('/about-cms/onboarding', requirePermission('SETTINGS', 'EDIT'), adminController.updateAboutOnboarding);
+router.post('/about-cms/milestones/new', requirePermission('SETTINGS', 'EDIT'), adminController.addAboutMilestone);
+router.post('/about-cms/milestones/add', requirePermission('SETTINGS', 'EDIT'), adminController.addAboutMilestone);
+router.post('/about-cms/milestones/:id/update', requirePermission('SETTINGS', 'EDIT'), adminController.updateAboutMilestone);
+router.post('/about-cms/milestones/:id/delete', requirePermission('SETTINGS', 'EDIT'), adminController.deleteAboutMilestone);
+router.post('/about-cms/milestones/:id/move-up', requirePermission('SETTINGS', 'EDIT'), adminController.moveAboutMilestoneUp);
+router.post('/about-cms/milestones/:id/move-down', requirePermission('SETTINGS', 'EDIT'), adminController.moveAboutMilestoneDown);
+
 module.exports = router;
 

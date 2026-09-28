@@ -42,14 +42,9 @@
             <div class="col-md-6">
               <label class="form-label font-weight-bold">Group Category</label>
               <select name="group_name" class="form-select form-select-lg">
-                <option value="teaching_staff" <%= (member.group_name === 'teaching_staff' || member.group_name === 'teaching') ? 'selected' : '' %>>Teaching Staff (Academic Faculty)</option>
-                <option value="non_teaching_staff" <%= member.group_name === 'non_teaching_staff' ? 'selected' : '' %>>Non-Teaching Staff (Admin & Operations)</option>
-                <option value="subject_experts" <%= member.group_name === 'subject_experts' ? 'selected' : '' %>>Experts for all subjects (Subject Specialists)</option>
-                <option value="technical_assistance" <%= member.group_name === 'technical_assistance' ? 'selected' : '' %>>Technical Assistance (Platform Support)</option>
-                <option value="other_staff" <%= member.group_name === 'other_staff' ? 'selected' : '' %>>Other Staff (Collaborators)</option>
-                <option value="founding" <%= member.group_name === 'founding' ? 'selected' : '' %>>Founding / Leadership</option>
-                <option value="advisory" <%= member.group_name === 'advisory' ? 'selected' : '' %>>Advisory Board / Trustees</option>
-                <option value="legal_business" <%= member.group_name === 'legal_business' ? 'selected' : '' %>>Legal & Business</option>
+                <option value="the_face" <%= (member.group_name === 'the_face' || member.group_name === 'founding') ? 'selected' : '' %>>🌟 1. The Face (Founders, Leadership & Visionaries)</option>
+                <option value="core_members" <%= (member.group_name === 'core_members' || member.group_name === 'teaching_staff' || member.group_name === 'teaching' || member.group_name === 'non_teaching_staff') ? 'selected' : '' %>>🎓 2. Core Members (Academic Faculty & Core Team)</option>
+                <option value="expert_advisors" <%= (member.group_name === 'expert_advisors' || member.group_name === 'subject_experts' || member.group_name === 'advisory' || member.group_name === 'technical_assistance' || member.group_name === 'legal_business' || member.group_name === 'other_staff') ? 'selected' : '' %>>🔬 3. Expert Advisors (Advisory Board & Subject Specialists)</option>
               </select>
             </div>
             <div class="col-md-6">

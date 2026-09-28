@@ -42,6 +42,11 @@
           <i class="ri-question-answer-line pe-icon-cyan"></i><span>Live Discussions</span>
         </a>
       <% } %>
+      <% if (isSuperAdmin || hasPermission('SETTINGS', 'VIEW')) { %>
+        <a href="/admin/about-cms" class="pe-menu-link <%= (currentPath==='/admin/about-cms' || currentPath.startsWith('/admin/about-cms'))?'active':'' %>">
+          <i class="ri-information-line pe-icon-cyan"></i><span>About Us Page CMS</span>
+        </a>
+      <% } %>
       <% if (isSuperAdmin || hasPermission('USER', 'VIEW')) { %>
         <a href="/admin/users" class="pe-menu-link <%= currentPath==='/admin/users'?'active':'' %>">
           <i class="ri-team-line pe-icon-purple"></i><span>Users</span>
@@ -82,7 +87,7 @@
           <a href="/admin/curriculum" class="pe-menu-link <%= currentPath==='/admin/curriculum'?'active':'' %>"><i class="ri-graduation-cap-line pe-icon-blue"></i><span>Curriculum Cards</span></a>
           <a href="/admin/learning-journey" class="pe-menu-link <%= currentPath==='/admin/learning-journey'?'active':'' %>"><i class="ri-route-line pe-icon-sky"></i><span>Learning Journey</span></a>
           <a href="/admin/vision-mission" class="pe-menu-link <%= currentPath==='/admin/vision-mission'?'active':'' %>"><i class="ri-compass-3-line pe-icon-emerald"></i><span>Vision & Mission</span></a>
-          <a href="/admin/team" class="pe-menu-link <%= currentPath==='/admin/team'?'active':'' %>"><i class="ri-user-star-line pe-icon-amber"></i><span>Expert Teachers & Team</span></a>
+          <a href="/admin/team" class="pe-menu-link <%= currentPath==='/admin/team'?'active':'' %>"><i class="ri-user-star-line pe-icon-amber"></i><span>Team</span></a>
           <a href="/admin/blog" class="pe-menu-link <%= currentPath==='/admin/blog'?'active':'' %>"><i class="ri-article-line pe-icon-purple"></i><span>Blog</span></a>
           <a href="/admin/live-sessions" class="pe-menu-link <%= currentPath==='/admin/live-sessions'?'active':'' %>"><i class="ri-vidicon-line pe-icon-red"></i><span>Live Sessions</span></a>
           <a href="/admin/notes" class="pe-menu-link <%= currentPath==='/admin/notes'?'active':'' %>"><i class="ri-file-text-line pe-icon-orange"></i><span>Study Notes</span></a>

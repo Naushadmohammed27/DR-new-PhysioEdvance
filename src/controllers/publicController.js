@@ -1,7 +1,7 @@
 const Course = require('../models/Course');
 const Enrollment = require('../models/Enrollment');
 const db = require('../db/connection');
-const { Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection } = require('../models/Content');
+const { Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection, AboutSettings } = require('../models/Content');
 const { PHYSIOTHERAPY_SPECIALTIES, THERAPY_TYPES, slugify, SUBJECT_ABBREVIATIONS, YEAR_SUBJECTS, OTHER_SUBJECTS } = require('../config/subjectTaxonomy');
 const subjectInteractiveData = require('../data/subjectInteractiveData');
 const { getSubjectLearningData, learningModulesData } = require('../data/learningModulesData');
@@ -392,32 +392,46 @@ exports.streamVideo = async (req, res) => {
 };
 
 exports.about = async (req, res) => {
+  const sectionsOrder = await AboutSettings.getSectionsOrder();
+  const aboutHero = await AboutSettings.getHero();
+  const aboutPurpose = await AboutSettings.getPurpose();
+  const aboutOnboarding = await AboutSettings.getOnboarding();
+  const storyMilestones = await AboutSettings.getMilestones();
   const aboutStatements = await Team.aboutStatements();
   const visionMission = await SiteSettings.getVisionMission();
-  console.log(`[About Controller] Rendering /about with ${aboutStatements.length} leadership statements`);
-  res.render('public/about', { title: 'About Us', aboutStatements, visionMission });
+
+  console.log(`[About Controller] Rendering /about with ${aboutStatements.length} leadership statements and ${storyMilestones.length} milestones`);
+  res.render('public/about', {
+    title: 'About Us',
+    sectionsOrder,
+    aboutHero,
+    aboutPurpose,
+    aboutOnboarding,
+    storyMilestones,
+    aboutStatements,
+    visionMission
+  });
 };
 
 exports.theTeam = async (req, res) => {
-  const teachingStaff = await db.prepare(`SELECT * FROM team_members WHERE (group_name = 'teaching_staff' OR group_name = 'teaching') AND is_active = 1 ORDER BY display_order, id`).all();
-  const nonTeachingStaff = await Team.byGroup('non_teaching_staff');
-  const subjectExperts = await Team.byGroup('subject_experts');
-  const technicalAssistance = await Team.byGroup('technical_assistance');
-  const otherStaff = await Team.byGroup('other_staff');
-  const founding = await Team.byGroup('founding');
-  const advisory = await Team.byGroup('advisory');
-  const legalBusiness = await Team.byGroup('legal_business');
+  const theFaceRaw = await db.prepare(`SELECT * FROM team_members WHERE (group_name IN ('the_face', 'founding') OR show_on_about = 1) AND is_active = 1 ORDER BY display_order ASC, id ASC`).all();
+  const coreMembersRaw = await db.prepare(`SELECT * FROM team_members WHERE group_name IN ('core_members', 'teaching_staff', 'teaching', 'non_teaching_staff') AND is_active = 1 ORDER BY display_order ASC, id ASC`).all();
+  const expertAdvisorsRaw = await db.prepare(`SELECT * FROM team_members WHERE group_name IN ('expert_advisors', 'subject_experts', 'advisory', 'technical_assistance', 'legal_business', 'other_staff') AND is_active = 1 ORDER BY display_order ASC, id ASC`).all();
+
+  const foundingFallback = await Team.byGroup('founding');
+  const advisoryFallback = await Team.byGroup('advisory');
+  const legalFallback = await Team.byGroup('legal_business');
+  const teachingFallback = await db.prepare(`SELECT * FROM team_members WHERE (group_name = 'teaching_staff' OR group_name = 'teaching') AND is_active = 1 ORDER BY display_order, id`).all();
+
+  const theFace = (theFaceRaw && theFaceRaw.length > 0) ? theFaceRaw : (foundingFallback || []);
+  const expertAdvisors = (expertAdvisorsRaw && expertAdvisorsRaw.length > 0) ? expertAdvisorsRaw : [...(advisoryFallback || []), ...(legalFallback || [])];
+  const coreMembers = (coreMembersRaw && coreMembersRaw.length > 0) ? coreMembersRaw : (teachingFallback || []);
 
   res.render('public/the-team', {
-    title: 'The Team',
-    teachingStaff,
-    nonTeachingStaff,
-    subjectExperts,
-    technicalAssistance,
-    otherStaff,
-    founding,
-    advisory,
-    legalBusiness
+    title: 'Team',
+    theFace: theFace || [],
+    coreMembers: coreMembers || [],
+    expertAdvisors: expertAdvisors || []
   });
 };
 
