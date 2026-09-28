@@ -2450,9 +2450,9 @@ exports.subjectHubGridIndex = async (req, res) => {
 
 exports.updateSubjectHubBlock = async (req, res) => {
   try {
-    const { title, icon, col_type, display_order, is_active } = req.body;
-    await SubjectHubSettings.updateBlock(req.params.id, { title, icon, col_type, display_order, is_active });
-    req.flash('success', 'Subject Hub Grid module updated successfully.');
+    const { title, icon, display_position, is_active } = req.body;
+    await SubjectHubSettings.updateBlock(req.params.id, { title, icon, display_position, is_active });
+    req.flash('success', 'Position & Module title updated successfully.');
   } catch (err) {
     console.error('Error updating Subject Hub block:', err);
     req.flash('error', `Failed to update block: ${err.message}`);

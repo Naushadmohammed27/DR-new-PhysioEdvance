@@ -1181,7 +1181,10 @@ const AboutSettings = {
   }
 };
 
-// ============ SUBJECT INTERACTIVE HUB GRID MODULES CMS ============
+// ==========================================
+// ==========================================
+// SUBJECT INTERACTIVE HUB GRID MODULES CMS (POSITIONS 1-9)
+// ==========================================
 const SubjectHubSettings = {
   async initTable() {
     await db.prepare(`
@@ -1193,40 +1196,68 @@ const SubjectHubSettings = {
         url TEXT NOT NULL,
         col_type TEXT DEFAULT 'left',
         display_order INTEGER DEFAULT 1,
+        display_position INTEGER DEFAULT 1,
         is_active INTEGER DEFAULT 1
       )
     `).run();
 
-    const countRow = await db.prepare(`SELECT COUNT(*) as c FROM subject_hub_blocks`).get();
-    const count = Number(countRow ? countRow.c : 0);
-    if (count === 0) {
-      const defaults = [
-        { block_key: 'regions', title: 'Regions & Maps', icon: 'ri-brain-line', url: '/subjects/:slug/module/regions', col_type: 'left', display_order: 1 },
-        { block_key: 'cross_sections', title: 'Cross-Sections', icon: 'ri-layout-grid-line', url: '/subjects/:slug/module/cross-sections', col_type: 'left', display_order: 2 },
-        { block_key: 'three_d', title: '3D Rotatable', icon: 'ri-box-3-line', url: '/subjects/:slug/module/interactive-modules', col_type: 'left', display_order: 3 },
-        { block_key: 'hd_videos', title: 'HD Videos', icon: 'ri-vidicon-line', url: '/subjects/:slug/module/hd-videos', col_type: 'right', display_order: 1 },
-        { block_key: 'notes_modules', title: 'Notes & Modules', icon: 'ri-file-text-line', url: '/subjects/:slug/module/interactive-modules', col_type: 'right', display_order: 2 },
-        { block_key: 'mri_scans', title: 'MRIs & Radiology', icon: 'ri-pulse-line', url: '/subjects/:slug/module/mri-scans', col_type: 'right', display_order: 3 },
-        { block_key: 'syllabus', title: ':subject Syllabus', icon: 'ri-quill-pen-line', url: '/subjects/:slug/module/syllabus', col_type: 'bottom', display_order: 1 },
-        { block_key: 'pathology', title: 'Stroke & Pathology', icon: 'ri-heart-pulse-line', url: '/subjects/:slug/module/cross-sections', col_type: 'bottom', display_order: 2 }
-      ];
+    try {
+      await db.prepare(`ALTER TABLE subject_hub_blocks ADD COLUMN IF NOT EXISTS display_position INTEGER DEFAULT 1;`).run();
+    } catch(e) {}
+
+    const defaults = [
+      { block_key: 'regions', title: 'Region Maps', icon: 'ri-brain-line', url: '/subjects/:slug/module/regions', col_type: 'left', display_order: 1, display_position: 1 },
+      { block_key: 'cross_sections', title: 'Cross Sections', icon: 'ri-layout-grid-line', url: '/subjects/:slug/module/cross-sections', col_type: 'left', display_order: 2, display_position: 2 },
+      { block_key: 'three_d', title: 'Rotatable Physio Slab', icon: 'ri-box-3-line', url: '/subjects/:slug/module/interactive-modules', col_type: 'left', display_order: 3, display_position: 3 },
+      { block_key: 'syllabus', title: ':subject Syllabus', icon: 'ri-quill-pen-line', url: '/subjects/:slug/module/syllabus', col_type: 'bottom', display_order: 4, display_position: 4 },
+      { block_key: 'pathology', title: 'Stroke and Pathology', icon: 'ri-heart-pulse-line', url: '/subjects/:slug/module/cross-sections', col_type: 'bottom', display_order: 5, display_position: 5 },
+      { block_key: 'mri_scans', title: 'MRI', icon: 'ri-pulse-line', url: '/subjects/:slug/module/mri-scans', col_type: 'right', display_order: 6, display_position: 6 },
+      { block_key: 'notes_modules', title: 'Notes and Models', icon: 'ri-file-text-line', url: '/subjects/:slug/module/interactive-modules', col_type: 'right', display_order: 7, display_position: 7 },
+      { block_key: 'hd_videos', title: 'HD Videos', icon: 'ri-vidicon-line', url: '/subjects/:slug/module/hd-videos', col_type: 'right', display_order: 8, display_position: 8 },
+      { block_key: 'center_player', title: 'The Center Point', icon: 'ri-play-circle-fill', url: '/videos/stream/:slug-intro', col_type: 'center', display_order: 9, display_position: 9 }
+    ];
+
+    for (const d of defaults) {
+      const existing = await db.prepare(`SELECT * FROM subject_hub_blocks WHERE block_key = ?`).get(d.block_key);
+      if (!existing) {
+        await db.prepare(`
+          INSERT INTO subject_hub_blocks (block_key, title, icon, url, col_type, display_order, display_position, is_active)
+          VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+        `).run(d.block_key, d.title, d.icon, d.url, d.col_type, d.display_order, d.display_position);
+      }
+    }
+
+    const allBlocks = await db.prepare(`SELECT * FROM subject_hub_blocks`).all();
+    const positionsSeen = new Set();
+    let hasDuplicate = false;
+    for (const b of allBlocks) {
+      const pos = Number(b.display_position);
+      if (positionsSeen.has(pos) || !pos) {
+        hasDuplicate = true;
+        break;
+      }
+      positionsSeen.add(pos);
+    }
+
+    if (hasDuplicate) {
       for (const d of defaults) {
         await db.prepare(`
-          INSERT INTO subject_hub_blocks (block_key, title, icon, url, col_type, display_order, is_active)
-          VALUES (?, ?, ?, ?, ?, ?, 1)
-        `).run(d.block_key, d.title, d.icon, d.url, d.col_type, d.display_order);
+          UPDATE subject_hub_blocks
+          SET display_position = ?, display_order = ?
+          WHERE block_key = ?
+        `).run(d.display_position, d.display_order, d.block_key);
       }
     }
   },
 
   async all() {
     await this.initTable();
-    return db.prepare(`SELECT * FROM subject_hub_blocks ORDER BY display_order ASC, id ASC`).all();
+    return db.prepare(`SELECT * FROM subject_hub_blocks ORDER BY COALESCE(display_position, display_order) ASC, id ASC`).all();
   },
 
   async allActive() {
     await this.initTable();
-    return db.prepare(`SELECT * FROM subject_hub_blocks WHERE is_active = 1 ORDER BY display_order ASC, id ASC`).all();
+    return db.prepare(`SELECT * FROM subject_hub_blocks WHERE is_active = 1 ORDER BY COALESCE(display_position, display_order) ASC, id ASC`).all();
   },
 
   async findById(id) {
@@ -1240,38 +1271,21 @@ const SubjectHubSettings = {
     if (!existing) return;
     const title = data.title !== undefined ? data.title.trim() : existing.title;
     const icon = data.icon !== undefined ? data.icon.trim() : existing.icon;
-    const col_type = data.col_type !== undefined ? data.col_type.trim() : existing.col_type;
-    const targetOrder = Math.max(1, parseInt(data.display_order, 10) || existing.display_order);
+    const targetPos = Math.max(1, Math.min(9, parseInt(data.display_position, 10) || existing.display_position || 1));
+    const oldPos = existing.display_position || 1;
+
+    if (targetPos !== oldPos) {
+      const occupant = await db.prepare(`SELECT * FROM subject_hub_blocks WHERE display_position = ? AND id != ?`).get(targetPos, id);
+      if (occupant) {
+        await db.prepare(`UPDATE subject_hub_blocks SET display_position = ?, display_order = ? WHERE id = ?`).run(oldPos, oldPos, occupant.id);
+      }
+    }
 
     await db.prepare(`
       UPDATE subject_hub_blocks
-      SET title = ?, icon = ?, col_type = ?, display_order = ?, is_active = ?
+      SET title = ?, icon = ?, display_position = ?, display_order = ?, is_active = ?
       WHERE id = ?
-    `).run(title, icon, col_type, targetOrder, data.is_active === '0' || data.is_active === 0 ? 0 : 1, id);
-  },
-
-  async moveUp(id) {
-    await this.initTable();
-    const current = await this.findById(id);
-    if (!current) return;
-    const prev = await db.prepare(`SELECT * FROM subject_hub_blocks WHERE col_type = ? AND display_order < ? ORDER BY display_order DESC, id DESC LIMIT 1`).get(current.col_type, current.display_order);
-    if (prev) {
-      const tempOrder = current.display_order;
-      await db.prepare(`UPDATE subject_hub_blocks SET display_order = ? WHERE id = ?`).run(prev.display_order, current.id);
-      await db.prepare(`UPDATE subject_hub_blocks SET display_order = ? WHERE id = ?`).run(tempOrder, prev.id);
-    }
-  },
-
-  async moveDown(id) {
-    await this.initTable();
-    const current = await this.findById(id);
-    if (!current) return;
-    const next = await db.prepare(`SELECT * FROM subject_hub_blocks WHERE col_type = ? AND display_order > ? ORDER BY display_order ASC, id ASC LIMIT 1`).get(current.col_type, current.display_order);
-    if (next) {
-      const tempOrder = current.display_order;
-      await db.prepare(`UPDATE subject_hub_blocks SET display_order = ? WHERE id = ?`).run(next.display_order, current.id);
-      await db.prepare(`UPDATE subject_hub_blocks SET display_order = ? WHERE id = ?`).run(tempOrder, next.id);
-    }
+    `).run(title, icon, targetPos, targetPos, data.is_active === '0' || data.is_active === 0 ? 0 : 1, id);
   }
 };
 

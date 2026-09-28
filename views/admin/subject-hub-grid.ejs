@@ -1,16 +1,48 @@
+<style>
+  .pe-grid-diagram {
+    background: #0f172a;
+    border-radius: 20px;
+    padding: 1.5rem;
+    color: #ffffff;
+  }
+  .pe-pos-box {
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+  }
+  .pe-pos-box:hover {
+    border-color: #0284c7;
+    background: rgba(2, 132, 199, 0.15);
+  }
+  .pe-pos-num {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 50%;
+    background: #f59e0b;
+    color: #000000;
+    font-weight: 800;
+    font-size: 0.85rem;
+  }
+</style>
+
 <div class="container-fluid py-4">
   <!-- Header -->
   <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
     <div>
       <span class="badge bg-primary-subtle text-primary font-weight-bold text-uppercase px-3 py-1.5 rounded-pill mb-1">
-        <i class="ri-layout-grid-line me-1"></i> Interactive Portal Layout CMS
+        <i class="ri-layout-grid-line me-1"></i> Interactive Portal 1-9 Grid CMS
       </span>
-      <h2 class="fw-bold mb-0 text-dark">Subject Interactive Grid Layout & Positions</h2>
-      <p class="text-muted small mb-0">Customize block titles, icons, and position layout (Left Column, Right Column, Bottom Row) for subject portal pages.</p>
+      <h2 class="fw-bold mb-0 text-dark">Subject Portal Grid Positions (1 to 9)</h2>
+      <p class="text-muted small mb-0">Change the position number (1-9) or display title for any module to place it anywhere on the subject portal grid.</p>
     </div>
     <div class="d-flex align-items-center gap-2">
-      <a href="/subjects/human-physiology" target="_blank" class="btn btn-outline-primary rounded-pill px-3.5 py-2 fw-semibold">
-        <i class="ri-external-link-line me-1"></i> Live View /subjects/human-physiology
+      <a href="/subjects/physiology" target="_blank" class="btn btn-outline-primary rounded-pill px-3.5 py-2 fw-semibold">
+        <i class="ri-external-link-line me-1"></i> Live View /subjects/physiology
       </a>
     </div>
   </div>
@@ -22,82 +54,145 @@
     </div>
   <% } %>
 
-  <div class="row g-4">
-    <% 
-      const columns = [
-        { key: 'left', title: 'Left Column Blocks (3 Boxes)', desc: 'Blocks displayed on the left side of the player', badgeBg: 'bg-primary' },
-        { key: 'right', title: 'Right Column Blocks (3 Boxes)', desc: 'Blocks displayed on the right side of the player', badgeBg: 'bg-info' },
-        { key: 'bottom', title: 'Bottom Row Blocks (2 Equal Cards)', desc: 'Cards displayed below the player & side columns', badgeBg: 'bg-warning' }
-      ];
+  <%
+    const blockMap = {};
+    (blocks || []).forEach(b => {
+      const pos = Number(b.display_position || b.display_order || 1);
+      blockMap[pos] = b;
+    });
+  %>
 
-      columns.forEach(col => {
-        const colBlocks = (blocks || []).filter(b => (b.col_type || 'left') === col.key).sort((a, b) => a.display_order - b.display_order);
-    %>
-      <div class="col-lg-4">
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
-          <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
-            <div>
-              <span class="badge <%= col.badgeBg %> text-white rounded-pill px-2.5 py-1 text-uppercase fw-bold mb-1" style="font-size: 0.72rem;"><%= col.key %> column</span>
-              <h5 class="fw-bold text-dark mb-0"><%= col.title %></h5>
-            </div>
-            <span class="badge bg-light text-dark border rounded-circle font-weight-bold" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;"><%= colBlocks.length %></span>
-          </div>
+  <!-- VISUAL 1-9 POSITION DIAGRAM MAP -->
+  <div class="pe-grid-diagram mb-4 shadow-lg">
+    <div class="d-flex align-items-center justify-content-between mb-3 border-bottom border-secondary border-opacity-50 pb-2">
+      <h5 class="fw-bold text-white mb-0"><i class="ri-map-pin-2-line text-warning me-2"></i> Grid Layout Positions Map (1 to 9)</h5>
+      <span class="badge bg-warning text-dark font-weight-bold">Select Number 1 to 9 to Edit Position</span>
+    </div>
 
-          <div class="d-flex flex-column gap-3">
-            <% colBlocks.forEach((blk, idx) => { %>
-              <div class="card border rounded-4 p-3 bg-light-subtle position-relative">
-                <form action="/admin/subject-hub-grid/<%= blk.id %>/update" method="POST">
-                  <div class="d-flex align-items-center justify-content-between mb-2">
-                    <div class="d-flex align-items-center gap-2">
-                      <span class="badge bg-secondary text-white rounded-circle font-weight-bold" style="width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;"><%= idx + 1 %></span>
-                      <strong class="text-dark" style="font-size: 0.95rem;">Key: <code><%= blk.block_key %></code></strong>
-                    </div>
-                    <div class="d-flex align-items-center gap-1">
-                      <button type="submit" class="btn btn-sm btn-success rounded-pill px-2.5 py-1" style="font-size: 0.75rem;" title="Save Block">
-                        <i class="ri-save-line me-1"></i> Save
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="mb-2">
-                    <label class="form-label text-muted small fw-bold mb-1">Display Title</label>
-                    <input type="text" name="title" class="form-control form-control-sm rounded-3 fw-bold text-dark" value="<%= blk.title %>" required>
-                  </div>
-
-                  <div class="row g-2">
-                    <div class="col-7">
-                      <label class="form-label text-muted small fw-bold mb-1">Icon Class</label>
-                      <input type="text" name="icon" class="form-control form-control-sm rounded-3" value="<%= blk.icon %>">
-                    </div>
-                    <div class="col-5">
-                      <label class="form-label text-muted small fw-bold mb-1">Position</label>
-                      <select name="col_type" class="form-select form-select-sm rounded-3 fw-semibold">
-                        <option value="left" <%= blk.col_type === 'left' ? 'selected' : '' %>>Left</option>
-                        <option value="right" <%= blk.col_type === 'right' ? 'selected' : '' %>>Right</option>
-                        <option value="bottom" <%= blk.col_type === 'bottom' ? 'selected' : '' %>>Bottom</option>
-                      </select>
-                    </div>
-                  </div>
-                </form>
-
-                <div class="d-flex align-items-center justify-content-end gap-1 mt-2 pt-2 border-top">
-                  <form action="/admin/subject-hub-grid/<%= blk.id %>/move-up" method="POST" class="m-0">
-                    <button type="submit" class="btn btn-xs btn-outline-primary rounded-pill px-2 py-0.5" style="font-size: 0.75rem;" <%= idx === 0 ? 'disabled' : '' %>>
-                      <i class="ri-arrow-up-line"></i> Up
-                    </button>
-                  </form>
-                  <form action="/admin/subject-hub-grid/<%= blk.id %>/move-down" method="POST" class="m-0">
-                    <button type="submit" class="btn btn-xs btn-outline-primary rounded-pill px-2 py-0.5" style="font-size: 0.75rem;" <%= idx === colBlocks.length - 1 ? 'disabled' : '' %>>
-                      <i class="ri-arrow-down-line"></i> Down
-                    </button>
-                  </form>
-                </div>
-              </div>
-            <% }) %>
-          </div>
-
+    <div class="row g-3 text-white">
+      <!-- Left Column (Positions 1, 2, 3) -->
+      <div class="col-lg-3 d-flex flex-column gap-2">
+        <div class="pe-pos-box">
+          <span class="pe-pos-num mb-1">1</span>
+          <div class="fw-bold text-truncate"><%= blockMap[1] ? blockMap[1].title : 'Region Maps' %></div>
+          <small class="text-white-50">Position 1 &bull; Left Top</small>
+        </div>
+        <div class="pe-pos-box">
+          <span class="pe-pos-num mb-1">2</span>
+          <div class="fw-bold text-truncate"><%= blockMap[2] ? blockMap[2].title : 'Cross Sections' %></div>
+          <small class="text-white-50">Position 2 &bull; Left Middle</small>
+        </div>
+        <div class="pe-pos-box">
+          <span class="pe-pos-num mb-1">3</span>
+          <div class="fw-bold text-truncate"><%= blockMap[3] ? blockMap[3].title : 'Rotatable Physio Slab' %></div>
+          <small class="text-white-50">Position 3 &bull; Left Bottom</small>
         </div>
       </div>
-    <% }) %>
+
+      <!-- Center Player (Position 9) -->
+      <div class="col-lg-6">
+        <div class="pe-pos-box h-100 d-flex flex-column align-items-center justify-content-center bg-primary bg-opacity-20 border-primary" style="min-height: 220px;">
+          <span class="pe-pos-num mb-2" style="background:#38bdf8; color:#000;">9</span>
+          <i class="ri-play-circle-fill display-4 text-warning mb-1"></i>
+          <div class="fw-bold fs-5 text-white"><%= blockMap[9] ? blockMap[9].title : 'The Center Point' %></div>
+          <small class="text-info fw-semibold">Position 9 &bull; Center Video & 3D Player</small>
+        </div>
+      </div>
+
+      <!-- Right Column (Positions 8, 7, 6) -->
+      <div class="col-lg-3 d-flex flex-column gap-2">
+        <div class="pe-pos-box">
+          <span class="pe-pos-num mb-1">8</span>
+          <div class="fw-bold text-truncate"><%= blockMap[8] ? blockMap[8].title : 'HD Videos' %></div>
+          <small class="text-white-50">Position 8 &bull; Right Top</small>
+        </div>
+        <div class="pe-pos-box">
+          <span class="pe-pos-num mb-1">7</span>
+          <div class="fw-bold text-truncate"><%= blockMap[7] ? blockMap[7].title : 'Notes & Models' %></div>
+          <small class="text-white-50">Position 7 &bull; Right Middle</small>
+        </div>
+        <div class="pe-pos-box">
+          <span class="pe-pos-num mb-1">6</span>
+          <div class="fw-bold text-truncate"><%= blockMap[6] ? blockMap[6].title : 'MRI' %></div>
+          <small class="text-white-50">Position 6 &bull; Right Bottom</small>
+        </div>
+      </div>
+
+      <!-- Bottom Row (Positions 4 & 5) -->
+      <div class="col-md-6">
+        <div class="pe-pos-box">
+          <span class="pe-pos-num mb-1">4</span>
+          <div class="fw-bold text-truncate"><%= blockMap[4] ? blockMap[4].title : 'Subject Syllabus' %></div>
+          <small class="text-white-50">Position 4 &bull; Bottom Left</small>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="pe-pos-box">
+          <span class="pe-pos-num mb-1">5</span>
+          <div class="fw-bold text-truncate"><%= blockMap[5] ? blockMap[5].title : 'Stroke & Pathology' %></div>
+          <small class="text-white-50">Position 5 &bull; Bottom Right</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE EDIT CARDS LIST WITH EASY POSITION NUMBER SELECTOR (1 to 9) -->
+  <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+    <h4 class="fw-bold text-dark mb-3"><i class="ri-edit-2-line text-primary me-2"></i> Edit Module Titles & Assign Positions (1 to 9)</h4>
+    <p class="text-muted small mb-4">Select any Position Number (1-9) for a module to move it instantly to that location on the grid.</p>
+
+    <div class="row g-3">
+      <% (blocks || []).sort((a,b) => Number(a.display_position || 1) - Number(b.display_position || 1)).forEach(blk => { 
+          const pos = Number(blk.display_position || blk.display_order || 1);
+      %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card border rounded-4 p-3 bg-light-subtle h-100">
+            <form action="/admin/subject-hub-grid/<%= blk.id %>/update" method="POST">
+              <div class="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom">
+                <span class="badge bg-warning text-dark font-weight-bold px-2.5 py-1" style="font-size: 0.85rem;">
+                  Position <%= pos %>
+                </span>
+                <span class="text-muted small">Key: <code><%= blk.block_key %></code></span>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label text-muted small fw-bold mb-1">Position Number (1 - 9)</label>
+                <select name="display_position" class="form-select rounded-3 font-weight-bold text-primary">
+                  <option value="1" <%= pos === 1 ? 'selected' : '' %>>Position 1 &bull; Region Maps (Left Top)</option>
+                  <option value="2" <%= pos === 2 ? 'selected' : '' %>>Position 2 &bull; Cross Sections (Left Middle)</option>
+                  <option value="3" <%= pos === 3 ? 'selected' : '' %>>Position 3 &bull; Rotatable Physio Slab (Left Bottom)</option>
+                  <option value="4" <%= pos === 4 ? 'selected' : '' %>>Position 4 &bull; Subject Syllabus (Bottom Left)</option>
+                  <option value="5" <%= pos === 5 ? 'selected' : '' %>>Position 5 &bull; Stroke & Pathology (Bottom Right)</option>
+                  <option value="6" <%= pos === 6 ? 'selected' : '' %>>Position 6 &bull; MRI (Right Bottom)</option>
+                  <option value="7" <%= pos === 7 ? 'selected' : '' %>>Position 7 &bull; Notes & Models (Right Middle)</option>
+                  <option value="8" <%= pos === 8 ? 'selected' : '' %>>Position 8 &bull; HD Videos (Right Top)</option>
+                  <option value="9" <%= pos === 9 ? 'selected' : '' %>>Position 9 &bull; The Center Point (Center Player)</option>
+                </select>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label text-muted small fw-bold mb-1">Display Title</label>
+                <input type="text" name="title" class="form-control rounded-3 font-weight-bold text-dark" value="<%= blk.title %>" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label text-muted small fw-bold mb-1">Icon Class</label>
+                <input type="text" name="icon" class="form-control form-control-sm rounded-3" value="<%= blk.icon %>">
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="form-check form-switch m-0">
+                  <input class="form-check-input" type="checkbox" name="is_active" value="1" <%= blk.is_active ? 'checked' : '' %>>
+                  <label class="form-check-label small fw-semibold text-muted">Active</label>
+                </div>
+                <button type="submit" class="btn btn-sm btn-primary rounded-pill px-3 font-weight-bold">
+                  <i class="ri-save-line me-1"></i> Save Position
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
   </div>
 </div>
