@@ -66,6 +66,12 @@ const Team = {
         )
       `).run();
 
+      const countRow = await db.prepare(`SELECT COUNT(*) as c FROM team_members`).get();
+      const count = Number(countRow ? (countRow.c || countRow.count) : 0);
+      if (count > 0) {
+        return;
+      }
+
       const defaults = [
         {
           name: 'Dr. Heena Nawaz',
@@ -226,27 +232,10 @@ const Team = {
       ];
 
       for (const m of defaults) {
-        const existing = await db.prepare(`SELECT * FROM team_members WHERE name LIKE ?`).get(`%${m.name.split(' ')[1] || m.name}%`);
-        if (!existing) {
-          await db.prepare(`
-            INSERT INTO team_members (name, role, designation, qualification, photo, bio, group_name, display_order, show_on_about, statement, is_active)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
-          `).run(m.name, m.role, m.designation, m.qualification, m.photo, m.bio, m.group_name, m.display_order, m.show_on_about, m.statement);
-        } else {
-          const currentStmt = existing.statement || '';
-          const needsUpdateStmt = !currentStmt || currentStmt.includes('Testing') || currentStmt.trim().length < 15;
-          if (needsUpdateStmt && m.statement) {
-            await db.prepare(`
-              UPDATE team_members
-              SET statement = ?,
-                  designation = COALESCE(NULLIF(designation, ''), ?)
-              WHERE id = ?
-            `).run(m.statement, m.designation, existing.id);
-          }
-          if (['Dr. Priya Sharma', 'Dr. Aisha Khan', 'Dr. Rajesh Kumar', 'Dr. Arjun Mehta'].includes(m.name)) {
-            await db.prepare(`UPDATE team_members SET group_name = 'core_members' WHERE id = ? AND group_name = 'advisory'`).run(existing.id);
-          }
-        }
+        await db.prepare(`
+          INSERT INTO team_members (name, role, designation, qualification, photo, bio, group_name, display_order, show_on_about, statement, is_active)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+        `).run(m.name, m.role, m.designation, m.qualification, m.photo, m.bio, m.group_name, m.display_order, m.show_on_about, m.statement);
       }
     } catch (e) {
       console.error('Error in ensureSeededTeamData:', e);
