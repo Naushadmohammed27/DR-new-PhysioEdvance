@@ -1,4 +1,6 @@
 const db = require('../db/connection');
+const fs = require('fs');
+const path = require('path');
 
 // ============ NOTES ============
 const Notes = {
@@ -486,7 +488,13 @@ const SiteSettings = {
     const titlePrefix = await this.get('hero_title_prefix', 'Advanced Physiotherapy Education,');
     const titleHighlight = await this.get('hero_title_highlight', 'All in One Place.');
     const subtext = await this.get('hero_subtext', 'Master your BPT degree with expert-led Seminars, HD Recorded Videos, interactive Workshops, real-time Live Classes, and 100% Free Courses.');
-    const imageUrl = await this.get('hero_image_url', '/images/hero_physio_education.jpg');
+    let imageUrl = await this.get('hero_image_url', '/images/hero_physio_education.jpg');
+    if (imageUrl && imageUrl.startsWith('/uploads/')) {
+      const fullPath = path.join(__dirname, '../../public', imageUrl);
+      if (!fs.existsSync(fullPath)) {
+        imageUrl = '/images/hero_physio_education.jpg';
+      }
+    }
     const tickerEnabled = await this.get('hero_ticker_enabled', '1');
     const tickerCustomSubjects = await this.get('hero_ticker_custom_subjects', '');
     const trustBarEnabled = await this.get('hero_trust_bar_enabled', '1');

@@ -41,7 +41,7 @@
         <div class="pe-hero-visual-wrapper">
           <!-- Main Hero Image with Frame -->
           <div class="pe-hero-img-container">
-            <img src="<%= (typeof heroSettings !== 'undefined' && heroSettings.imageUrl) ? heroSettings.imageUrl : '/images/hero_physio_education.jpg' %>" alt="Physiotherapy Education & Clinical Workshop" class="pe-hero-main-img img-fluid">
+            <img src="<%= (typeof heroSettings !== 'undefined' && heroSettings.imageUrl) ? heroSettings.imageUrl : '/images/hero_physio_education.jpg' %>" alt="Physiotherapy Education & Clinical Workshop" class="pe-hero-main-img img-fluid" onerror="this.onerror=null; this.src='/images/hero_physio_education.jpg';">
             <div class="pe-hero-img-overlay"></div>
           </div>
         </div>
