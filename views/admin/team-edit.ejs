@@ -79,10 +79,18 @@
           <h5 class="mb-0 fw-bold text-dark"><i class="ri-chat-quote-line me-2 text-warning"></i>About Page Display</h5>
         </div>
         <div class="card-body p-4">
+          <div class="form-check form-switch p-3 bg-light rounded-3 border mb-3">
+            <input class="form-check-input ms-0 me-3" type="checkbox" name="is_active" value="1" id="isActiveSwitch" <%= member.is_active ? 'checked' : '' %>>
+            <label class="form-check-label font-weight-bold fs-6 text-dark" for="isActiveSwitch">
+              <i class="ri-team-line text-success me-1"></i> Display Member on Public Team Page (`/the-team`)
+            </label>
+            <span class="text-muted small d-block mt-1">Enabling this makes this member visible on the public Team page roster.</span>
+          </div>
+
           <div class="form-check form-switch p-3 bg-light rounded-3 border mb-4">
             <input class="form-check-input ms-0 me-3" type="checkbox" name="show_on_about" value="1" id="showOnAboutSwitch" <%= member.show_on_about ? 'checked' : '' %>>
             <label class="form-check-label font-weight-bold fs-6 text-dark" for="showOnAboutSwitch">
-              <i class="ri-star-fill text-warning me-1"></i> Display Statement on About Page
+              <i class="ri-star-fill text-warning me-1"></i> Display Statement on About Us Page (`/about`)
             </label>
             <span class="text-muted small d-block mt-1">Enabling this makes this member's quote visible in the Leadership Messages section on `/about`.</span>
           </div>

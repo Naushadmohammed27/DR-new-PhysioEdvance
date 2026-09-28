@@ -82,7 +82,7 @@ const Team = {
           bio: 'Founder of PhysioEdvance. "Help students to help themselves."',
           group_name: 'founding',
           display_order: 1,
-          show_on_about: 1,
+          show_on_about: 0,
           statement: 'PhysioEdvance was born out of a genuine need to simplify physiotherapy education. Our mission, "Help students to help themselves," guides every single note, video, and resource we create. We aim to empower BPT students across India to learn independently, build strong clinical foundations, and excel in their exams and practice.'
         },
         {
@@ -94,7 +94,7 @@ const Team = {
           bio: 'Co-founder, leading legal and business strategy for PhysioEdvance.',
           group_name: 'founding',
           display_order: 2,
-          show_on_about: 1,
+          show_on_about: 0,
           statement: 'Building PhysioEdvance means creating a sustainable, compliant, and accessible digital home for physiotherapy learning. We are committed to maintaining the highest standards of academic integrity, technology, and user privacy for our growing student community.'
         },
         {
@@ -106,7 +106,7 @@ const Team = {
           bio: 'Founding member overseeing academic and advisory quality.',
           group_name: 'founding',
           display_order: 3,
-          show_on_about: 1,
+          show_on_about: 0,
           statement: 'Quality physiotherapy education requires bridging classroom theory with real-world clinical application. At PhysioEdvance, we curate evidence-informed content designed to clarify complex medical concepts and build true clinical confidence.'
         },
         {
@@ -314,16 +314,18 @@ const Team = {
 
     const roleVal = data.role || data.designation || (existing ? existing.role : 'Faculty');
     const desigVal = data.designation || data.role || (existing ? existing.designation : 'Faculty');
+    const isActiveVal = data.is_active !== undefined ? (data.is_active === 'on' || data.is_active === '1' || data.is_active === 1 ? 1 : 0) : (existing ? existing.is_active : 1);
+    const showAboutVal = data.show_on_about !== undefined ? (data.show_on_about === 'on' || data.show_on_about === '1' || data.show_on_about === 1 ? 1 : 0) : (existing ? existing.show_on_about : 0);
 
     await db.prepare(`
       UPDATE team_members
-      SET name = ?, role = ?, designation = ?, qualification = ?, photo = ?, bio = ?, group_name = ?, display_order = ?, show_on_about = ?, statement = ?
-      WHERE id = ?
+      SET name = ?, role = ?, designation = ?, qualification = ?, photo = ?, bio = ?, group_name = ?, display_order = ?, show_on_about = ?, is_active = ?, statement = ?
+      WHERE id = ? OR LOWER(TRIM(name)) = LOWER(TRIM(?))
     `).run(
       data.name, roleVal, desigVal, data.qualification || '',
       data.photo || '/images/team/default-avatar.png', data.bio || '',
       targetGroup, targetOrder,
-      data.show_on_about ? 1 : 0, data.statement || '', id
+      showAboutVal, isActiveVal, data.statement || '', id, existing ? existing.name : data.name
     );
 
     await this.normalizePositions();

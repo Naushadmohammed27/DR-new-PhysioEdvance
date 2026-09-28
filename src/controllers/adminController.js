@@ -669,7 +669,7 @@ exports.editTeamMember = async (req, res) => {
 
 exports.updateTeamMember = async (req, res) => {
   try {
-    const { name, role, designation, qualification, bio, group_name, display_order, show_on_about, statement, photo } = req.body;
+    const { name, role, designation, qualification, bio, group_name, display_order, show_on_about, is_active, statement, photo } = req.body;
     await Team.update(req.params.id, {
       name,
       role: role || designation || 'Faculty',
@@ -678,7 +678,8 @@ exports.updateTeamMember = async (req, res) => {
       bio: bio || '',
       group_name,
       display_order: parseInt(display_order) || 0,
-      show_on_about: show_on_about === 'on' || show_on_about === '1' ? 1 : 0,
+      show_on_about: show_on_about === 'on' || show_on_about === '1' || show_on_about === 1 ? 1 : 0,
+      is_active: is_active === 'on' || is_active === '1' || is_active === 1 ? 1 : 0,
       statement: statement || '',
       photo: photo || '/images/team/default-avatar.png'
     });
