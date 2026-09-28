@@ -101,10 +101,10 @@
           </tr>
         <% } else { %>
           <% admins.forEach(admin => { %>
-            <tr class="hover-bg-light">
+            <tr class="hover-bg-light" style="cursor: pointer;" onclick="if (!event.target.closest('a, button, form, input')) window.location.href='/admin/admins/<%= admin.id %>';">
               <td class="ps-4 py-3">
-                <div class="d-flex align-items-center gap-3">
-                  <div class="avatar rounded-circle bg-light border text-primary fw-bold d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                <a href="/admin/admins/<%= admin.id %>" class="d-flex align-items-center gap-3 text-decoration-none">
+                  <div class="avatar rounded-circle bg-light border text-primary fw-bold d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px; flex-shrink: 0;">
                     <% if (admin.avatar) { %>
                       <img src="<%= admin.avatar %>" alt="<%= admin.name %>" class="rounded-circle w-100 h-100 object-fit-cover">
                     <% } else { %>
@@ -112,11 +112,11 @@
                     <% } %>
                   </div>
                   <div>
-                    <div class="fw-semibold text-slate-900"><%= admin.name %></div>
+                    <div class="fw-bold text-slate-900 fs-6 hover-primary-text mb-0.5"><%= admin.name %> <i class="ri-external-link-line text-muted small ms-1" style="font-size: 0.8rem;"></i></div>
                     <div class="small text-muted"><%= admin.email %></div>
                     <span class="badge bg-light text-secondary border mt-1" style="font-size: 0.7rem;"><%= admin.user_code %></span>
                   </div>
-                </div>
+                </a>
               </td>
               <td>
                 <% if (admin.role === 'superadmin') { %>
@@ -139,7 +139,7 @@
                     <span class="badge bg-secondary-subtle text-secondary px-2 py-0.5 rounded-pill fw-medium">
                       <%= admin.permissionsCount || 0 %> Permissions Granted
                     </span>
-                    <a href="/admin/admins/<%= admin.id %>/permissions" class="btn btn-sm btn-link text-primary p-0 small fw-semibold">
+                    <a href="/admin/admins/<%= admin.id %>/permissions" class="btn btn-sm btn-link text-primary p-0 small fw-semibold" onclick="event.stopPropagation();">
                       Configure <i class="ri-arrow-right-s-line"></i>
                     </a>
                   </div>
@@ -160,7 +160,10 @@
                 <%= new Date(admin.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) %>
               </td>
               <td class="text-end pe-4">
-                <div class="d-flex align-items-center justify-content-end gap-1.5">
+                <div class="d-flex align-items-center justify-content-end gap-1.5" onclick="event.stopPropagation();">
+                  <a href="/admin/admins/<%= admin.id %>" class="btn btn-sm btn-outline-secondary rounded-pill px-2.5 py-1 text-xs fw-medium" title="View Full Details">
+                    <i class="ri-user-line me-1"></i>View Details
+                  </a>
                   <% if (admin.role !== 'superadmin') { %>
                     <a href="/admin/admins/<%= admin.id %>/permissions" class="btn btn-sm btn-outline-primary rounded-pill px-2.5 py-1 text-xs fw-medium" title="Configure Permissions">
                       <i class="ri-key-2-line me-1"></i>Permissions

@@ -16,6 +16,7 @@ router.get('/profile', adminController.profile);
 router.get('/admins', requireSuperAdmin, adminController.adminsIndex);
 router.get('/admins/new', requireSuperAdmin, adminController.newAdminView);
 router.post('/admins', requireSuperAdmin, adminController.createAdmin);
+router.get('/admins/:id', requireSuperAdmin, adminController.userDetail);
 router.get('/admins/:id/permissions', requireSuperAdmin, adminController.adminPermissionsView);
 router.post('/admins/:id/permissions', requireSuperAdmin, adminController.updateAdminPermissions);
 router.post('/admins/:id/toggle-status', requireSuperAdmin, adminController.toggleAdminStatus);
