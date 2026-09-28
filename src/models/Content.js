@@ -290,15 +290,17 @@ const Team = {
   async toggleAboutShow(id) {
     const member = await this.findById(id);
     if (!member) return null;
-    const newStatus = member.show_on_about ? 0 : 1;
-    await db.prepare(`UPDATE team_members SET show_on_about = ? WHERE id = ?`).run(newStatus, id);
+    const isCurrentlyShown = (member.show_on_about === 1 || member.show_on_about === '1' || member.show_on_about === true);
+    const newStatus = isCurrentlyShown ? 0 : 1;
+    await db.prepare(`UPDATE team_members SET show_on_about = ? WHERE id = ? OR LOWER(TRIM(name)) = LOWER(TRIM(?))`).run(newStatus, id, member.name);
     return newStatus;
   },
   async toggleActive(id) {
     const member = await this.findById(id);
     if (!member) return null;
-    const newStatus = member.is_active ? 0 : 1;
-    await db.prepare(`UPDATE team_members SET is_active = ? WHERE id = ?`).run(newStatus, id);
+    const isCurrentlyActive = (member.is_active === 1 || member.is_active === '1' || member.is_active === true);
+    const newStatus = isCurrentlyActive ? 0 : 1;
+    await db.prepare(`UPDATE team_members SET is_active = ? WHERE id = ? OR LOWER(TRIM(name)) = LOWER(TRIM(?))`).run(newStatus, id, member.name);
     return newStatus;
   },
   async update(id, data) {
@@ -327,7 +329,12 @@ const Team = {
     await this.normalizePositions();
   },
   async delete(id) {
-    await db.prepare(`DELETE FROM team_members WHERE id = ?`).run(id);
+    const member = await this.findById(id);
+    if (member) {
+      await db.prepare(`DELETE FROM team_members WHERE id = ? OR LOWER(TRIM(name)) = LOWER(TRIM(?))`).run(id, member.name);
+    } else {
+      await db.prepare(`DELETE FROM team_members WHERE id = ?`).run(id);
+    }
     await this.normalizePositions();
   },
   async moveUp(id) {
