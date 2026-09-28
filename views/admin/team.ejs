@@ -77,6 +77,60 @@
       document.body.appendChild(modal);
     }
   });
+
+  window.toggleAboutStatus = async function(event, id, formEl) {
+    if (event && event.preventDefault) event.preventDefault();
+    try {
+      const res = await fetch(formEl.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+      });
+      const data = await res.json();
+      if (data && data.success) {
+        const btn = formEl.querySelector('button');
+        if (data.newStatus) {
+          btn.className = 'btn btn-sm btn-warning text-dark font-weight-bold rounded-pill px-3 shadow-sm';
+          btn.title = 'Click to hide from About page leadership quotes';
+          btn.innerHTML = '<i class="ri-star-fill me-1"></i> Shown on About';
+        } else {
+          btn.className = 'btn btn-sm btn-outline-secondary rounded-pill px-3';
+          btn.title = 'Click to show on About page leadership quotes';
+          btn.innerHTML = '<i class="ri-star-line me-1"></i> Add to About';
+        }
+      } else {
+        formEl.submit();
+      }
+    } catch (e) {
+      formEl.submit();
+    }
+  };
+
+  window.toggleActiveStatus = async function(event, id, formEl) {
+    if (event && event.preventDefault) event.preventDefault();
+    try {
+      const res = await fetch(formEl.action, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }
+      });
+      const data = await res.json();
+      if (data && data.success) {
+        const btn = formEl.querySelector('button');
+        if (data.newStatus) {
+          btn.className = 'btn btn-sm btn-success rounded-pill px-3 shadow-sm font-weight-bold';
+          btn.title = 'Click to hide from public Team page';
+          btn.innerHTML = '<i class="ri-checkbox-circle-fill me-1"></i> Displayed on Team Page';
+        } else {
+          btn.className = 'btn btn-sm btn-outline-secondary rounded-pill px-3';
+          btn.title = 'Click to display on public Team page';
+          btn.innerHTML = '<i class="ri-eye-off-line me-1"></i> Hidden from Team Page';
+        }
+      } else {
+        formEl.submit();
+      }
+    } catch (e) {
+      formEl.submit();
+    }
+  };
 </script>
 
 <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
@@ -315,7 +369,7 @@
 
             <!-- Public Team Page Display Toggle -->
             <td class="text-center">
-              <form action="/admin/team/<%= m.id %>/toggle-active" method="POST" class="d-inline">
+              <form action="/admin/team/<%= m.id %>/toggle-active" method="POST" class="d-inline" onsubmit="window.toggleActiveStatus(event, <%= m.id %>, this)">
                 <% if (m.is_active) { %>
                   <button type="submit" class="btn btn-sm btn-success rounded-pill px-3 shadow-sm font-weight-bold" title="Click to hide from public Team page">
                     <i class="ri-checkbox-circle-fill me-1"></i> Displayed on Team Page
@@ -330,7 +384,7 @@
 
             <!-- About Page Showcase Toggle -->
             <td class="text-center">
-              <form action="/admin/team/<%= m.id %>/toggle-about" method="POST" class="d-inline">
+              <form action="/admin/team/<%= m.id %>/toggle-about" method="POST" class="d-inline" onsubmit="window.toggleAboutStatus(event, <%= m.id %>, this)">
                 <% if (m.show_on_about) { %>
                   <button type="submit" class="btn btn-sm btn-warning text-dark font-weight-bold rounded-pill px-3 shadow-sm" title="Click to hide from About page leadership quotes">
                     <i class="ri-star-fill me-1"></i> Shown on About

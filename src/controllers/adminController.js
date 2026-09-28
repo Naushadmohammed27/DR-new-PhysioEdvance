@@ -692,12 +692,18 @@ exports.updateTeamMember = async (req, res) => {
 
 exports.toggleAboutShow = async (req, res) => {
   const newStatus = await Team.toggleAboutShow(req.params.id);
+  if (req.xhr || req.headers.accept?.includes('application/json')) {
+    return res.json({ success: true, newStatus, message: newStatus ? 'Member statement will now be displayed on the About Page.' : 'Member statement hidden from the About Page.' });
+  }
   req.flash('success', newStatus ? 'Member statement will now be displayed on the About Page.' : 'Member statement hidden from the About Page.');
   res.redirect('/admin/team');
 };
 
 exports.toggleTeamMemberActive = async (req, res) => {
   const newStatus = await Team.toggleActive(req.params.id);
+  if (req.xhr || req.headers.accept?.includes('application/json')) {
+    return res.json({ success: true, newStatus, message: newStatus ? 'Member is now visible on the public Team page.' : 'Member is now hidden from the public Team page.' });
+  }
   req.flash('success', newStatus ? 'Member is now visible on the public Team page.' : 'Member is now hidden from the public Team page.');
   res.redirect('/admin/team');
 };
