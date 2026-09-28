@@ -135,13 +135,13 @@
                     <i class="ri-checkbox-circle-fill me-1"></i>Full Master Access (All Resources)
                   </span>
                 <% } else { %>
-                  <div class="d-flex align-items-center gap-2">
+                  <div class="d-flex align-items-center gap-2" onclick="event.stopPropagation();">
                     <span class="badge bg-secondary-subtle text-secondary px-2 py-0.5 rounded-pill fw-medium">
                       <%= admin.permissionsCount || 0 %> Permissions Granted
                     </span>
-                    <a href="/admin/admins/<%= admin.id %>/permissions" class="btn btn-sm btn-link text-primary p-0 small fw-semibold" onclick="event.stopPropagation();">
-                      Configure <i class="ri-arrow-right-s-line"></i>
-                    </a>
+                    <button type="button" class="btn btn-sm btn-link text-primary p-0 small fw-semibold text-decoration-none" data-bs-toggle="modal" data-bs-target="#permModal_<%= admin.id %>">
+                      Configure <i class="ri-eye-line ms-0.5"></i>
+                    </button>
                   </div>
                 <% } %>
               </td>
@@ -180,6 +180,110 @@
                 </div>
               </td>
             </tr>
+
+            <!-- Modal: Permission Preview for Admin #<%= admin.id %> -->
+            <div class="modal fade" id="permModal_<%= admin.id %>" tabindex="-1" aria-labelledby="permModalLabel_<%= admin.id %>" aria-hidden="true" onclick="event.stopPropagation();">
+              <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden text-start">
+                  <div class="modal-header bg-light py-3 px-4 border-bottom">
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="avatar rounded-circle bg-primary-subtle text-primary fw-bold d-flex align-items-center justify-content-center border shadow-sm" style="width: 44px; height: 44px; flex-shrink: 0;">
+                        <% if (admin.avatar) { %>
+                          <img src="<%= admin.avatar %>" alt="<%= admin.name %>" class="rounded-circle w-100 h-100 object-fit-cover">
+                        <% } else { %>
+                          <%= admin.name.charAt(0).toUpperCase() %>
+                        <% } %>
+                      </div>
+                      <div>
+                        <h5 class="modal-title fw-bold text-dark mb-0" id="permModalLabel_<%= admin.id %>"><%= admin.name %></h5>
+                        <span class="text-muted small"><%= admin.email %> &bull; <code class="text-primary"><%= admin.user_code %></code></span>
+                      </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+
+                  <div class="modal-body p-4">
+                    <% if (admin.role === 'superadmin') { %>
+                      <div class="p-4 rounded-3 bg-warning-subtle text-warning-emphasis border border-warning-subtle text-center">
+                        <i class="ri-vip-crown-fill fs-2 mb-2 d-block"></i>
+                        <h6 class="fw-bold mb-1">Super Administrator Account</h6>
+                        <p class="small mb-0">This user holds Master Authority and has unrestricted access to all platform resources, settings, and administrator management tools.</p>
+                      </div>
+                    <% } else { %>
+                      <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h6 class="fw-bold text-dark mb-0"><i class="ri-shield-keyhole-line text-primary me-2"></i>Assigned Permissions Breakdown</h6>
+                        <span class="badge bg-primary text-white rounded-pill px-3 py-1 font-weight-bold">
+                          <%= admin.permissionsCount || 0 %> Active Permissions
+                        </span>
+                      </div>
+
+                      <% if (!admin.permissions || admin.permissions.length === 0) { %>
+                        <div class="p-4 rounded-3 bg-light border text-center text-muted">
+                          <i class="ri-shield-line fs-2 mb-2 d-block text-slate-400"></i>
+                          <p class="fw-semibold text-dark mb-1">No Explicit Permissions Assigned</p>
+                          <span class="small d-block text-secondary">This administrator account currently has 0 active permission grants. Click "Configure Full Permissions" below to grant access.</span>
+                        </div>
+                      <% } else { %>
+                        <% 
+                          const permGroups = {};
+                          admin.permissions.forEach(pk => {
+                            const parts = pk.split(':');
+                            const resKey = parts[0] || 'GENERAL';
+                            const actKey = parts[1] || 'VIEW';
+                            if (!permGroups[resKey]) permGroups[resKey] = [];
+                            permGroups[resKey].push(actKey);
+                          });
+                          
+                          const resourceMeta = {
+                            'SUBJECT': { label: 'Subjects & Curriculum Categories', icon: 'ri-folder-2-line', color: 'primary' },
+                            'CASE_DISCUSSION': { label: 'Live Discussions & Q&A Desk', icon: 'ri-question-answer-line', color: 'cyan' },
+                            'COURSE': { label: 'Courses & Learning Modules', icon: 'ri-book-read-line', color: 'emerald' },
+                            'LIVE_CLASS': { label: 'Live Classes & Webinars', icon: 'ri-vidicon-line', color: 'red' },
+                            'BLOG': { label: 'Blog & Articles', icon: 'ri-article-line', color: 'purple' },
+                            'USER': { label: 'User Management', icon: 'ri-team-line', color: 'orange' },
+                            'AUDIT_LOG': { label: 'Audit Trail Logs', icon: 'ri-shield-check-line', color: 'sky' },
+                            'SETTINGS': { label: 'Platform & Homepage Settings', icon: 'ri-settings-4-line', color: 'amber' }
+                          };
+                        %>
+                        <div class="row g-3">
+                          <% Object.keys(permGroups).forEach(resKey => { 
+                            const meta = resourceMeta[resKey] || { label: resKey.replace(/_/g, ' '), icon: 'ri-lock-line', color: 'primary' };
+                            const acts = permGroups[resKey];
+                          %>
+                            <div class="col-md-6">
+                              <div class="p-3 border rounded-3 bg-white h-100 shadow-sm d-flex flex-column justify-content-between">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                  <div class="rounded-2 p-1.5 bg-<%= meta.color %>-subtle text-<%= meta.color %> d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; font-size: 1rem;">
+                                    <i class="<%= meta.icon %>"></i>
+                                  </div>
+                                  <span class="fw-bold text-dark small"><%= meta.label %></span>
+                                </div>
+                                <div class="d-flex flex-wrap gap-1.5 mt-1">
+                                  <% acts.forEach(act => { %>
+                                    <span class="badge bg-light text-primary border font-weight-bold px-2 py-0.5 text-uppercase" style="font-size: 0.68rem;">
+                                      <i class="ri-check-line text-success me-0.5"></i><%= act %>
+                                    </span>
+                                  <% }) %>
+                                </div>
+                              </div>
+                            </div>
+                          <% }) %>
+                        </div>
+                      <% } %>
+                    <% } %>
+                  </div>
+
+                  <div class="modal-footer bg-light py-2.5 px-4 border-top d-flex align-items-center justify-content-between">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4 btn-sm" data-bs-dismiss="modal">Close</button>
+                    <% if (admin.role !== 'superadmin') { %>
+                      <a href="/admin/admins/<%= admin.id %>/permissions" class="btn btn-primary rounded-pill px-4 btn-sm font-weight-bold shadow-sm">
+                        <i class="ri-edit-box-line me-1"></i> Configure Full Permissions
+                      </a>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+            </div>
           <% }) %>
         <% } %>
       </tbody>
