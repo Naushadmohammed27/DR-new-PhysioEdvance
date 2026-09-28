@@ -156,13 +156,14 @@ exports.subjectDetail = async (req, res) => {
     ORDER BY c.created_at DESC
   `).all(category.id);
 
-  const { Notes } = require('../models/Content');
+  const { Notes, SubjectHubSettings } = require('../models/Content');
   const notes = await Notes.byCategory(category.id);
   const research = await db.prepare(`SELECT * FROM research_articles WHERE category_id = ? ORDER BY created_at DESC`).all(category.id);
 
-  // Load complete interactive hub data with all 9 options for any newly created subject
+  // Load complete interactive hub data with all options for any subject
   const interactiveData = buildSubjectInteractiveData(category);
   const activeFeatures = getSubjectActiveFeatures(category, courses);
+  const hubBlocks = await SubjectHubSettings.allActive();
 
   res.render('public/subject-detail', { 
     title: category.name, 
@@ -171,7 +172,8 @@ exports.subjectDetail = async (req, res) => {
     notes: notes || [], 
     research: research || [], 
     interactiveData,
-    activeFeatures
+    activeFeatures,
+    hubBlocks
   });
 };
 
@@ -437,11 +439,13 @@ exports.about = async (req, res) => {
     ];
   }
   const visionMission = await SiteSettings.getVisionMission();
+  const sectionTitles = await AboutSettings.getSectionTitles();
 
   console.log(`[About Controller] Rendering /about with ${aboutStatements.length} leadership statements and ${storyMilestones.length} milestones`);
   res.render('public/about', {
     title: 'About Us',
     sectionsOrder,
+    sectionTitles,
     aboutHero,
     aboutPurpose,
     aboutOnboarding,

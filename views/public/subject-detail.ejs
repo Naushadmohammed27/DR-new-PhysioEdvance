@@ -85,38 +85,52 @@
           </a>
         </div>
 
-        <!-- Left Column: Regions, Cross-Sections, 3D -->
+        <% 
+          const leftColBlocks = (typeof hubBlocks !== 'undefined' && Array.isArray(hubBlocks)) ? hubBlocks.filter(b => b.col_type === 'left') : [];
+          const rightColBlocks = (typeof hubBlocks !== 'undefined' && Array.isArray(hubBlocks)) ? hubBlocks.filter(b => b.col_type === 'right') : [];
+          const bottomRowBlocks = (typeof hubBlocks !== 'undefined' && Array.isArray(hubBlocks)) ? hubBlocks.filter(b => b.col_type === 'bottom') : [];
+        %>
+
+        <!-- Left Column -->
         <div class="col-lg-3 d-flex flex-column gap-3">
-          <!-- 1. Regions (Feature 3) -->
-          <a href="/subjects/<%= category.slug %>/module/regions" class="text-decoration-none flex-fill d-flex">
-            <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
-              <i class="ri-brain-line display-5 mb-2 text-white"></i>
-              <h5 class="fw-bold text-white mb-0">Regions & Maps <i class="ri-arrow-right-up-line fs-6"></i></h5>
-            </div>
-          </a>
-
-          <!-- 2. Cross-Sections (Feature 4) -->
-          <a href="/subjects/<%= category.slug %>/module/cross-sections" class="text-decoration-none flex-fill d-flex">
-            <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
-              <i class="ri-layout-grid-line display-5 mb-2 text-white"></i>
-              <h5 class="fw-bold text-white mb-0">Cross-Sections <i class="ri-arrow-right-up-line fs-6"></i></h5>
-            </div>
-          </a>
-
-          <!-- 3. 3D Models / Interactive Modules (Feature 2) -->
-          <a href="/subjects/<%= category.slug %>/module/interactive-modules" class="text-decoration-none flex-fill d-flex">
-            <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
-              <i class="ri-box-3-line display-5 mb-2 text-white"></i>
-              <h5 class="fw-bold text-white mb-0">3D Rotatable <i class="ri-arrow-right-up-line fs-6"></i></h5>
-            </div>
-          </a>
+          <% if (leftColBlocks.length > 0) { %>
+            <% leftColBlocks.forEach((b, bIdx) => { 
+                const blockTitle = b.title.replace(':subject', category.name);
+                const blockUrl = b.url.replace(':slug', category.slug);
+                const bgStyle = bIdx % 2 === 0 ? 'background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);' : 'background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);';
+            %>
+              <a href="<%= blockUrl %>" class="text-decoration-none flex-fill d-flex">
+                <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="<%= bgStyle %>">
+                  <i class="<%= b.icon || 'ri-box-3-line' %> display-5 mb-2 text-white"></i>
+                  <h5 class="fw-bold text-white mb-0"><%= blockTitle %> <i class="ri-arrow-right-up-line fs-6"></i></h5>
+                </div>
+              </a>
+            <% }) %>
+          <% } else { %>
+            <a href="/subjects/<%= category.slug %>/module/regions" class="text-decoration-none flex-fill d-flex">
+              <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
+                <i class="ri-brain-line display-5 mb-2 text-white"></i>
+                <h5 class="fw-bold text-white mb-0">Regions & Maps <i class="ri-arrow-right-up-line fs-6"></i></h5>
+              </div>
+            </a>
+            <a href="/subjects/<%= category.slug %>/module/cross-sections" class="text-decoration-none flex-fill d-flex">
+              <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+                <i class="ri-layout-grid-line display-5 mb-2 text-white"></i>
+                <h5 class="fw-bold text-white mb-0">Cross-Sections <i class="ri-arrow-right-up-line fs-6"></i></h5>
+              </div>
+            </a>
+            <a href="/subjects/<%= category.slug %>/module/interactive-modules" class="text-decoration-none flex-fill d-flex">
+              <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
+                <i class="ri-box-3-line display-5 mb-2 text-white"></i>
+                <h5 class="fw-bold text-white mb-0">3D Rotatable <i class="ri-arrow-right-up-line fs-6"></i></h5>
+              </div>
+            </a>
+          <% } %>
         </div>
 
-        <!-- Center Column: Direct Native HTML5 MP4 3D Video Player (NO YOUTUBE DEPENDENCY!) -->
+        <!-- Center Column: Video / WebGL Player -->
         <div class="col-lg-6">
           <div class="card border-0 rounded-4 overflow-hidden shadow-lg h-100 bg-dark position-relative" style="min-height: 340px;">
-            
-            <!-- 1. Native HTML5 MP4 Video Player Layer (Active by Default) -->
             <div id="demo3DVideoContainer" class="w-100 h-100 position-relative">
               <video id="demoHTML5Video" autoplay loop muted playsinline controls class="w-100 h-100" style="object-fit: cover; min-height: 340px; background: #020617;">
                 <source src="/videos/stream/<%= category.slug %>-intro" type="video/mp4">
@@ -125,11 +139,8 @@
               </video>
             </div>
 
-            <!-- 2. Real 3D WebGL Canvas Layer (Toggleable) -->
             <div id="demo3DCanvasContainer" class="w-100 h-100 position-absolute top-0 start-0 d-none">
               <canvas id="demo3DCanvas" class="w-100 h-100" style="min-height: 340px; background: radial-gradient(circle, #0f172a 0%, #020617 100%); cursor: grab;"></canvas>
-              
-              <!-- Interactive Overlay Controls -->
               <div class="position-absolute top-0 start-0 p-3 d-flex align-items-center gap-2 z-2">
                 <span class="badge bg-primary text-white font-weight-bold shadow-sm">
                   <i class="ri-box-3-fill me-1"></i> Live 3D WebGL Mesh
@@ -140,14 +151,12 @@
               </div>
             </div>
 
-            <!-- Bottom Control Bar -->
             <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-dark bg-opacity-85 text-white d-flex align-items-center justify-content-between z-3 border-top border-secondary border-opacity-25">
               <div class="d-flex align-items-center gap-2">
                 <span class="badge bg-warning text-dark font-weight-bold shadow-sm">
                   <i class="ri-play-circle-fill me-1"></i> <%= category.name %> 3D Prosection MP4 Video
                 </span>
               </div>
-              
               <div class="btn-group btn-group-sm">
                 <button type="button" class="btn btn-sm btn-primary font-weight-bold" id="btnShowVideo" onclick="switchMediaMode('video')">
                   <i class="ri-film-line me-1"></i> 3D Video MP4
@@ -157,55 +166,81 @@
                 </button>
               </div>
             </div>
-
           </div>
         </div>
 
-        <!-- Right Column: 3 Boxes (HD Videos, Interactive Modules, MRIs & Radiology) -->
+        <!-- Right Column -->
         <div class="col-lg-3 d-flex flex-column gap-3">
-          <!-- 4. Videos (Feature 5) -->
-          <a href="/subjects/<%= category.slug %>/module/hd-videos" class="text-decoration-none flex-fill d-flex">
-            <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
-              <i class="ri-vidicon-line display-5 mb-2 text-white"></i>
-              <h5 class="fw-bold text-white mb-0">HD Videos <i class="ri-arrow-right-up-line fs-6"></i></h5>
-            </div>
-          </a>
-
-          <!-- 5. Notes and Interactive Modules (Feature 6) -->
-          <a href="/subjects/<%= category.slug %>/module/interactive-modules" class="text-decoration-none flex-fill d-flex">
-            <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
-              <i class="ri-file-text-line display-5 mb-2 text-white"></i>
-              <h5 class="fw-bold text-white mb-0">Notes & Modules <i class="ri-arrow-right-up-line fs-6"></i></h5>
-            </div>
-          </a>
-
-          <!-- 6. MRIs & Radiology (Feature 7) -->
-          <a href="/subjects/<%= category.slug %>/module/mri-scans" class="text-decoration-none flex-fill d-flex">
-            <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
-              <i class="ri-pulse-line display-5 mb-2 text-white"></i>
-              <h5 class="fw-bold text-white mb-0">MRIs & Radiology <i class="ri-arrow-right-up-line fs-6"></i></h5>
-            </div>
-          </a>
+          <% if (rightColBlocks.length > 0) { %>
+            <% rightColBlocks.forEach((b, bIdx) => { 
+                const blockTitle = b.title.replace(':subject', category.name);
+                const blockUrl = b.url.replace(':slug', category.slug);
+                const bgStyle = bIdx % 2 === 0 ? 'background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);' : 'background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);';
+            %>
+              <a href="<%= blockUrl %>" class="text-decoration-none flex-fill d-flex">
+                <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="<%= bgStyle %>">
+                  <i class="<%= b.icon || 'ri-box-3-line' %> display-5 mb-2 text-white"></i>
+                  <h5 class="fw-bold text-white mb-0"><%= blockTitle %> <i class="ri-arrow-right-up-line fs-6"></i></h5>
+                </div>
+              </a>
+            <% }) %>
+          <% } else { %>
+            <a href="/subjects/<%= category.slug %>/module/hd-videos" class="text-decoration-none flex-fill d-flex">
+              <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
+                <i class="ri-vidicon-line display-5 mb-2 text-white"></i>
+                <h5 class="fw-bold text-white mb-0">HD Videos <i class="ri-arrow-right-up-line fs-6"></i></h5>
+              </div>
+            </a>
+            <a href="/subjects/<%= category.slug %>/module/interactive-modules" class="text-decoration-none flex-fill d-flex">
+              <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+                <i class="ri-file-text-line display-5 mb-2 text-white"></i>
+                <h5 class="fw-bold text-white mb-0">Notes & Modules <i class="ri-arrow-right-up-line fs-6"></i></h5>
+              </div>
+            </a>
+            <a href="/subjects/<%= category.slug %>/module/mri-scans" class="text-decoration-none flex-fill d-flex">
+              <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer flex-fill d-flex flex-column align-items-center justify-content-center transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
+                <i class="ri-pulse-line display-5 mb-2 text-white"></i>
+                <h5 class="fw-bold text-white mb-0">MRIs & Radiology <i class="ri-arrow-right-up-line fs-6"></i></h5>
+              </div>
+            </a>
+          <% } %>
         </div>
 
-        <!-- Bottom Row: 2 Equal Boxes (Syllabus, Stroke & Pathology) -->
-        <div class="col-md-6">
-          <a href="/subjects/<%= category.slug %>/module/syllabus" class="text-decoration-none">
-            <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer transition-all shadow-sm" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
-              <i class="ri-quill-pen-line fs-2 mb-1 text-white"></i>
-              <h5 class="fw-bold text-white mb-0"><%= category.name %> Syllabus <i class="ri-arrow-right-up-line fs-6"></i></h5>
+        <!-- Bottom Row -->
+        <% if (bottomRowBlocks.length > 0) { %>
+          <% bottomRowBlocks.forEach((b, bIdx) => { 
+              const blockTitle = b.title.replace(':subject', category.name);
+              const blockUrl = b.url.replace(':slug', category.slug);
+              const bgStyle = bIdx % 2 === 0 ? 'background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);' : 'background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);';
+              const colSize = bottomRowBlocks.length === 1 ? 'col-12' : (bottomRowBlocks.length === 2 ? 'col-md-6' : 'col-md-4');
+          %>
+            <div class="<%= colSize %>">
+              <a href="<%= blockUrl %>" class="text-decoration-none">
+                <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer transition-all shadow-sm" style="<%= bgStyle %>">
+                  <i class="<%= b.icon || 'ri-quill-pen-line' %> fs-2 mb-1 text-white"></i>
+                  <h5 class="fw-bold text-white mb-0"><%= blockTitle %> <i class="ri-arrow-right-up-line fs-6"></i></h5>
+                </div>
+              </a>
             </div>
-          </a>
-        </div>
-
-        <div class="col-md-6">
-          <a href="/subjects/<%= category.slug %>/module/stroke-models" class="text-decoration-none">
-            <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
-              <i class="ri-heart-pulse-line fs-2 mb-1 text-white"></i>
-              <h5 class="fw-bold text-white mb-0">Stroke & Pathology <i class="ri-arrow-right-up-line fs-6"></i></h5>
-            </div>
-          </a>
-        </div>
+          <% }) %>
+        <% } else { %>
+          <div class="col-md-6">
+            <a href="/subjects/<%= category.slug %>/module/syllabus" class="text-decoration-none">
+              <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer transition-all shadow-sm" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);">
+                <i class="ri-quill-pen-line fs-2 mb-1 text-white"></i>
+                <h5 class="fw-bold text-white mb-0"><%= category.name %> Syllabus <i class="ri-arrow-right-up-line fs-6"></i></h5>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-6">
+            <a href="/subjects/<%= category.slug %>/module/stroke-models" class="text-decoration-none">
+              <div class="pe-neuro-card p-4 rounded-4 text-white text-center cursor-pointer transition-all shadow-sm" style="background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);">
+                <i class="ri-heart-pulse-line fs-2 mb-1 text-white"></i>
+                <h5 class="fw-bold text-white mb-0">Stroke & Pathology <i class="ri-arrow-right-up-line fs-6"></i></h5>
+              </div>
+            </a>
+          </div>
+        <% } %>
 
       </div>
     </div>

@@ -98,11 +98,35 @@
           };
 
           const currentOrder = (typeof sectionsOrder !== 'undefined' && Array.isArray(sectionsOrder)) ? sectionsOrder : Object.keys(sectionLabels);
+          const customTitles = (typeof sectionTitles !== 'undefined' && sectionTitles) ? sectionTitles : {};
         %>
+
+        <!-- Section Title Renaming Form -->
+        <form action="/admin/about-cms/section-titles" method="POST" class="mb-4">
+          <div class="p-3 bg-light rounded-4 border mb-3">
+            <h6 class="fw-bold text-dark mb-2"><i class="ri-edit-box-line text-primary me-1.5"></i> Custom Section Titles (Rename Any Section)</h6>
+            <div class="row g-3">
+              <% Object.keys(sectionLabels).forEach(secKey => { 
+                const displayTitle = customTitles[secKey] || sectionLabels[secKey].name;
+              %>
+                <div class="col-md-6">
+                  <label class="form-label small text-muted font-weight-bold mb-1"><%= sectionLabels[secKey].name %></label>
+                  <input type="text" name="<%= secKey %>" class="form-control form-control-sm rounded-3 fw-semibold" value="<%= displayTitle %>" placeholder="<%= sectionLabels[secKey].name %>">
+                </div>
+              <% }) %>
+            </div>
+            <div class="mt-3 text-end">
+              <button type="submit" class="btn btn-sm btn-primary rounded-pill px-4 font-weight-bold">
+                <i class="ri-save-line me-1"></i> Save Custom Section Names
+              </button>
+            </div>
+          </div>
+        </form>
 
         <div class="d-flex flex-column gap-3 mt-3">
           <% currentOrder.forEach((secKey, idx) => { 
               const info = sectionLabels[secKey] || { name: secKey, desc: 'About Page Section', icon: 'ri-layout-grid-line' };
+              const currentName = customTitles[secKey] || info.name;
           %>
             <div class="card border border-light-subtle rounded-4 p-3 bg-light-subtle pe-cms-card">
               <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
@@ -112,7 +136,7 @@
                     <i class="<%= info.icon %>"></i>
                   </div>
                   <div>
-                    <h5 class="fw-bold text-dark mb-0.5" style="font-size: 1.1rem;"><%= info.name %></h5>
+                    <h5 class="fw-bold text-dark mb-0.5" style="font-size: 1.1rem;"><%= currentName %></h5>
                     <span class="text-muted small"><%= info.desc %></span>
                   </div>
                 </div>

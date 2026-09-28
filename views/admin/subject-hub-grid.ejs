@@ -1,0 +1,103 @@
+<div class="container-fluid py-4">
+  <!-- Header -->
+  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+    <div>
+      <span class="badge bg-primary-subtle text-primary font-weight-bold text-uppercase px-3 py-1.5 rounded-pill mb-1">
+        <i class="ri-layout-grid-line me-1"></i> Interactive Portal Layout CMS
+      </span>
+      <h2 class="fw-bold mb-0 text-dark">Subject Interactive Grid Layout & Positions</h2>
+      <p class="text-muted small mb-0">Customize block titles, icons, and position layout (Left Column, Right Column, Bottom Row) for subject portal pages.</p>
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      <a href="/subjects/human-physiology" target="_blank" class="btn btn-outline-primary rounded-pill px-3.5 py-2 fw-semibold">
+        <i class="ri-external-link-line me-1"></i> Live View /subjects/human-physiology
+      </a>
+    </div>
+  </div>
+
+  <% if (typeof success !== 'undefined' && success && success.length > 0) { %>
+    <div class="alert alert-success alert-dismissible fade show rounded-4 shadow-sm border-0 mb-4" role="alert">
+      <i class="ri-checkbox-circle-fill me-2 fs-5 align-middle"></i> <%= success %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% } %>
+
+  <div class="row g-4">
+    <% 
+      const columns = [
+        { key: 'left', title: 'Left Column Blocks (3 Boxes)', desc: 'Blocks displayed on the left side of the player', badgeBg: 'bg-primary' },
+        { key: 'right', title: 'Right Column Blocks (3 Boxes)', desc: 'Blocks displayed on the right side of the player', badgeBg: 'bg-info' },
+        { key: 'bottom', title: 'Bottom Row Blocks (2 Equal Cards)', desc: 'Cards displayed below the player & side columns', badgeBg: 'bg-warning' }
+      ];
+
+      columns.forEach(col => {
+        const colBlocks = (blocks || []).filter(b => (b.col_type || 'left') === col.key).sort((a, b) => a.display_order - b.display_order);
+    %>
+      <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white h-100">
+          <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3">
+            <div>
+              <span class="badge <%= col.badgeBg %> text-white rounded-pill px-2.5 py-1 text-uppercase fw-bold mb-1" style="font-size: 0.72rem;"><%= col.key %> column</span>
+              <h5 class="fw-bold text-dark mb-0"><%= col.title %></h5>
+            </div>
+            <span class="badge bg-light text-dark border rounded-circle font-weight-bold" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;"><%= colBlocks.length %></span>
+          </div>
+
+          <div class="d-flex flex-column gap-3">
+            <% colBlocks.forEach((blk, idx) => { %>
+              <div class="card border rounded-4 p-3 bg-light-subtle position-relative">
+                <form action="/admin/subject-hub-grid/<%= blk.id %>/update" method="POST">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge bg-secondary text-white rounded-circle font-weight-bold" style="width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem;"><%= idx + 1 %></span>
+                      <strong class="text-dark" style="font-size: 0.95rem;">Key: <code><%= blk.block_key %></code></strong>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                      <button type="submit" class="btn btn-sm btn-success rounded-pill px-2.5 py-1" style="font-size: 0.75rem;" title="Save Block">
+                        <i class="ri-save-line me-1"></i> Save
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="mb-2">
+                    <label class="form-label text-muted small fw-bold mb-1">Display Title</label>
+                    <input type="text" name="title" class="form-control form-control-sm rounded-3 fw-bold text-dark" value="<%= blk.title %>" required>
+                  </div>
+
+                  <div class="row g-2">
+                    <div class="col-7">
+                      <label class="form-label text-muted small fw-bold mb-1">Icon Class</label>
+                      <input type="text" name="icon" class="form-control form-control-sm rounded-3" value="<%= blk.icon %>">
+                    </div>
+                    <div class="col-5">
+                      <label class="form-label text-muted small fw-bold mb-1">Position</label>
+                      <select name="col_type" class="form-select form-select-sm rounded-3 fw-semibold">
+                        <option value="left" <%= blk.col_type === 'left' ? 'selected' : '' %>>Left</option>
+                        <option value="right" <%= blk.col_type === 'right' ? 'selected' : '' %>>Right</option>
+                        <option value="bottom" <%= blk.col_type === 'bottom' ? 'selected' : '' %>>Bottom</option>
+                      </select>
+                    </div>
+                  </div>
+                </form>
+
+                <div class="d-flex align-items-center justify-content-end gap-1 mt-2 pt-2 border-top">
+                  <form action="/admin/subject-hub-grid/<%= blk.id %>/move-up" method="POST" class="m-0">
+                    <button type="submit" class="btn btn-xs btn-outline-primary rounded-pill px-2 py-0.5" style="font-size: 0.75rem;" <%= idx === 0 ? 'disabled' : '' %>>
+                      <i class="ri-arrow-up-line"></i> Up
+                    </button>
+                  </form>
+                  <form action="/admin/subject-hub-grid/<%= blk.id %>/move-down" method="POST" class="m-0">
+                    <button type="submit" class="btn btn-xs btn-outline-primary rounded-pill px-2 py-0.5" style="font-size: 0.75rem;" <%= idx === colBlocks.length - 1 ? 'disabled' : '' %>>
+                      <i class="ri-arrow-down-line"></i> Down
+                    </button>
+                  </form>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>

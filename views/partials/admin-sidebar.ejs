@@ -46,6 +46,9 @@
         <a href="/admin/about-cms" class="pe-menu-link <%= (currentPath==='/admin/about-cms' || currentPath.startsWith('/admin/about-cms'))?'active':'' %>">
           <i class="ri-information-line pe-icon-cyan"></i><span>About Us Page CMS</span>
         </a>
+        <a href="/admin/subject-hub-grid" class="pe-menu-link <%= (currentPath==='/admin/subject-hub-grid' || currentPath.startsWith('/admin/subject-hub-grid'))?'active':'' %>">
+          <i class="ri-layout-grid-line pe-icon-yellow"></i><span>Subject Grid CMS</span>
+        </a>
       <% } %>
       <% if (isSuperAdmin || hasPermission('USER', 'VIEW')) { %>
         <a href="/admin/users" class="pe-menu-link <%= currentPath==='/admin/users'?'active':'' %>">

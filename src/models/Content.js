@@ -1030,6 +1030,27 @@ const AboutSettings = {
     }
   },
 
+  async getSectionTitles() {
+    return {
+      purpose_vision: await SiteSettings.get('about_sec_title_purpose_vision', 'Our Purpose & Vision'),
+      leadership_messages: await SiteSettings.get('about_sec_title_leadership_messages', 'Leadership Messages'),
+      onboarding_steps: await SiteSettings.get('about_sec_title_onboarding_steps', 'Easy 4-Step Student & Faculty Access'),
+      story_journey: await SiteSettings.get('about_sec_title_story_journey', 'The Story Behind PhysioEdvance'),
+      core_offers: await SiteSettings.get('about_sec_title_core_offers', 'What PhysioEdvance Offers'),
+      vision_mission: await SiteSettings.get('about_sec_title_vision_mission', 'Our Vision & Mission')
+    };
+  },
+
+  async updateSectionTitles(titles) {
+    if (titles && typeof titles === 'object') {
+      for (const [key, val] of Object.entries(titles)) {
+        if (val !== undefined && val.trim()) {
+          await SiteSettings.set(`about_sec_title_${key}`, val.trim());
+        }
+      }
+    }
+  },
+
   async updateSectionsOrder(newOrderArray) {
     await SiteSettings.set('about_sections_order', JSON.stringify(newOrderArray));
   },
@@ -1160,6 +1181,100 @@ const AboutSettings = {
   }
 };
 
-module.exports = { Notes, Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection, AboutSettings };
+// ============ SUBJECT INTERACTIVE HUB GRID MODULES CMS ============
+const SubjectHubSettings = {
+  async initTable() {
+    await db.prepare(`
+      CREATE TABLE IF NOT EXISTS subject_hub_blocks (
+        id SERIAL PRIMARY KEY,
+        block_key TEXT UNIQUE NOT NULL,
+        title TEXT NOT NULL,
+        icon TEXT DEFAULT 'ri-box-3-line',
+        url TEXT NOT NULL,
+        col_type TEXT DEFAULT 'left',
+        display_order INTEGER DEFAULT 1,
+        is_active INTEGER DEFAULT 1
+      )
+    `).run();
+
+    const countRow = await db.prepare(`SELECT COUNT(*) as c FROM subject_hub_blocks`).get();
+    const count = Number(countRow ? countRow.c : 0);
+    if (count === 0) {
+      const defaults = [
+        { block_key: 'regions', title: 'Regions & Maps', icon: 'ri-brain-line', url: '/subjects/:slug/module/regions', col_type: 'left', display_order: 1 },
+        { block_key: 'cross_sections', title: 'Cross-Sections', icon: 'ri-layout-grid-line', url: '/subjects/:slug/module/cross-sections', col_type: 'left', display_order: 2 },
+        { block_key: 'three_d', title: '3D Rotatable', icon: 'ri-box-3-line', url: '/subjects/:slug/module/interactive-modules', col_type: 'left', display_order: 3 },
+        { block_key: 'hd_videos', title: 'HD Videos', icon: 'ri-vidicon-line', url: '/subjects/:slug/module/hd-videos', col_type: 'right', display_order: 1 },
+        { block_key: 'notes_modules', title: 'Notes & Modules', icon: 'ri-file-text-line', url: '/subjects/:slug/module/interactive-modules', col_type: 'right', display_order: 2 },
+        { block_key: 'mri_scans', title: 'MRIs & Radiology', icon: 'ri-pulse-line', url: '/subjects/:slug/module/mri-scans', col_type: 'right', display_order: 3 },
+        { block_key: 'syllabus', title: ':subject Syllabus', icon: 'ri-quill-pen-line', url: '/subjects/:slug/module/syllabus', col_type: 'bottom', display_order: 1 },
+        { block_key: 'pathology', title: 'Stroke & Pathology', icon: 'ri-heart-pulse-line', url: '/subjects/:slug/module/cross-sections', col_type: 'bottom', display_order: 2 }
+      ];
+      for (const d of defaults) {
+        await db.prepare(`
+          INSERT INTO subject_hub_blocks (block_key, title, icon, url, col_type, display_order, is_active)
+          VALUES (?, ?, ?, ?, ?, ?, 1)
+        `).run(d.block_key, d.title, d.icon, d.url, d.col_type, d.display_order);
+      }
+    }
+  },
+
+  async all() {
+    await this.initTable();
+    return db.prepare(`SELECT * FROM subject_hub_blocks ORDER BY display_order ASC, id ASC`).all();
+  },
+
+  async allActive() {
+    await this.initTable();
+    return db.prepare(`SELECT * FROM subject_hub_blocks WHERE is_active = 1 ORDER BY display_order ASC, id ASC`).all();
+  },
+
+  async findById(id) {
+    await this.initTable();
+    return db.prepare(`SELECT * FROM subject_hub_blocks WHERE id = ?`).get(id);
+  },
+
+  async updateBlock(id, data) {
+    await this.initTable();
+    const existing = await this.findById(id);
+    if (!existing) return;
+    const title = data.title !== undefined ? data.title.trim() : existing.title;
+    const icon = data.icon !== undefined ? data.icon.trim() : existing.icon;
+    const col_type = data.col_type !== undefined ? data.col_type.trim() : existing.col_type;
+    const targetOrder = Math.max(1, parseInt(data.display_order, 10) || existing.display_order);
+
+    await db.prepare(`
+      UPDATE subject_hub_blocks
+      SET title = ?, icon = ?, col_type = ?, display_order = ?, is_active = ?
+      WHERE id = ?
+    `).run(title, icon, col_type, targetOrder, data.is_active === '0' || data.is_active === 0 ? 0 : 1, id);
+  },
+
+  async moveUp(id) {
+    await this.initTable();
+    const current = await this.findById(id);
+    if (!current) return;
+    const prev = await db.prepare(`SELECT * FROM subject_hub_blocks WHERE col_type = ? AND display_order < ? ORDER BY display_order DESC, id DESC LIMIT 1`).get(current.col_type, current.display_order);
+    if (prev) {
+      const tempOrder = current.display_order;
+      await db.prepare(`UPDATE subject_hub_blocks SET display_order = ? WHERE id = ?`).run(prev.display_order, current.id);
+      await db.prepare(`UPDATE subject_hub_blocks SET display_order = ? WHERE id = ?`).run(tempOrder, prev.id);
+    }
+  },
+
+  async moveDown(id) {
+    await this.initTable();
+    const current = await this.findById(id);
+    if (!current) return;
+    const next = await db.prepare(`SELECT * FROM subject_hub_blocks WHERE col_type = ? AND display_order > ? ORDER BY display_order ASC, id ASC LIMIT 1`).get(current.col_type, current.display_order);
+    if (next) {
+      const tempOrder = current.display_order;
+      await db.prepare(`UPDATE subject_hub_blocks SET display_order = ? WHERE id = ?`).run(next.display_order, current.id);
+      await db.prepare(`UPDATE subject_hub_blocks SET display_order = ? WHERE id = ?`).run(tempOrder, next.id);
+    }
+  }
+};
+
+module.exports = { Notes, Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection, AboutSettings, SubjectHubSettings };
 
 

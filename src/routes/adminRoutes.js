@@ -218,6 +218,7 @@ router.post('/team/:id/delete', requirePermission('SETTINGS', 'EDIT'), adminCont
 router.get('/about-cms', requirePermission('SETTINGS', 'VIEW'), adminController.aboutCmsIndex);
 router.post('/about-cms/sections/:secKey/move-up', requirePermission('SETTINGS', 'EDIT'), adminController.moveAboutSectionUp);
 router.post('/about-cms/sections/:secKey/move-down', requirePermission('SETTINGS', 'EDIT'), adminController.moveAboutSectionDown);
+router.post('/about-cms/section-titles', requirePermission('SETTINGS', 'EDIT'), adminController.updateAboutSectionTitles);
 router.post('/about-cms/hero', requirePermission('SETTINGS', 'EDIT'), adminController.updateAboutHero);
 router.post('/about-cms/purpose', requirePermission('SETTINGS', 'EDIT'), adminController.updateAboutPurpose);
 router.post('/about-cms/onboarding', requirePermission('SETTINGS', 'EDIT'), adminController.updateAboutOnboarding);
@@ -227,6 +228,14 @@ router.post('/about-cms/milestones/:id/update', requirePermission('SETTINGS', 'E
 router.post('/about-cms/milestones/:id/delete', requirePermission('SETTINGS', 'EDIT'), adminController.deleteAboutMilestone);
 router.post('/about-cms/milestones/:id/move-up', requirePermission('SETTINGS', 'EDIT'), adminController.moveAboutMilestoneUp);
 router.post('/about-cms/milestones/:id/move-down', requirePermission('SETTINGS', 'EDIT'), adminController.moveAboutMilestoneDown);
+
+// ==========================================
+// SUBJECT INTERACTIVE HUB GRID CMS
+// ==========================================
+router.get('/subject-hub-grid', requirePermission('SETTINGS', 'VIEW'), adminController.subjectHubGridIndex);
+router.post('/subject-hub-grid/:id/update', requirePermission('SETTINGS', 'EDIT'), adminController.updateSubjectHubBlock);
+router.post('/subject-hub-grid/:id/move-up', requirePermission('SETTINGS', 'EDIT'), adminController.moveSubjectHubBlockUp);
+router.post('/subject-hub-grid/:id/move-down', requirePermission('SETTINGS', 'EDIT'), adminController.moveSubjectHubBlockDown);
 
 module.exports = router;
 

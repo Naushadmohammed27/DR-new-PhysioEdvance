@@ -1,7 +1,7 @@
 const Course = require('../models/Course');
 const User = require('../models/User');
 const db = require('../db/connection');
-const { Notes, Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection, AboutSettings } = require('../models/Content');
+const { Notes, Team, Blog, LiveSessions, HeroFeature, ClinicalSpecialty, SiteSettings, CurriculumYearCard, LearningJourneyCard, HomepageSection, AboutSettings, SubjectHubSettings } = require('../models/Content');
 const PermissionService = require('../services/permissionService');
 
 exports.dashboard = async (req, res) => {
@@ -2279,6 +2279,7 @@ exports.deleteLiveDiscussion = async (req, res) => {
 exports.aboutCmsIndex = async (req, res) => {
   try {
     const sectionsOrder = await AboutSettings.getSectionsOrder();
+    const sectionTitles = await AboutSettings.getSectionTitles();
     const aboutHero = await AboutSettings.getHero();
     const aboutPurpose = await AboutSettings.getPurpose();
     const aboutOnboarding = await AboutSettings.getOnboarding();
@@ -2288,6 +2289,7 @@ exports.aboutCmsIndex = async (req, res) => {
       title: 'About Us Page CMS',
       layout: 'layouts/admin',
       sectionsOrder,
+      sectionTitles,
       aboutHero,
       aboutPurpose,
       aboutOnboarding,
@@ -2299,6 +2301,17 @@ exports.aboutCmsIndex = async (req, res) => {
     req.flash('error', `Failed to load About CMS: ${err.message}`);
     res.redirect('/admin/dashboard');
   }
+};
+
+exports.updateAboutSectionTitles = async (req, res) => {
+  try {
+    await AboutSettings.updateSectionTitles(req.body);
+    req.flash('success', 'About section names updated successfully.');
+  } catch (err) {
+    console.error('Error updating section names:', err);
+    req.flash('error', `Failed to update section names: ${err.message}`);
+  }
+  res.redirect('/admin/about-cms?tab=order');
 };
 
 exports.moveAboutSectionUp = async (req, res) => {
@@ -2417,5 +2430,55 @@ exports.moveAboutMilestoneDown = async (req, res) => {
     req.flash('error', `Failed to move milestone: ${err.message}`);
   }
   res.redirect('/admin/about-cms?tab=milestones');
+};
+
+exports.subjectHubGridIndex = async (req, res) => {
+  try {
+    const blocks = await SubjectHubSettings.all();
+    res.render('admin/subject-hub-grid', {
+      title: 'Subject Interactive Grid Layout',
+      layout: 'layouts/admin',
+      blocks,
+      currentPath: '/admin/subject-hub-grid'
+    });
+  } catch (err) {
+    console.error('Error loading Subject Hub Grid CMS:', err);
+    req.flash('error', `Failed to load Subject Hub Grid: ${err.message}`);
+    res.redirect('/admin/dashboard');
+  }
+};
+
+exports.updateSubjectHubBlock = async (req, res) => {
+  try {
+    const { title, icon, col_type, display_order, is_active } = req.body;
+    await SubjectHubSettings.updateBlock(req.params.id, { title, icon, col_type, display_order, is_active });
+    req.flash('success', 'Subject Hub Grid module updated successfully.');
+  } catch (err) {
+    console.error('Error updating Subject Hub block:', err);
+    req.flash('error', `Failed to update block: ${err.message}`);
+  }
+  res.redirect('/admin/subject-hub-grid');
+};
+
+exports.moveSubjectHubBlockUp = async (req, res) => {
+  try {
+    await SubjectHubSettings.moveUp(req.params.id);
+    req.flash('success', 'Module moved up.');
+  } catch (err) {
+    console.error('Error moving block up:', err);
+    req.flash('error', `Failed to move module: ${err.message}`);
+  }
+  res.redirect('/admin/subject-hub-grid');
+};
+
+exports.moveSubjectHubBlockDown = async (req, res) => {
+  try {
+    await SubjectHubSettings.moveDown(req.params.id);
+    req.flash('success', 'Module moved down.');
+  } catch (err) {
+    console.error('Error moving block down:', err);
+    req.flash('error', `Failed to move module: ${err.message}`);
+  }
+  res.redirect('/admin/subject-hub-grid');
 };
 
