@@ -47,16 +47,227 @@ const Notes = {
 
 // ============ TEAM MEMBERS ============
 const Team = {
+  async ensureSeededTeamData() {
+    try {
+      await db.prepare(`
+        CREATE TABLE IF NOT EXISTS team_members (
+          id SERIAL PRIMARY KEY,
+          name TEXT NOT NULL,
+          role TEXT NOT NULL,
+          designation TEXT,
+          qualification TEXT,
+          photo TEXT,
+          bio TEXT,
+          group_name TEXT DEFAULT 'founding',
+          display_order INTEGER DEFAULT 1,
+          is_active INTEGER DEFAULT 1,
+          show_on_about INTEGER DEFAULT 0,
+          statement TEXT
+        )
+      `).run();
+
+      const defaults = [
+        {
+          name: 'Dr. Heena Nawaz',
+          role: 'Founder',
+          designation: 'Founder & Director',
+          qualification: 'BPT, MPT',
+          photo: '/images/team/founder-1.png',
+          bio: 'Founder of PhysioEdvance. "Help students to help themselves."',
+          group_name: 'founding',
+          display_order: 1,
+          show_on_about: 1,
+          statement: 'PhysioEdvance was born out of a genuine need to simplify physiotherapy education. Our mission, "Help students to help themselves," guides every single note, video, and resource we create. We aim to empower BPT students across India to learn independently, build strong clinical foundations, and excel in their exams and practice.'
+        },
+        {
+          name: 'Zainuddeen Nawaz',
+          role: 'Co-Founder',
+          designation: 'Co-Founder & Business Lead',
+          qualification: 'Founding Member',
+          photo: '/images/team/founder-2.png',
+          bio: 'Co-founder, leading legal and business strategy for PhysioEdvance.',
+          group_name: 'founding',
+          display_order: 2,
+          show_on_about: 1,
+          statement: 'Building PhysioEdvance means creating a sustainable, compliant, and accessible digital home for physiotherapy learning. We are committed to maintaining the highest standards of academic integrity, technology, and user privacy for our growing student community.'
+        },
+        {
+          name: 'Dr. Neha Samapriya',
+          role: 'Founding Member',
+          designation: 'Founding Member & Lead Advisor',
+          qualification: 'BPT, MPT',
+          photo: '/images/team/founder-3.png',
+          bio: 'Founding member overseeing academic and advisory quality.',
+          group_name: 'founding',
+          display_order: 3,
+          show_on_about: 1,
+          statement: 'Quality physiotherapy education requires bridging classroom theory with real-world clinical application. At PhysioEdvance, we curate evidence-informed content designed to clarify complex medical concepts and build true clinical confidence.'
+        },
+        {
+          name: 'Dr. Priya Sharma',
+          role: 'Clinical Advisor',
+          designation: 'Senior Clinical Advisor & Core Faculty',
+          qualification: 'BPT, MPT (Ortho)',
+          photo: '/images/team/team-4.png',
+          bio: 'Senior clinical advisor specializing in musculoskeletal physiotherapy and rehabilitation.',
+          group_name: 'core_members',
+          display_order: 1,
+          show_on_about: 0,
+          statement: ''
+        },
+        {
+          name: 'Dr. Aisha Khan',
+          role: 'Academic Lead',
+          designation: 'Academic Content Lead',
+          qualification: 'BPT, MPT (Neuro)',
+          photo: '/images/team/team-5.png',
+          bio: 'Academic content lead for neurology and pediatric physiotherapy modules.',
+          group_name: 'core_members',
+          display_order: 2,
+          show_on_about: 0,
+          statement: ''
+        },
+        {
+          name: 'Dr. Rajesh Kumar',
+          role: 'Medical Advisor',
+          designation: 'Senior Medical Advisor & Core Faculty',
+          qualification: 'MBBS, MD',
+          photo: '/images/team/team-6.png',
+          bio: 'Senior medical advisor overseeing clinical accuracy across all course content.',
+          group_name: 'core_members',
+          display_order: 3,
+          show_on_about: 0,
+          statement: ''
+        },
+        {
+          name: 'Dr. Arjun Mehta',
+          role: 'Sports Physio Expert',
+          designation: 'Sports Physiotherapy Expert',
+          qualification: 'BPT, MSc Sports Medicine',
+          photo: '/images/team/team-7.png',
+          bio: 'Sports physiotherapy expert with extensive experience in athlete rehabilitation.',
+          group_name: 'core_members',
+          display_order: 4,
+          show_on_about: 0,
+          statement: ''
+        },
+        {
+          name: 'Dr. Manu Krishna',
+          role: 'Advisory Board',
+          designation: 'Physiotherapy Advisor',
+          qualification: 'BPT, MPT',
+          photo: '/images/team/manu-krishna.jpg',
+          bio: '',
+          group_name: 'expert_advisors',
+          display_order: 1,
+          show_on_about: 0,
+          statement: ''
+        },
+        {
+          name: 'Dr. Prameela',
+          role: 'Advisory Board',
+          designation: 'Physiotherapy Advisor',
+          qualification: 'BPT, MPT',
+          photo: '/images/team/prameela.jpg',
+          bio: '',
+          group_name: 'expert_advisors',
+          display_order: 2,
+          show_on_about: 0,
+          statement: ''
+        },
+        {
+          name: 'Dr. Sneha',
+          role: 'Advisory Board',
+          designation: 'Physiotherapy Advisor',
+          qualification: 'BPT, MPT',
+          photo: '/images/team/sneha.jpg',
+          bio: '',
+          group_name: 'expert_advisors',
+          display_order: 3,
+          show_on_about: 0,
+          statement: ''
+        },
+        {
+          name: 'Priya',
+          role: 'Advisory Board',
+          designation: 'Physiotherapy Advisor',
+          qualification: '',
+          photo: '/images/team/priya.jpg',
+          bio: '',
+          group_name: 'expert_advisors',
+          display_order: 4,
+          show_on_about: 0,
+          statement: ''
+        },
+        {
+          name: 'Dr. Aafiya',
+          role: 'Advisory Board',
+          designation: 'Physiotherapy Advisor',
+          qualification: 'BPT, MPT',
+          photo: '/images/team/aafiya.jpg',
+          bio: '',
+          group_name: 'expert_advisors',
+          display_order: 5,
+          show_on_about: 0,
+          statement: ''
+        },
+        {
+          name: 'Abdullah A Shaikh',
+          role: 'Legal & Business Advisory',
+          designation: 'Legal & Business Advisor',
+          qualification: '',
+          photo: '/images/team/abdullah-shaikh.jpg',
+          bio: '',
+          group_name: 'expert_advisors',
+          display_order: 6,
+          show_on_about: 0,
+          statement: ''
+        }
+      ];
+
+      for (const m of defaults) {
+        const existing = await db.prepare(`SELECT * FROM team_members WHERE name LIKE ?`).get(`%${m.name.split(' ')[1] || m.name}%`);
+        if (!existing) {
+          await db.prepare(`
+            INSERT INTO team_members (name, role, designation, qualification, photo, bio, group_name, display_order, show_on_about, statement, is_active)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+          `).run(m.name, m.role, m.designation, m.qualification, m.photo, m.bio, m.group_name, m.display_order, m.show_on_about, m.statement);
+        } else {
+          if (m.show_on_about === 1) {
+            const currentStmt = existing.statement || '';
+            const needsUpdateStmt = !currentStmt || currentStmt.includes('Testing') || currentStmt.trim().length < 15;
+            await db.prepare(`
+              UPDATE team_members
+              SET show_on_about = 1,
+                  statement = CASE WHEN ? THEN ? ELSE statement END,
+                  designation = COALESCE(NULLIF(designation, ''), ?),
+                  group_name = CASE WHEN group_name = 'advisory' AND ? = 'founding' THEN 'founding' ELSE group_name END
+              WHERE id = ?
+            `).run(needsUpdateStmt ? 1 : 0, m.statement, m.designation, m.group_name, existing.id);
+          }
+          if (['Dr. Priya Sharma', 'Dr. Aisha Khan', 'Dr. Rajesh Kumar', 'Dr. Arjun Mehta'].includes(m.name)) {
+            await db.prepare(`UPDATE team_members SET group_name = 'core_members' WHERE id = ? AND group_name = 'advisory'`).run(existing.id);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error in ensureSeededTeamData:', e);
+    }
+  },
   async byGroup(group) {
+    await this.ensureSeededTeamData();
     return db.prepare(`SELECT * FROM team_members WHERE group_name = ? AND is_active = 1 ORDER BY display_order, id`).all(group);
   },
   async featuredHomepage() {
+    await this.ensureSeededTeamData();
     return db.prepare(`SELECT * FROM team_members WHERE is_active = 1 ORDER BY display_order ASC, id ASC LIMIT 4`).all();
   },
   async aboutStatements() {
+    await this.ensureSeededTeamData();
     return db.prepare(`SELECT * FROM team_members WHERE show_on_about = 1 AND is_active = 1 ORDER BY display_order, id`).all();
   },
   async all() {
+    await this.ensureSeededTeamData();
     return db.prepare(`SELECT * FROM team_members ORDER BY display_order ASC, id ASC`).all();
   },
   async findById(id) {

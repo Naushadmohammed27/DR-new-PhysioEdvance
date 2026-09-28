@@ -456,18 +456,23 @@ exports.about = async (req, res) => {
 };
 
 exports.theTeam = async (req, res) => {
-  const theFaceRaw = await db.prepare(`SELECT * FROM team_members WHERE (group_name IN ('the_face', 'founding') OR show_on_about = 1) AND is_active = 1 ORDER BY display_order ASC, id ASC`).all();
-  const coreMembersRaw = await db.prepare(`SELECT * FROM team_members WHERE group_name IN ('core_members', 'teaching_staff', 'teaching', 'non_teaching_staff') AND is_active = 1 ORDER BY display_order ASC, id ASC`).all();
-  const expertAdvisorsRaw = await db.prepare(`SELECT * FROM team_members WHERE group_name IN ('expert_advisors', 'subject_experts', 'advisory', 'technical_assistance', 'legal_business', 'other_staff') AND is_active = 1 ORDER BY display_order ASC, id ASC`).all();
+  const { Team } = require('../models/Content');
+  await Team.ensureSeededTeamData();
 
-  const foundingFallback = await Team.byGroup('founding');
-  const advisoryFallback = await Team.byGroup('advisory');
-  const legalFallback = await Team.byGroup('legal_business');
-  const teachingFallback = await db.prepare(`SELECT * FROM team_members WHERE (group_name = 'teaching_staff' OR group_name = 'teaching') AND is_active = 1 ORDER BY display_order, id`).all();
+  let theFaceRaw = await db.prepare(`SELECT * FROM team_members WHERE (group_name IN ('the_face', 'founding') OR show_on_about = 1) AND is_active = 1 ORDER BY display_order ASC, id ASC`).all();
+  let coreMembersRaw = await db.prepare(`SELECT * FROM team_members WHERE group_name IN ('core_members', 'teaching_staff', 'teaching', 'non_teaching_staff') AND is_active = 1 ORDER BY display_order ASC, id ASC`).all();
+  let expertAdvisorsRaw = await db.prepare(`SELECT * FROM team_members WHERE group_name IN ('expert_advisors', 'subject_experts', 'advisory', 'technical_assistance', 'legal_business', 'other_staff') AND is_active = 1 ORDER BY display_order ASC, id ASC`).all();
 
-  const theFace = (theFaceRaw && theFaceRaw.length > 0) ? theFaceRaw : (foundingFallback || []);
-  const expertAdvisors = (expertAdvisorsRaw && expertAdvisorsRaw.length > 0) ? expertAdvisorsRaw : [...(advisoryFallback || []), ...(legalFallback || [])];
-  const coreMembers = (coreMembersRaw && coreMembersRaw.length > 0) ? coreMembersRaw : (teachingFallback || []);
+  const theFace = (theFaceRaw && theFaceRaw.length > 0) ? theFaceRaw : await Team.byGroup('founding');
+  let coreMembers = (coreMembersRaw && coreMembersRaw.length > 0) ? coreMembersRaw : await Team.byGroup('core_members');
+  let expertAdvisors = (expertAdvisorsRaw && expertAdvisorsRaw.length > 0) ? expertAdvisorsRaw : await Team.byGroup('expert_advisors');
+
+  if (!coreMembers || coreMembers.length === 0) {
+    if (expertAdvisors && expertAdvisors.length > 2) {
+      coreMembers = expertAdvisors.slice(0, 4);
+      expertAdvisors = expertAdvisors.slice(4);
+    }
+  }
 
   res.render('public/the-team', {
     title: 'Team',

@@ -169,30 +169,38 @@ console.log('  ✓ Users seeded:', Object.keys(userIds).length);
 // TEAM MEMBERS (sourced from the proposal whiteboard's "CORE TEAM" section)
 // ===========================================================
 const insertTeam = db.prepare(`
-  INSERT INTO team_members (name, role, designation, qualification, photo, bio, group_name, display_order)
-  VALUES (@name, @role, @designation, @qualification, @photo, @bio, @group_name, @display_order)
+  INSERT INTO team_members (name, role, designation, qualification, photo, bio, group_name, display_order, show_on_about, statement)
+  VALUES (@name, @role, @designation, @qualification, @photo, @bio, @group_name, @display_order, @show_on_about, @statement)
 `);
 
 const teamMembers = [
-  { name: 'Dr. Heena Nawaz', role: 'Founder', designation: 'Founder & Director', qualification: 'BPT, MPT', photo: '/images/team/founder-1.png', bio: 'Founder of PhysioEdvance. "Help students to help themselves."', group_name: 'founding', display_order: 1 },
-  { name: 'Zainuddeen Nawaz', role: 'Founding Member', designation: 'Co-Founder', qualification: '', photo: '/images/team/founder-2.png', bio: 'Co-founder, leading legal and business strategy for PhysioEdvance.', group_name: 'founding', display_order: 2 },
-  { name: 'Dr. Neha Samapriya', role: 'Founding Member', designation: 'Founding Member & Lead Advisor', qualification: 'BPT, MPT', photo: '/images/team/founder-3.png', bio: 'Founding member overseeing academic and advisory quality.', group_name: 'founding', display_order: 3 },
-  { name: 'Dr. Priya Sharma', role: 'Clinical Advisor', designation: 'Senior Clinical Advisor', qualification: 'BPT, MPT (Ortho)', photo: '/images/team/team-4.png', bio: 'Senior clinical advisor specializing in musculoskeletal physiotherapy and rehabilitation.', group_name: 'advisory', display_order: 1 },
-  { name: 'Dr. Aisha Khan', role: 'Academic Lead', designation: 'Academic Content Lead', qualification: 'BPT, MPT (Neuro)', photo: '/images/team/team-5.png', bio: 'Academic content lead for neurology and pediatric physiotherapy modules.', group_name: 'advisory', display_order: 2 },
-  { name: 'Dr. Rajesh Kumar', role: 'Medical Advisor', designation: 'Senior Medical Advisor', qualification: 'MBBS, MD', photo: '/images/team/team-6.png', bio: 'Senior medical advisor overseeing clinical accuracy across all course content.', group_name: 'advisory', display_order: 3 },
-  { name: 'Dr. Arjun Mehta', role: 'Sports Physio Expert', designation: 'Sports Physiotherapy Expert', qualification: 'BPT, MSc Sports Medicine', photo: '/images/team/team-7.png', bio: 'Sports physiotherapy expert with extensive experience in athlete rehabilitation.', group_name: 'advisory', display_order: 4 },
+  { 
+    name: 'Dr. Heena Nawaz', role: 'Founder', designation: 'Founder & Director', qualification: 'BPT, MPT', photo: '/images/team/founder-1.png', bio: 'Founder of PhysioEdvance. "Help students to help themselves."', group_name: 'founding', display_order: 1, show_on_about: 1, 
+    statement: 'PhysioEdvance was born out of a genuine need to simplify physiotherapy education. Our mission, "Help students to help themselves," guides every single note, video, and resource we create. We aim to empower BPT students across India to learn independently, build strong clinical foundations, and excel in their exams and practice.' 
+  },
+  { 
+    name: 'Zainuddeen Nawaz', role: 'Founding Member', designation: 'Co-Founder & Business Lead', qualification: 'Founding Member', photo: '/images/team/founder-2.png', bio: 'Co-founder, leading legal and business strategy for PhysioEdvance.', group_name: 'founding', display_order: 2, show_on_about: 1, 
+    statement: 'Building PhysioEdvance means creating a sustainable, compliant, and accessible digital home for physiotherapy learning. We are committed to maintaining the highest standards of academic integrity, technology, and user privacy for our growing student community.' 
+  },
+  { 
+    name: 'Dr. Neha Samapriya', role: 'Founding Member', designation: 'Founding Member & Lead Advisor', qualification: 'BPT, MPT', photo: '/images/team/founder-3.png', bio: 'Founding member overseeing academic and advisory quality.', group_name: 'founding', display_order: 3, show_on_about: 1, 
+    statement: 'Quality physiotherapy education requires bridging classroom theory with real-world clinical application. At PhysioEdvance, we curate evidence-informed content designed to clarify complex medical concepts and build true clinical confidence.' 
+  },
 
-  { name: 'Dr. Neha Samapriya', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: 'BPT, MPT', photo: '/images/team/founder-3.png', bio: '', group_name: 'advisory', display_order: 1 },
-  { name: 'Dr. Manu Krishna', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: 'BPT, MPT', photo: '/images/team/manu-krishna.jpg', bio: '', group_name: 'advisory', display_order: 2 },
-  { name: 'Dr. Prameela', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: 'BPT, MPT', photo: '/images/team/prameela.jpg', bio: '', group_name: 'advisory', display_order: 3 },
-  { name: 'Dr. Sneha', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: 'BPT, MPT', photo: '/images/team/sneha.jpg', bio: '', group_name: 'advisory', display_order: 4 },
-  { name: 'Priya', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: '', photo: '/images/team/priya.jpg', bio: '', group_name: 'advisory', display_order: 5 },
-  { name: 'Dr. Aafiya', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: 'BPT, MPT', photo: '/images/team/aafiya.jpg', bio: '', group_name: 'advisory', display_order: 6 },
+  { name: 'Dr. Priya Sharma', role: 'Clinical Advisor', designation: 'Senior Clinical Advisor & Core Faculty', qualification: 'BPT, MPT (Ortho)', photo: '/images/team/team-4.png', bio: 'Senior clinical advisor specializing in musculoskeletal physiotherapy and rehabilitation.', group_name: 'core_members', display_order: 1, show_on_about: 0, statement: '' },
+  { name: 'Dr. Aisha Khan', role: 'Academic Lead', designation: 'Academic Content Lead', qualification: 'BPT, MPT (Neuro)', photo: '/images/team/team-5.png', bio: 'Academic content lead for neurology and pediatric physiotherapy modules.', group_name: 'core_members', display_order: 2, show_on_about: 0, statement: '' },
+  { name: 'Dr. Rajesh Kumar', role: 'Medical Advisor', designation: 'Senior Medical Advisor & Core Faculty', qualification: 'MBBS, MD', photo: '/images/team/team-6.png', bio: 'Senior medical advisor overseeing clinical accuracy across all course content.', group_name: 'core_members', display_order: 3, show_on_about: 0, statement: '' },
+  { name: 'Dr. Arjun Mehta', role: 'Sports Physio Expert', designation: 'Sports Physiotherapy Expert', qualification: 'BPT, MSc Sports Medicine', photo: '/images/team/team-7.png', bio: 'Sports physiotherapy expert with extensive experience in athlete rehabilitation.', group_name: 'core_members', display_order: 4, show_on_about: 0, statement: '' },
 
-  { name: 'Zainuddeen Nawaz', role: 'Legal & Business Advisory', designation: 'Legal & Business Advisor', qualification: '', photo: '/images/team/founder-2.png', bio: '', group_name: 'legal_business', display_order: 1 },
-  { name: 'Abdullah A Shaikh', role: 'Legal & Business Advisory', designation: 'Legal & Business Advisor', qualification: '', photo: '/images/team/abdullah-shaikh.jpg', bio: '', group_name: 'legal_business', display_order: 2 },
-  { name: 'Mr. Imran Shaikh', role: 'Senior Legal Advisor', designation: 'Senior Legal Advisor', qualification: 'LLB, MBA', photo: '/images/team/legal-1.png', bio: 'Senior legal advisor handling academic partnerships and institutional compliance.', group_name: 'legal_business', display_order: 3 },
-  { name: 'Ms. Priya Verma', role: 'Business Strategy Lead', designation: 'Business Strategy Lead', qualification: 'MBA (Finance)', photo: '/images/team/legal-2.png', bio: 'Business strategy lead overseeing operations, partnerships, and growth.', group_name: 'legal_business', display_order: 4 }
+  { name: 'Dr. Manu Krishna', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: 'BPT, MPT', photo: '/images/team/manu-krishna.jpg', bio: '', group_name: 'expert_advisors', display_order: 1, show_on_about: 0, statement: '' },
+  { name: 'Dr. Prameela', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: 'BPT, MPT', photo: '/images/team/prameela.jpg', bio: '', group_name: 'expert_advisors', display_order: 2, show_on_about: 0, statement: '' },
+  { name: 'Dr. Sneha', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: 'BPT, MPT', photo: '/images/team/sneha.jpg', bio: '', group_name: 'expert_advisors', display_order: 3, show_on_about: 0, statement: '' },
+  { name: 'Priya', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: '', photo: '/images/team/priya.jpg', bio: '', group_name: 'expert_advisors', display_order: 4, show_on_about: 0, statement: '' },
+  { name: 'Dr. Aafiya', role: 'Advisory Board', designation: 'Physiotherapy Advisor', qualification: 'BPT, MPT', photo: '/images/team/aafiya.jpg', bio: '', group_name: 'expert_advisors', display_order: 5, show_on_about: 0, statement: '' },
+
+  { name: 'Abdullah A Shaikh', role: 'Legal & Business Advisory', designation: 'Legal & Business Advisor', qualification: '', photo: '/images/team/abdullah-shaikh.jpg', bio: '', group_name: 'expert_advisors', display_order: 6, show_on_about: 0, statement: '' },
+  { name: 'Mr. Imran Shaikh', role: 'Senior Legal Advisor', designation: 'Senior Legal Advisor', qualification: 'LLB, MBA', photo: '/images/team/legal-1.png', bio: 'Senior legal advisor handling academic partnerships and institutional compliance.', group_name: 'expert_advisors', display_order: 7, show_on_about: 0, statement: '' },
+  { name: 'Ms. Priya Verma', role: 'Business Strategy Lead', designation: 'Business Strategy Lead', qualification: 'MBA (Finance)', photo: '/images/team/legal-2.png', bio: 'Business strategy lead overseeing operations, partnerships, and growth.', group_name: 'expert_advisors', display_order: 8, show_on_about: 0, statement: '' }
 ];
 
 for (const m of teamMembers) await insertTeam.run(m);
