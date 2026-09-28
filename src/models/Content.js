@@ -233,17 +233,15 @@ const Team = {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
           `).run(m.name, m.role, m.designation, m.qualification, m.photo, m.bio, m.group_name, m.display_order, m.show_on_about, m.statement);
         } else {
-          if (m.show_on_about === 1) {
-            const currentStmt = existing.statement || '';
-            const needsUpdateStmt = !currentStmt || currentStmt.includes('Testing') || currentStmt.trim().length < 15;
+          const currentStmt = existing.statement || '';
+          const needsUpdateStmt = !currentStmt || currentStmt.includes('Testing') || currentStmt.trim().length < 15;
+          if (needsUpdateStmt && m.statement) {
             await db.prepare(`
               UPDATE team_members
-              SET show_on_about = 1,
-                  statement = CASE WHEN ? THEN ? ELSE statement END,
-                  designation = COALESCE(NULLIF(designation, ''), ?),
-                  group_name = CASE WHEN group_name = 'advisory' AND ? = 'founding' THEN 'founding' ELSE group_name END
+              SET statement = ?,
+                  designation = COALESCE(NULLIF(designation, ''), ?)
               WHERE id = ?
-            `).run(needsUpdateStmt ? 1 : 0, m.statement, m.designation, m.group_name, existing.id);
+            `).run(m.statement, m.designation, existing.id);
           }
           if (['Dr. Priya Sharma', 'Dr. Aisha Khan', 'Dr. Rajesh Kumar', 'Dr. Arjun Mehta'].includes(m.name)) {
             await db.prepare(`UPDATE team_members SET group_name = 'core_members' WHERE id = ? AND group_name = 'advisory'`).run(existing.id);
