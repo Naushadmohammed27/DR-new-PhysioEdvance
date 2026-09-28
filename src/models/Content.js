@@ -667,6 +667,9 @@ const SiteSettings = {
   },
   async getTeamGroupStatuses() {
     return {
+      the_face: await this.isGroupEnabled('the_face', 1),
+      core_members: await this.isGroupEnabled('core_members', 1),
+      expert_advisors: await this.isGroupEnabled('expert_advisors', 1),
       teaching_staff: await this.isGroupEnabled('teaching_staff', 1),
       non_teaching_staff: await this.isGroupEnabled('non_teaching_staff', 1),
       subject_experts: await this.isGroupEnabled('subject_experts', 1),
@@ -675,9 +678,11 @@ const SiteSettings = {
     };
   },
   async updateTeamGroupStatuses(statuses) {
-    const groups = ['teaching_staff', 'non_teaching_staff', 'subject_experts', 'technical_assistance', 'other_staff'];
+    const groups = ['the_face', 'core_members', 'expert_advisors', 'teaching_staff', 'non_teaching_staff', 'subject_experts', 'technical_assistance', 'other_staff'];
     for (const g of groups) {
-      await this.setGroupEnabled(g, !!statuses[g]);
+      if (statuses && statuses[g] !== undefined) {
+        await this.setGroupEnabled(g, !!statuses[g]);
+      }
     }
   },
   async getHeroSettings() {

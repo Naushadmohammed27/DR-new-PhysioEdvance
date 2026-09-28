@@ -622,11 +622,14 @@ exports.newTeamMember = async (req, res) => {
 
 exports.toggleTeamGroups = async (req, res) => {
   await SiteSettings.updateTeamGroupStatuses({
-    teaching_staff: req.body.teaching_staff === '1',
-    non_teaching_staff: req.body.non_teaching_staff === '1',
-    subject_experts: req.body.subject_experts === '1',
-    technical_assistance: req.body.technical_assistance === '1',
-    other_staff: req.body.other_staff === '1'
+    the_face: req.body.the_face === '1' || req.body.the_face === 'on',
+    core_members: req.body.core_members === '1' || req.body.core_members === 'on',
+    expert_advisors: req.body.expert_advisors === '1' || req.body.expert_advisors === 'on',
+    teaching_staff: req.body.teaching_staff === '1' || req.body.teaching_staff === 'on',
+    non_teaching_staff: req.body.non_teaching_staff === '1' || req.body.non_teaching_staff === 'on',
+    subject_experts: req.body.subject_experts === '1' || req.body.subject_experts === 'on',
+    technical_assistance: req.body.technical_assistance === '1' || req.body.technical_assistance === 'on',
+    other_staff: req.body.other_staff === '1' || req.body.other_staff === 'on'
   });
   req.flash('success', 'Staff group visibility updated.');
   res.redirect('/admin/team');
