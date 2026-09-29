@@ -1481,17 +1481,45 @@ const SubjectHubSettings = {
     await this.initTable();
     const existing = await this.findById(id);
     if (!existing) return;
-    const title = data.title !== undefined ? data.title.trim() : existing.title;
-    const icon = data.icon !== undefined ? data.icon.trim() : existing.icon;
+
+    const defaultSlotTitles = {
+      1: 'Region Maps',
+      2: 'Cross Sections',
+      3: 'Rotatable Physio Slab',
+      4: ':subject Syllabus',
+      5: 'Stroke and Pathology',
+      6: 'MRI',
+      7: 'Notes and Models',
+      8: 'HD Videos',
+      9: 'The Center Point'
+    };
+
+    const defaultSlotIcons = {
+      1: 'ri-brain-line',
+      2: 'ri-layout-grid-line',
+      3: 'ri-box-3-line',
+      4: 'ri-quill-pen-line',
+      5: 'ri-heart-pulse-line',
+      6: 'ri-pulse-line',
+      7: 'ri-file-text-line',
+      8: 'ri-vidicon-line',
+      9: 'ri-play-circle-fill'
+    };
+
     const targetPos = Math.max(1, Math.min(9, parseInt(data.display_position, 10) || existing.display_position || 1));
     const oldPos = existing.display_position || 1;
 
     if (targetPos !== oldPos) {
       const occupant = await db.prepare(`SELECT * FROM subject_hub_blocks WHERE display_position = ? AND id != ?`).get(targetPos, id);
       if (occupant) {
-        await db.prepare(`UPDATE subject_hub_blocks SET display_position = ?, display_order = ? WHERE id = ?`).run(oldPos, oldPos, occupant.id);
+        const occTitle = defaultSlotTitles[oldPos] || occupant.title;
+        const occIcon = defaultSlotIcons[oldPos] || occupant.icon;
+        await db.prepare(`UPDATE subject_hub_blocks SET display_position = ?, display_order = ?, title = ?, icon = ? WHERE id = ?`).run(oldPos, oldPos, occTitle, occIcon, occupant.id);
       }
     }
+
+    const title = data.title !== undefined && data.title.trim().length > 0 ? data.title.trim() : (defaultSlotTitles[targetPos] || existing.title);
+    const icon = data.icon !== undefined && data.icon.trim().length > 0 ? data.icon.trim() : (defaultSlotIcons[targetPos] || existing.icon);
 
     await db.prepare(`
       UPDATE subject_hub_blocks

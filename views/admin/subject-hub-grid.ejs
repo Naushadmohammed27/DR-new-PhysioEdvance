@@ -178,7 +178,7 @@
             <form action="/admin/subject-hub-grid/<%= blk.id %>/update" method="POST">
               <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
                 <div class="d-flex align-items-center gap-2">
-                  <span class="badge bg-warning text-dark font-weight-bold px-2.5 py-1.5 rounded-pill" style="font-size: 0.88rem;">
+                  <span class="badge bg-warning text-dark font-weight-bold px-2.5 py-1.5 rounded-pill pos-badge" style="font-size: 0.88rem;">
                     Position <%= pos %>
                   </span>
                   <span class="badge bg-primary-subtle text-primary font-weight-semibold rounded-pill px-2.5 py-1" style="font-size: 0.78rem;">
@@ -271,7 +271,11 @@
     const pos = selectEl.value;
     const titleInput = formEl.querySelector('input[name="title"]');
     const iconInput = formEl.querySelector('input[name="icon"]');
+    const posBadge = formEl.querySelector('.pos-badge');
 
+    if (posBadge) {
+      posBadge.textContent = 'Position ' + pos;
+    }
     if (defaultSlotTitles[pos] && titleInput) {
       titleInput.value = defaultSlotTitles[pos];
     }
