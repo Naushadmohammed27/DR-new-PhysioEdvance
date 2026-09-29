@@ -184,7 +184,7 @@
     </div>
 
     <div class="row g-3">
-      <% (blocks || []).sort((a,b) => Number(a.id || 1) - Number(b.id || 1)).forEach(blk => { 
+      <% (blocks || []).sort((a,b) => Number(a.display_position || 1) - Number(b.display_position || 1)).forEach(blk => { 
           const currentPos = Number(blk.display_position || blk.display_order || 1);
       %>
         <div class="col-md-6 col-lg-4" id="card-module-<%= blk.id %>" data-card-id="<%= blk.id %>">
