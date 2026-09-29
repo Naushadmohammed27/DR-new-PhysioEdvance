@@ -74,15 +74,15 @@
     });
 
     const slotNames = {
-      1: 'Position 1 — Left Column (Top)',
-      2: 'Position 2 — Left Column (Middle)',
-      3: 'Position 3 — Left Column (Bottom)',
-      4: 'Position 4 — Bottom Row (Left)',
-      5: 'Position 5 — Bottom Row (Right)',
-      6: 'Position 6 — Right Column (Bottom)',
-      7: 'Position 7 — Right Column (Middle)',
-      8: 'Position 8 — Right Column (Top)',
-      9: 'Position 9 — Center (Main Video & 3D Player)'
+      1: 'Region Maps',
+      2: 'Cross Sections',
+      3: 'Rotatable Physio Slab',
+      4: ':subject Syllabus',
+      5: 'Stroke & Pathology',
+      6: 'MRI',
+      7: 'Notes & Models',
+      8: 'HD Videos',
+      9: 'The Center Point'
     };
   %>
 
@@ -187,7 +187,7 @@
                 </div>
               </div>
 
-              <!-- Position Selector with Dynamic Swap Hints -->
+              <!-- Position Selector -->
               <div class="mb-3">
                 <label class="form-label text-dark small fw-bold mb-1">
                   <i class="ri-map-pin-line text-primary me-1"></i> Grid Slot Location (1 to 9)
@@ -195,16 +195,10 @@
                 <select name="display_position" class="form-select form-select-lg rounded-3 font-weight-bold text-primary border-primary border-opacity-50 shadow-sm" style="font-size:0.95rem;" onchange="onPositionSelectChange(this, this.form)">
                   <% for (let i = 1; i <= 9; i++) { 
                        const occupant = blockMap[i];
-                       const isCurrent = (pos === i);
-                       let optionText = slotNames[i];
-                       if (isCurrent) {
-                         optionText += '  ✓ (Current Slot)';
-                       } else if (occupant) {
-                         optionText += `  ↔ [Swaps with: "${occupant.title}"]`;
-                       }
+                       const currentTitle = occupant ? occupant.title : slotNames[i];
                   %>
                     <option value="<%= i %>" <%= pos === i ? 'selected' : '' %>>
-                      <%= optionText %>
+                      Position <%= i %> (<%= currentTitle %>)
                     </option>
                   <% } %>
                 </select>
