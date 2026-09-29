@@ -160,12 +160,26 @@
     </div>
   </div>
 
-  <!-- MODULE EDIT CARDS LIST WITH EASY POSITION NUMBER SELECTOR (1 to 9) -->
+  <%
+    const moduleList = [
+      { key: 'regions', title: 'Region Maps', icon: 'ri-brain-line' },
+      { key: 'cross_sections', title: 'Cross Sections', icon: 'ri-layout-grid-line' },
+      { key: 'three_d', title: 'Rotatable Physio Slab', icon: 'ri-box-3-line' },
+      { key: 'syllabus', title: ':subject Syllabus', icon: 'ri-quill-pen-line' },
+      { key: 'pathology', title: 'Stroke and Pathology', icon: 'ri-heart-pulse-line' },
+      { key: 'mri_scans', title: 'MRI', icon: 'ri-pulse-line' },
+      { key: 'notes_modules', title: 'Notes and Models', icon: 'ri-file-text-line' },
+      { key: 'hd_videos', title: 'HD Videos', icon: 'ri-vidicon-line' },
+      { key: 'center_player', title: 'The Center Point', icon: 'ri-play-circle-fill' }
+    ];
+  %>
+
+  <!-- MODULE EDIT CARDS LIST WITH EASY MODULE SELECTOR PER POSITION -->
   <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2 border-bottom pb-3">
       <div>
         <h4 class="fw-bold text-dark mb-1"><i class="ri-edit-2-line text-primary me-2"></i> Edit Module Titles & Grid Positions</h4>
-        <p class="text-muted small mb-0">Changing a module's Position Number moves it directly to that location on the subject page grid.</p>
+        <p class="text-muted small mb-0">Select which feature module sits in each Grid Position (1 to 9). Occupants automatically swap modules vice-versa.</p>
       </div>
     </div>
 
@@ -187,20 +201,20 @@
                 </div>
               </div>
 
-              <!-- Position Selector -->
+              <!-- Module Selector for this Position -->
               <div class="mb-3">
                 <label class="form-label text-dark small fw-bold mb-1">
-                  <i class="ri-map-pin-line text-primary me-1"></i> Grid Slot Location (1 to 9)
+                  <i class="ri-apps-line text-primary me-1"></i> Module Assigned to Position <%= pos %>
                 </label>
-                <select name="display_position" class="form-select form-select-lg rounded-3 font-weight-bold text-primary border-primary border-opacity-50 shadow-sm" style="font-size:0.95rem;" onchange="onPositionSelectChange(this, this.form)">
-                  <% for (let i = 1; i <= 9; i++) { 
-                       const occupant = blockMap[i];
-                       const currentTitle = occupant ? occupant.title : slotNames[i];
+                <select name="block_key" class="form-select form-select-lg rounded-3 font-weight-bold text-primary border-primary border-opacity-50 shadow-sm" style="font-size:0.95rem;" onchange="onModuleSelectChange(this, this.form)">
+                  <% moduleList.forEach(m => { 
+                       const currentHolder = (blocks || []).find(b => b.block_key === m.key);
+                       const posInfo = currentHolder ? ` (Currently Position ${currentHolder.display_position})` : '';
                   %>
-                    <option value="<%= i %>" <%= pos === i ? 'selected' : '' %>>
-                      Position <%= i %> (<%= currentTitle %>)
+                    <option value="<%= m.key %>" <%= blk.block_key === m.key ? 'selected' : '' %>>
+                      <%= m.title %><%= posInfo %>
                     </option>
-                  <% } %>
+                  <% }) %>
                 </select>
               </div>
 
@@ -230,7 +244,7 @@
                   <label class="form-check-label small fw-semibold text-muted">Active</label>
                 </div>
                 <button type="submit" class="btn btn-primary rounded-pill px-4 font-weight-bold shadow-sm">
-                  <i class="ri-save-line me-1"></i> Save Position
+                  <i class="ri-save-line me-1"></i> Save Position <%= pos %>
                 </button>
               </div>
             </form>
@@ -242,48 +256,32 @@
 </div>
 
 <script>
-  const defaultSlotTitles = {
-    1: 'Region Maps',
-    2: 'Cross Sections',
-    3: 'Rotatable Physio Slab',
-    4: ':subject Syllabus',
-    5: 'Stroke & Pathology',
-    6: 'MRI',
-    7: 'Notes & Models',
-    8: 'HD Videos',
-    9: 'The Center Point'
+  const moduleDefaults = {
+    regions: { title: 'Region Maps', icon: 'ri-brain-line' },
+    cross_sections: { title: 'Cross Sections', icon: 'ri-layout-grid-line' },
+    three_d: { title: 'Rotatable Physio Slab', icon: 'ri-box-3-line' },
+    syllabus: { title: ':subject Syllabus', icon: 'ri-quill-pen-line' },
+    pathology: { title: 'Stroke and Pathology', icon: 'ri-heart-pulse-line' },
+    mri_scans: { title: 'MRI', icon: 'ri-pulse-line' },
+    notes_modules: { title: 'Notes and Models', icon: 'ri-file-text-line' },
+    hd_videos: { title: 'HD Videos', icon: 'ri-vidicon-line' },
+    center_player: { title: 'The Center Point', icon: 'ri-play-circle-fill' }
   };
 
-  const defaultSlotIcons = {
-    1: 'ri-brain-line',
-    2: 'ri-layout-grid-line',
-    3: 'ri-box-3-line',
-    4: 'ri-quill-pen-line',
-    5: 'ri-heart-pulse-line',
-    6: 'ri-pulse-line',
-    7: 'ri-file-text-line',
-    8: 'ri-vidicon-line',
-    9: 'ri-play-circle-fill'
-  };
-
-  function onPositionSelectChange(selectEl, formEl) {
+  function onModuleSelectChange(selectEl, formEl) {
     if (!selectEl || !formEl) return;
-    const pos = selectEl.value;
+    const key = selectEl.value;
     const titleInput = formEl.querySelector('input[name="title"]');
     const iconInput = formEl.querySelector('input[name="icon"]');
-    const posBadge = formEl.querySelector('.pos-badge');
 
-    if (posBadge) {
-      posBadge.textContent = 'Position ' + pos;
-    }
-    if (defaultSlotTitles[pos] && titleInput) {
-      titleInput.value = defaultSlotTitles[pos];
-    }
-    if (defaultSlotIcons[pos] && iconInput) {
-      iconInput.value = defaultSlotIcons[pos];
-      const iconPreview = formEl.querySelector('.input-group-text i');
-      if (iconPreview) {
-        iconPreview.className = defaultSlotIcons[pos] + ' text-primary';
+    if (moduleDefaults[key]) {
+      if (titleInput) titleInput.value = moduleDefaults[key].title;
+      if (iconInput) {
+        iconInput.value = moduleDefaults[key].icon;
+        const iconPreview = formEl.querySelector('.input-group-text i');
+        if (iconPreview) {
+          iconPreview.className = moduleDefaults[key].icon + ' text-primary';
+        }
       }
     }
   }

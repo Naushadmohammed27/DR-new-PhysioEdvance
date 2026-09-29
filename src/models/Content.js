@@ -1482,50 +1482,60 @@ const SubjectHubSettings = {
     const existing = await this.findById(id);
     if (!existing) return;
 
-    const defaultSlotTitles = {
-      1: 'Region Maps',
-      2: 'Cross Sections',
-      3: 'Rotatable Physio Slab',
-      4: ':subject Syllabus',
-      5: 'Stroke and Pathology',
-      6: 'MRI',
-      7: 'Notes and Models',
-      8: 'HD Videos',
-      9: 'The Center Point'
+    const moduleDefs = {
+      regions: { title: 'Region Maps', icon: 'ri-brain-line', url: '/subjects/:slug/module/regions', col_type: 'left' },
+      cross_sections: { title: 'Cross Sections', icon: 'ri-layout-grid-line', url: '/subjects/:slug/module/cross-sections', col_type: 'left' },
+      three_d: { title: 'Rotatable Physio Slab', icon: 'ri-box-3-line', url: '/subjects/:slug/module/interactive-modules', col_type: 'left' },
+      syllabus: { title: ':subject Syllabus', icon: 'ri-quill-pen-line', url: '/subjects/:slug/module/syllabus', col_type: 'bottom' },
+      pathology: { title: 'Stroke and Pathology', icon: 'ri-heart-pulse-line', url: '/subjects/:slug/module/cross-sections', col_type: 'bottom' },
+      mri_scans: { title: 'MRI', icon: 'ri-pulse-line', url: '/subjects/:slug/module/mri-scans', col_type: 'right' },
+      notes_modules: { title: 'Notes and Models', icon: 'ri-file-text-line', url: '/subjects/:slug/module/interactive-modules', col_type: 'right' },
+      hd_videos: { title: 'HD Videos', icon: 'ri-vidicon-line', url: '/subjects/:slug/module/hd-videos', col_type: 'right' },
+      center_player: { title: 'The Center Point', icon: 'ri-play-circle-fill', url: '/videos/stream/:slug-intro', col_type: 'center' }
     };
 
-    const defaultSlotIcons = {
-      1: 'ri-brain-line',
-      2: 'ri-layout-grid-line',
-      3: 'ri-box-3-line',
-      4: 'ri-quill-pen-line',
-      5: 'ri-heart-pulse-line',
-      6: 'ri-pulse-line',
-      7: 'ri-file-text-line',
-      8: 'ri-vidicon-line',
-      9: 'ri-play-circle-fill'
-    };
+    const targetModuleKey = data.block_key || existing.block_key;
+    const oldModuleKey = existing.block_key;
 
-    const targetPos = Math.max(1, Math.min(9, parseInt(data.display_position, 10) || existing.display_position || 1));
-    const oldPos = existing.display_position || 1;
+    if (targetModuleKey && targetModuleKey !== oldModuleKey && moduleDefs[targetModuleKey]) {
+      const otherCard = await db.prepare(`SELECT * FROM subject_hub_blocks WHERE block_key = ? AND id != ?`).get(targetModuleKey, id);
+      if (otherCard) {
+        const oldDef = moduleDefs[oldModuleKey] || moduleDefs['regions'];
+        const tempKey = 'temp_swap_' + otherCard.id;
+        
+        await db.prepare(`UPDATE subject_hub_blocks SET block_key = ? WHERE id = ?`).run(tempKey, otherCard.id);
+        
+        const newDef = moduleDefs[targetModuleKey] || moduleDefs['regions'];
+        const title = data.title !== undefined && data.title.trim().length > 0 ? data.title.trim() : newDef.title;
+        const icon = data.icon !== undefined && data.icon.trim().length > 0 ? data.icon.trim() : newDef.icon;
+        
+        await db.prepare(`
+          UPDATE subject_hub_blocks
+          SET block_key = ?, title = ?, icon = ?, url = ?, col_type = ?, is_active = ?
+          WHERE id = ?
+        `).run(targetModuleKey, title, icon, newDef.url, newDef.col_type, data.is_active === '0' || data.is_active === 0 ? 0 : 1, id);
 
-    if (targetPos !== oldPos) {
-      const occupant = await db.prepare(`SELECT * FROM subject_hub_blocks WHERE display_position = ? AND id != ?`).get(targetPos, id);
-      if (occupant) {
-        const occTitle = defaultSlotTitles[oldPos] || occupant.title;
-        const occIcon = defaultSlotIcons[oldPos] || occupant.icon;
-        await db.prepare(`UPDATE subject_hub_blocks SET display_position = ?, display_order = ?, title = ?, icon = ? WHERE id = ?`).run(oldPos, oldPos, occTitle, occIcon, occupant.id);
+        await db.prepare(`
+          UPDATE subject_hub_blocks
+          SET block_key = ?, title = ?, icon = ?, url = ?, col_type = ?
+          WHERE id = ?
+        `).run(oldModuleKey, oldDef.title, oldDef.icon, oldDef.url, oldDef.col_type, otherCard.id);
+
+        return;
       }
     }
 
-    const title = data.title !== undefined && data.title.trim().length > 0 ? data.title.trim() : (defaultSlotTitles[targetPos] || existing.title);
-    const icon = data.icon !== undefined && data.icon.trim().length > 0 ? data.icon.trim() : (defaultSlotIcons[targetPos] || existing.icon);
+    const newDef = moduleDefs[targetModuleKey] || moduleDefs['regions'];
+    const title = data.title !== undefined && data.title.trim().length > 0 ? data.title.trim() : newDef.title;
+    const icon = data.icon !== undefined && data.icon.trim().length > 0 ? data.icon.trim() : newDef.icon;
+    const url = newDef.url;
+    const col_type = newDef.col_type;
 
     await db.prepare(`
       UPDATE subject_hub_blocks
-      SET title = ?, icon = ?, display_position = ?, display_order = ?, is_active = ?
+      SET block_key = ?, title = ?, icon = ?, url = ?, col_type = ?, is_active = ?
       WHERE id = ?
-    `).run(title, icon, targetPos, targetPos, data.is_active === '0' || data.is_active === 0 ? 0 : 1, id);
+    `).run(targetModuleKey, title, icon, url, col_type, data.is_active === '0' || data.is_active === 0 ? 0 : 1, id);
   }
 };
 
