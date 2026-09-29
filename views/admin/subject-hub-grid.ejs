@@ -174,47 +174,47 @@
     ];
   %>
 
-  <!-- MODULE EDIT CARDS LIST WITH EASY MODULE SELECTOR PER POSITION -->
+  <!-- MODULE EDIT CARDS LIST WITH EASY 1 TO 9 POSITION SELECTOR PER MODULE -->
   <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2 border-bottom pb-3">
       <div>
         <h4 class="fw-bold text-dark mb-1"><i class="ri-edit-2-line text-primary me-2"></i> Edit Module Titles & Grid Positions</h4>
-        <p class="text-muted small mb-0">Select which feature module sits in each Grid Position (1 to 9). Occupants automatically swap modules vice-versa.</p>
+        <p class="text-muted small mb-0">Select a Position Number (1 to 9) for each module. If you pick Position 9, the module at Position 9 automatically moves to your previous position vice-versa.</p>
       </div>
     </div>
 
     <div class="row g-3">
-      <% (blocks || []).sort((a,b) => Number(a.display_position || 1) - Number(b.display_position || 1)).forEach(blk => { 
-          const pos = Number(blk.display_position || blk.display_order || 1);
+      <% (blocks || []).sort((a,b) => Number(a.id || 1) - Number(b.id || 1)).forEach(blk => { 
+          const currentPos = Number(blk.display_position || blk.display_order || 1);
       %>
-        <div class="col-md-6 col-lg-4" id="card-module-<%= blk.id %>">
+        <div class="col-md-6 col-lg-4" id="card-module-<%= blk.id %>" data-card-id="<%= blk.id %>">
           <div class="card border rounded-4 p-3 bg-light-subtle h-100 transition-all border-1">
             <form action="/admin/subject-hub-grid/<%= blk.id %>/update" method="POST">
               <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
                 <div class="d-flex align-items-center gap-2">
-                  <span class="badge bg-warning text-dark font-weight-bold px-2.5 py-1.5 rounded-pill pos-badge" style="font-size: 0.88rem;">
-                    Position <%= pos %>
+                  <span class="badge bg-primary text-white font-weight-bold px-2.5 py-1.5 rounded-pill" style="font-size: 0.88rem;">
+                    <i class="<%= blk.icon || 'ri-box-3-line' %> me-1"></i> <%= blk.title %>
                   </span>
-                  <span class="badge bg-primary-subtle text-primary font-weight-semibold rounded-pill px-2.5 py-1" style="font-size: 0.78rem;">
-                    <i class="<%= blk.icon || 'ri-box-3-line' %> me-1"></i> <%= blk.block_key %>
+                  <span class="badge bg-warning text-dark font-weight-bold pos-badge px-2.5 py-1 rounded-pill" style="font-size: 0.80rem;">
+                    Position <%= currentPos %>
                   </span>
                 </div>
               </div>
 
-              <!-- Module Selector for this Position -->
+              <!-- Position Selector for this Module -->
               <div class="mb-3">
                 <label class="form-label text-dark small fw-bold mb-1">
-                  <i class="ri-apps-line text-primary me-1"></i> Module Assigned to Position <%= pos %>
+                  <i class="ri-map-pin-line text-primary me-1"></i> Position Location for <%= blk.title %> (1 to 9)
                 </label>
-                <select name="block_key" class="form-select form-select-lg rounded-3 font-weight-bold text-primary border-primary border-opacity-50 shadow-sm" style="font-size:0.95rem;" onchange="onModuleSelectChange(this, this.form)">
-                  <% moduleList.forEach(m => { 
-                       const currentHolder = (blocks || []).find(b => b.block_key === m.key);
-                       const posInfo = currentHolder ? ` (Currently Position ${currentHolder.display_position})` : '';
+                <select name="display_position" class="form-select form-select-lg rounded-3 font-weight-bold text-primary border-primary border-opacity-50 shadow-sm pos-select" style="font-size:0.95rem;" onchange="onPositionSelectChange(this, this.form)">
+                  <% for (let i = 1; i <= 9; i++) { 
+                       const occupant = (blocks || []).find(b => Number(b.display_position) === i);
+                       const occupantTitle = occupant ? occupant.title : slotNames[i];
                   %>
-                    <option value="<%= m.key %>" <%= blk.block_key === m.key ? 'selected' : '' %>>
-                      <%= m.title %><%= posInfo %>
+                    <option value="<%= i %>" <%= currentPos === i ? 'selected' : '' %>>
+                      Position <%= i %> (Currently <%= occupantTitle %>)
                     </option>
-                  <% }) %>
+                  <% } %>
                 </select>
               </div>
 
@@ -244,7 +244,7 @@
                   <label class="form-check-label small fw-semibold text-muted">Active</label>
                 </div>
                 <button type="submit" class="btn btn-primary rounded-pill px-4 font-weight-bold shadow-sm">
-                  <i class="ri-save-line me-1"></i> Save Position <%= pos %>
+                  <i class="ri-save-line me-1"></i> Save Position & Title
                 </button>
               </div>
             </form>
@@ -256,57 +256,35 @@
 </div>
 
 <script>
-  const moduleDefaults = {
-    regions: { title: 'Region Maps', icon: 'ri-brain-line' },
-    cross_sections: { title: 'Cross Sections', icon: 'ri-layout-grid-line' },
-    three_d: { title: 'Rotatable Physio Slab', icon: 'ri-box-3-line' },
-    syllabus: { title: ':subject Syllabus', icon: 'ri-quill-pen-line' },
-    pathology: { title: 'Stroke and Pathology', icon: 'ri-heart-pulse-line' },
-    mri_scans: { title: 'MRI', icon: 'ri-pulse-line' },
-    notes_modules: { title: 'Notes and Models', icon: 'ri-file-text-line' },
-    hd_videos: { title: 'HD Videos', icon: 'ri-vidicon-line' },
-    center_player: { title: 'The Center Point', icon: 'ri-play-circle-fill' }
-  };
-
-  function onModuleSelectChange(selectEl, formEl) {
+  function onPositionSelectChange(selectEl, formEl) {
     if (!selectEl || !formEl) return;
-    const newKey = selectEl.value;
-    const titleInput = formEl.querySelector('input[name="title"]');
-    const iconInput = formEl.querySelector('input[name="icon"]');
-
-    if (moduleDefaults[newKey]) {
-      if (titleInput) titleInput.value = moduleDefaults[newKey].title;
-      if (iconInput) {
-        iconInput.value = moduleDefaults[newKey].icon;
-        const iconPreview = formEl.querySelector('.input-group-text i');
-        if (iconPreview) {
-          iconPreview.className = moduleDefaults[newKey].icon + ' text-primary';
-        }
-      }
+    const newPos = selectEl.value;
+    const currentCard = selectEl.closest('.card');
+    const posBadge = formEl.querySelector('.pos-badge');
+    if (posBadge) {
+      posBadge.textContent = 'Position ' + newPos;
     }
 
-    // Vice-versa live swap on client UI for instant feedback
-    const allSelects = document.querySelectorAll('select[name="block_key"]');
-    const allKeys = Object.keys(moduleDefaults);
+    // Find which other select currently holds newPos
+    const allSelects = document.querySelectorAll('select.pos-select');
     allSelects.forEach(otherSelect => {
-      if (otherSelect !== selectEl && otherSelect.value === newKey) {
-        const usedKeys = new Set();
-        allSelects.forEach(s => { if (s !== otherSelect) usedKeys.add(s.value); });
-        const freeKey = allKeys.find(k => !usedKeys.has(k)) || 'regions';
+      if (otherSelect !== selectEl && otherSelect.value === newPos) {
+        // Find position freed by selectEl (the position number not used by any other select)
+        const usedPositions = new Set();
+        allSelects.forEach(s => { if (s !== otherSelect) usedPositions.add(s.value); });
+        let freePos = 1;
+        for (let i = 1; i <= 9; i++) {
+          if (!usedPositions.has(String(i))) {
+            freePos = i;
+            break;
+          }
+        }
 
-        otherSelect.value = freeKey;
+        otherSelect.value = freePos;
         const otherForm = otherSelect.form;
         if (otherForm) {
-          const otherTitle = otherForm.querySelector('input[name="title"]');
-          const otherIcon = otherForm.querySelector('input[name="icon"]');
-          if (moduleDefaults[freeKey]) {
-            if (otherTitle) otherTitle.value = moduleDefaults[freeKey].title;
-            if (otherIcon) {
-              otherIcon.value = moduleDefaults[freeKey].icon;
-              const otherPreview = otherForm.querySelector('.input-group-text i');
-              if (otherPreview) otherPreview.className = moduleDefaults[freeKey].icon + ' text-primary';
-            }
-          }
+          const otherBadge = otherForm.querySelector('.pos-badge');
+          if (otherBadge) otherBadge.textContent = 'Position ' + freePos;
         }
         const otherCardEl = otherSelect.closest('.card');
         if (otherCardEl) {
