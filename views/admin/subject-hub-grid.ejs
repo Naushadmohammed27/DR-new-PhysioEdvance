@@ -183,7 +183,7 @@
       </div>
     </div>
 
-    <div class="row g-3">
+    <div class="row g-3" id="cards-grid-container">
       <% (blocks || []).sort((a,b) => Number(a.display_position || 1) - Number(b.display_position || 1)).forEach(blk => { 
           const currentPos = Number(blk.display_position || blk.display_order || 1);
       %>
@@ -289,7 +289,29 @@
       }
     });
 
+    const currentCardCol = selectEl.closest('.col-md-6');
+    if (currentCardCol) {
+      const cardInner = currentCardCol.querySelector('.card');
+      if (cardInner) {
+        cardInner.classList.add('pe-card-highlight');
+        setTimeout(() => cardInner.classList.remove('pe-card-highlight'), 2000);
+      }
+    }
+
+    reorderCardsInDOM();
     updateTopDiagramReference();
+  }
+
+  function reorderCardsInDOM() {
+    const gridContainer = document.querySelector('#cards-grid-container');
+    if (!gridContainer) return;
+    const cardCols = Array.from(gridContainer.children);
+    cardCols.sort((a, b) => {
+      const posA = Number(a.querySelector('select.pos-select')?.value || 0);
+      const posB = Number(b.querySelector('select.pos-select')?.value || 0);
+      return posA - posB;
+    });
+    cardCols.forEach(col => gridContainer.appendChild(col));
   }
 
   function updateTopDiagramReference() {
@@ -318,6 +340,9 @@
     }
   }
 
-  // Initialize top diagram on page load
-  document.addEventListener('DOMContentLoaded', updateTopDiagramReference);
+  // Initialize top diagram and DOM order on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    reorderCardsInDOM();
+    updateTopDiagramReference();
+  });
 </script>
