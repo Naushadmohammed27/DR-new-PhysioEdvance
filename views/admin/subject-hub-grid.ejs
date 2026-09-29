@@ -270,20 +270,51 @@
 
   function onModuleSelectChange(selectEl, formEl) {
     if (!selectEl || !formEl) return;
-    const key = selectEl.value;
+    const newKey = selectEl.value;
     const titleInput = formEl.querySelector('input[name="title"]');
     const iconInput = formEl.querySelector('input[name="icon"]');
 
-    if (moduleDefaults[key]) {
-      if (titleInput) titleInput.value = moduleDefaults[key].title;
+    if (moduleDefaults[newKey]) {
+      if (titleInput) titleInput.value = moduleDefaults[newKey].title;
       if (iconInput) {
-        iconInput.value = moduleDefaults[key].icon;
+        iconInput.value = moduleDefaults[newKey].icon;
         const iconPreview = formEl.querySelector('.input-group-text i');
         if (iconPreview) {
-          iconPreview.className = moduleDefaults[key].icon + ' text-primary';
+          iconPreview.className = moduleDefaults[newKey].icon + ' text-primary';
         }
       }
     }
+
+    // Vice-versa live swap on client UI for instant feedback
+    const allSelects = document.querySelectorAll('select[name="block_key"]');
+    const allKeys = Object.keys(moduleDefaults);
+    allSelects.forEach(otherSelect => {
+      if (otherSelect !== selectEl && otherSelect.value === newKey) {
+        const usedKeys = new Set();
+        allSelects.forEach(s => { if (s !== otherSelect) usedKeys.add(s.value); });
+        const freeKey = allKeys.find(k => !usedKeys.has(k)) || 'regions';
+
+        otherSelect.value = freeKey;
+        const otherForm = otherSelect.form;
+        if (otherForm) {
+          const otherTitle = otherForm.querySelector('input[name="title"]');
+          const otherIcon = otherForm.querySelector('input[name="icon"]');
+          if (moduleDefaults[freeKey]) {
+            if (otherTitle) otherTitle.value = moduleDefaults[freeKey].title;
+            if (otherIcon) {
+              otherIcon.value = moduleDefaults[freeKey].icon;
+              const otherPreview = otherForm.querySelector('.input-group-text i');
+              if (otherPreview) otherPreview.className = moduleDefaults[freeKey].icon + ' text-primary';
+            }
+          }
+        }
+        const otherCardEl = otherSelect.closest('.card');
+        if (otherCardEl) {
+          otherCardEl.classList.add('pe-card-highlight');
+          setTimeout(() => otherCardEl.classList.remove('pe-card-highlight'), 2000);
+        }
+      }
+    });
   }
 
   function scrollToModuleCard(cardId) {
