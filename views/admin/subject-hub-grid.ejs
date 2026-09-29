@@ -96,17 +96,17 @@
     <div class="row g-3 text-white">
       <!-- Left Column (Positions 1, 2, 3) -->
       <div class="col-lg-3 d-flex flex-column gap-2">
-        <div class="pe-pos-box" onclick="scrollToModuleCard(<%= blockMap[1] ? blockMap[1].id : '' %>)">
+        <div class="pe-pos-box" id="diagram-box-1" onclick="scrollToModuleCard(<%= blockMap[1] ? blockMap[1].id : '' %>)">
           <span class="pe-pos-num mb-1">1</span>
           <div class="fw-bold text-truncate"><%= blockMap[1] ? blockMap[1].title : 'Region Maps' %></div>
           <small class="text-white-50">Position 1 &bull; Left Top</small>
         </div>
-        <div class="pe-pos-box" onclick="scrollToModuleCard(<%= blockMap[2] ? blockMap[2].id : '' %>)">
+        <div class="pe-pos-box" id="diagram-box-2" onclick="scrollToModuleCard(<%= blockMap[2] ? blockMap[2].id : '' %>)">
           <span class="pe-pos-num mb-1">2</span>
           <div class="fw-bold text-truncate"><%= blockMap[2] ? blockMap[2].title : 'Cross Sections' %></div>
           <small class="text-white-50">Position 2 &bull; Left Middle</small>
         </div>
-        <div class="pe-pos-box" onclick="scrollToModuleCard(<%= blockMap[3] ? blockMap[3].id : '' %>)">
+        <div class="pe-pos-box" id="diagram-box-3" onclick="scrollToModuleCard(<%= blockMap[3] ? blockMap[3].id : '' %>)">
           <span class="pe-pos-num mb-1">3</span>
           <div class="fw-bold text-truncate"><%= blockMap[3] ? blockMap[3].title : 'Rotatable Physio Slab' %></div>
           <small class="text-white-50">Position 3 &bull; Left Bottom</small>
@@ -115,7 +115,7 @@
 
       <!-- Center Player (Position 9) -->
       <div class="col-lg-6">
-        <div class="pe-pos-box h-100 d-flex flex-column align-items-center justify-content-center bg-primary bg-opacity-20 border-primary" style="min-height: 220px;" onclick="scrollToModuleCard(<%= blockMap[9] ? blockMap[9].id : '' %>)">
+        <div class="pe-pos-box h-100 d-flex flex-column align-items-center justify-content-center bg-primary bg-opacity-20 border-primary" id="diagram-box-9" style="min-height: 220px;" onclick="scrollToModuleCard(<%= blockMap[9] ? blockMap[9].id : '' %>)">
           <span class="pe-pos-num mb-2" style="background:#38bdf8; color:#000;">9</span>
           <i class="ri-play-circle-fill display-4 text-warning mb-1"></i>
           <div class="fw-bold fs-5 text-white"><%= blockMap[9] ? blockMap[9].title : 'The Center Point' %></div>
@@ -125,17 +125,17 @@
 
       <!-- Right Column (Positions 8, 7, 6) -->
       <div class="col-lg-3 d-flex flex-column gap-2">
-        <div class="pe-pos-box" onclick="scrollToModuleCard(<%= blockMap[8] ? blockMap[8].id : '' %>)">
+        <div class="pe-pos-box" id="diagram-box-8" onclick="scrollToModuleCard(<%= blockMap[8] ? blockMap[8].id : '' %>)">
           <span class="pe-pos-num mb-1">8</span>
           <div class="fw-bold text-truncate"><%= blockMap[8] ? blockMap[8].title : 'HD Videos' %></div>
           <small class="text-white-50">Position 8 &bull; Right Top</small>
         </div>
-        <div class="pe-pos-box" onclick="scrollToModuleCard(<%= blockMap[7] ? blockMap[7].id : '' %>)">
+        <div class="pe-pos-box" id="diagram-box-7" onclick="scrollToModuleCard(<%= blockMap[7] ? blockMap[7].id : '' %>)">
           <span class="pe-pos-num mb-1">7</span>
           <div class="fw-bold text-truncate"><%= blockMap[7] ? blockMap[7].title : 'Notes & Models' %></div>
           <small class="text-white-50">Position 7 &bull; Right Middle</small>
         </div>
-        <div class="pe-pos-box" onclick="scrollToModuleCard(<%= blockMap[6] ? blockMap[6].id : '' %>)">
+        <div class="pe-pos-box" id="diagram-box-6" onclick="scrollToModuleCard(<%= blockMap[6] ? blockMap[6].id : '' %>)">
           <span class="pe-pos-num mb-1">6</span>
           <div class="fw-bold text-truncate"><%= blockMap[6] ? blockMap[6].title : 'MRI' %></div>
           <small class="text-white-50">Position 6 &bull; Right Bottom</small>
@@ -144,14 +144,14 @@
 
       <!-- Bottom Row (Positions 4 & 5) -->
       <div class="col-md-6">
-        <div class="pe-pos-box" onclick="scrollToModuleCard(<%= blockMap[4] ? blockMap[4].id : '' %>)">
+        <div class="pe-pos-box" id="diagram-box-4" onclick="scrollToModuleCard(<%= blockMap[4] ? blockMap[4].id : '' %>)">
           <span class="pe-pos-num mb-1">4</span>
           <div class="fw-bold text-truncate"><%= blockMap[4] ? blockMap[4].title : 'Subject Syllabus' %></div>
           <small class="text-white-50">Position 4 &bull; Bottom Left</small>
         </div>
       </div>
       <div class="col-md-6">
-        <div class="pe-pos-box" onclick="scrollToModuleCard(<%= blockMap[5] ? blockMap[5].id : '' %>)">
+        <div class="pe-pos-box" id="diagram-box-5" onclick="scrollToModuleCard(<%= blockMap[5] ? blockMap[5].id : '' %>)">
           <span class="pe-pos-num mb-1">5</span>
           <div class="fw-bold text-truncate"><%= blockMap[5] ? blockMap[5].title : 'Stroke & Pathology' %></div>
           <small class="text-white-50">Position 5 &bull; Bottom Right</small>
@@ -179,7 +179,7 @@
     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2 border-bottom pb-3">
       <div>
         <h4 class="fw-bold text-dark mb-1"><i class="ri-edit-2-line text-primary me-2"></i> Edit Module Titles & Grid Positions</h4>
-        <p class="text-muted small mb-0">Select a Position Number (1 to 9) for each module. If you pick Position 9, the module at Position 9 automatically moves to your previous position vice-versa.</p>
+        <p class="text-muted small mb-0">Select a Position Number (1 to 9) for each module. Changing a position automatically swaps with the occupant vice-versa.</p>
       </div>
     </div>
 
@@ -207,12 +207,9 @@
                   <i class="ri-map-pin-line text-primary me-1"></i> Position Location for <%= blk.title %> (1 to 9)
                 </label>
                 <select name="display_position" class="form-select form-select-lg rounded-3 font-weight-bold text-primary border-primary border-opacity-50 shadow-sm pos-select" style="font-size:0.95rem;" onchange="onPositionSelectChange(this, this.form)">
-                  <% for (let i = 1; i <= 9; i++) { 
-                       const occupant = (blocks || []).find(b => Number(b.display_position) === i);
-                       const occupantTitle = occupant ? occupant.title : slotNames[i];
-                  %>
+                  <% for (let i = 1; i <= 9; i++) { %>
                     <option value="<%= i %>" <%= currentPos === i ? 'selected' : '' %>>
-                      Position <%= i %> (Currently <%= occupantTitle %>)
+                      Position <%= i %>
                     </option>
                   <% } %>
                 </select>
@@ -223,7 +220,7 @@
                 <label class="form-label text-dark small fw-bold mb-1">
                   <i class="ri-text me-1 text-secondary"></i> Display Title on Grid
                 </label>
-                <input type="text" name="title" class="form-control form-control-lg rounded-3 font-weight-bold text-dark border-secondary border-opacity-25" value="<%= blk.title %>" required placeholder="Enter module title...">
+                <input type="text" name="title" class="form-control form-control-lg rounded-3 font-weight-bold text-dark border-secondary border-opacity-25" value="<%= blk.title %>" required placeholder="Enter module title..." oninput="updateTopDiagramReference()">
               </div>
 
               <!-- Icon Class -->
@@ -259,7 +256,6 @@
   function onPositionSelectChange(selectEl, formEl) {
     if (!selectEl || !formEl) return;
     const newPos = selectEl.value;
-    const currentCard = selectEl.closest('.card');
     const posBadge = formEl.querySelector('.pos-badge');
     if (posBadge) {
       posBadge.textContent = 'Position ' + newPos;
@@ -269,7 +265,6 @@
     const allSelects = document.querySelectorAll('select.pos-select');
     allSelects.forEach(otherSelect => {
       if (otherSelect !== selectEl && otherSelect.value === newPos) {
-        // Find position freed by selectEl (the position number not used by any other select)
         const usedPositions = new Set();
         allSelects.forEach(s => { if (s !== otherSelect) usedPositions.add(s.value); });
         let freePos = 1;
@@ -293,6 +288,24 @@
         }
       }
     });
+
+    updateTopDiagramReference();
+  }
+
+  function updateTopDiagramReference() {
+    const allCards = document.querySelectorAll('[data-card-id]');
+    allCards.forEach(card => {
+      const select = card.querySelector('select.pos-select');
+      const titleInput = card.querySelector('input[name="title"]');
+      if (select && titleInput) {
+        const pos = select.value;
+        const diagramBox = document.getElementById('diagram-box-' + pos);
+        if (diagramBox) {
+          const titleDiv = diagramBox.querySelector('.fw-bold');
+          if (titleDiv) titleDiv.textContent = titleInput.value || ('Position ' + pos);
+        }
+      }
+    });
   }
 
   function scrollToModuleCard(cardId) {
@@ -304,4 +317,7 @@
       setTimeout(() => cardEl.classList.remove('pe-card-highlight'), 2000);
     }
   }
+
+  // Initialize top diagram on page load
+  document.addEventListener('DOMContentLoaded', updateTopDiagramReference);
 </script>
