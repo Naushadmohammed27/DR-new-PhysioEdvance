@@ -1493,8 +1493,12 @@
                         </div>
 
                         <% const displayImg = (note.file_url && note.file_url !== '/images/logo-icon.png') ? note.file_url : 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&auto=format&fit=crop&q=80'; %>
-                        <div class="position-relative w-100 text-center my-auto p-2 bg-white rounded-3 shadow-xs border" style="max-height: 520px; display: flex; align-items: center; justify-content: center;">
-                          <img src="<%= displayImg %>" alt="<%= getCleanNoteTitle(note, typeof category !== 'undefined' ? category.name : '') %>" class="img-fluid rounded-3 w-100" style="max-height: 480px; object-fit: contain; cursor: zoom-in;" onclick="window.open(this.src, '_blank')">
+                          <img src="<%= displayImg %>" 
+                               alt="<%= getCleanNoteTitle(note, typeof category !== 'undefined' ? category.name : '') %>" 
+                               class="img-fluid rounded-3 w-100" 
+                               style="max-height: 480px; object-fit: contain; cursor: zoom-in;" 
+                               onclick="window.open(this.src, '_blank')"
+                               onerror="if(!this.dataset.fallback){this.dataset.fallback=1; this.src='/images/anatomy/clavicle-bony-landmarks.jpeg';}">
 
                           <!-- 5 NUMBERED INTERACTIVE PIN BUTTONS OVERLAID ON IMAGE -->
                           <% 
@@ -1744,27 +1748,45 @@
               const iframeDoc = iframe.contentDocument || (iframe.contentWindow && iframe.contentWindow.document);
               if (iframeDoc) {
                 const text = (iframeDoc.body ? iframeDoc.body.innerHTML : '') + (iframeDoc.title || '');
-                if (text.includes('Login to PhysioEdvance') || text.includes('Two-step verification required') || iframeDoc.querySelector('form[action*="/auth/login"]')) {
-                  console.warn('Iframe redirected to login page. Hiding iframe.');
+                const is404 = text.includes('404') || text.includes('Page Not Found') || iframeDoc.querySelector('.error-page') || (iframeDoc.title && iframeDoc.title.includes('404'));
+                const isLogin = text.includes('Login to PhysioEdvance') || text.includes('Two-step verification required') || iframeDoc.querySelector('form[action*="/auth/login"]');
+                const hasNestedWebsite = iframeDoc.querySelector('.navbar') || iframeDoc.querySelector('header') || iframeDoc.querySelector('.public-nav');
+
+                if (is404 || isLogin || hasNestedWebsite) {
+                  console.warn('Iframe contained login/404/nested navbar. Suppressing iframe view.');
                   iframe.style.display = 'none';
                   const parent = iframe.parentElement;
-                  if (parent && !parent.querySelector('.iframe-login-fallback')) {
+                  if (parent && !parent.querySelector('.iframe-custom-fallback')) {
                     const fallback = document.createElement('div');
-                    fallback.className = 'iframe-login-fallback p-5 text-center bg-white rounded-4 border my-3';
-                    fallback.innerHTML = `
-                      <div class="py-4">
-                        <div class="bg-warning-subtle text-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 76px; height: 76px;">
-                          <i class="ri-file-lock-line display-5"></i>
+                    fallback.className = 'iframe-custom-fallback p-5 text-center bg-white rounded-4 border my-3';
+                    if (isLogin) {
+                      fallback.innerHTML = `
+                        <div class="py-4">
+                          <div class="bg-warning-subtle text-warning rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 76px; height: 76px;">
+                            <i class="ri-file-lock-line display-5"></i>
+                          </div>
+                          <h4 class="fw-bold text-dark mb-2">Document Access Restricted</h4>
+                          <p class="text-secondary small mb-3 mx-auto leading-relaxed" style="max-width: 520px;">
+                            This study note attachment is restricted or requires login authentication to view. Please log in to your student account to open this file.
+                          </p>
+                          <a href="/auth/login" class="btn btn-primary rounded-pill px-4 py-2 font-weight-bold shadow-sm" style="background: #0a5dc2; border: none;">
+                            <i class="ri-user-shared-line me-1"></i> Log In to Access Document
+                          </a>
                         </div>
-                        <h4 class="fw-bold text-dark mb-2">Document Access Restricted</h4>
-                        <p class="text-secondary small mb-3 mx-auto leading-relaxed" style="max-width: 520px;">
-                          This study note attachment is restricted or requires login authentication to view. Please log in to your student account to open this file.
-                        </p>
-                        <a href="/auth/login" class="btn btn-primary rounded-pill px-4 py-2 font-weight-bold shadow-sm" style="background: #0a5dc2; border: none;">
-                          <i class="ri-user-shared-line me-1"></i> Log In to Access Document
-                        </a>
-                      </div>
-                    `;
+                      `;
+                    } else {
+                      fallback.innerHTML = `
+                        <div class="py-4">
+                          <div class="bg-primary-subtle text-primary rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 76px; height: 76px;">
+                            <i class="ri-file-search-line display-5"></i>
+                          </div>
+                          <h4 class="fw-bold text-dark mb-2">PDF Document Unavailable</h4>
+                          <p class="text-secondary small mb-3 mx-auto leading-relaxed" style="max-width: 520px;">
+                            The original uploaded file is not stored on this server. Please inspect the interactive diagrams and curriculum modules.
+                          </p>
+                        </div>
+                      `;
+                    }
                     parent.appendChild(fallback);
                   }
                 }
