@@ -395,7 +395,7 @@
             // =====================================================================
 
             // Right Clavicle - Bony Landmarks (Superior & Inferior Views)
-            if (fileUrl.includes('note-1790741296158') || 
+            if (fileUrl.includes('note-1790741296158') || fileUrl.includes('clavicle-bony-landmarks') ||
                 (text.includes('clavicle') && text.includes('superior') && text.includes('inferior') && text.includes('shaft')) ||
                 (text.includes('right clavicle') && (text.includes('bony') || text.includes('superior view') || text.includes('inferior view') || text.includes('acromial') || text.includes('costal tuberosity')))) {
               return [
@@ -463,7 +463,7 @@
             }
 
             // Bones of the Hand (Right Hand - Dorsal View)
-            if (fileUrl.includes('note-1790741296162') ||
+            if (fileUrl.includes('note-1790741296162') || fileUrl.includes('bones-of-the-hand') ||
                 (text.includes('hand') && (text.includes('phalang') || text.includes('metacarpal') || text.includes('carpal') || text.includes('scaphoid') || text.includes('dorsal view')))) {
               return [
                 {
@@ -530,7 +530,7 @@
             }
 
             // Movements of the Right Clavicle (Sternoclavicular Joint)
-            if (fileUrl.includes('note-1790741296165') ||
+            if (fileUrl.includes('note-1790741296165') || fileUrl.includes('clavicle-movements') ||
                 (text.includes('clavicle') && (text.includes('elevation') || text.includes('depression') || text.includes('protraction') || text.includes('retraction') || text.includes('movement')))) {
               return [
                 {
@@ -597,7 +597,7 @@
             }
 
             // Right Clavicle - Muscle Attachments (Superior & Inferior Surfaces)
-            if (fileUrl.includes('note-1790741296168') ||
+            if (fileUrl.includes('note-1790741296168') || fileUrl.includes('clavicle-muscle-attachments') ||
                 (text.includes('clavicle') && (text.includes('muscle attachment') || text.includes('deltoid') || text.includes('pectoralis') || text.includes('sternocleidomastoid') || text.includes('subclavius') || text.includes('sternohyoid')))) {
               return [
                 {
