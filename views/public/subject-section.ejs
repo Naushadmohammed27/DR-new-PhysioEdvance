@@ -451,8 +451,76 @@
               ];
             }
 
-            // 2. CLAVICLE & SHOULDER GIRDLE
-            if (text.includes('clavicle') || text.includes('shoulder') || text.includes('acromion') || text.includes('scapula') || text.includes('rotator') || text.includes('glenohumeral') || text.includes('deltoid') || text.includes('subclavian')) {
+            // 2. CLAVICLE & SHOULDER GIRDLE (Includes specific Clavicle media IDs 1789119063738 & 1789119063739)
+            if (text.includes('clavicle') || text.includes('shoulder') || text.includes('acromion') || text.includes('scapula') || text.includes('1789119063738') || text.includes('1789119063739') || text.includes('attachment') || text.includes('muscle')) {
+              
+              // IF IT IS THE MUSCLE ATTACHMENTS DIAGRAM (1789119063739 or contains 'attachment' / 'muscle')
+              if (text.includes('1789119063739') || text.includes('attachment') || text.includes('muscle')) {
+                return [
+                  {
+                    id: 1,
+                    title: 'Superior Surface Muscle Origins & Insertions',
+                    subtitle: 'Pectoralis Major, Deltoid, Trapezius & SCM Anchor Points',
+                    whatItMeans: 'The superior surface of the right clavicle serves as key muscular attachment zones for upper trunk and neck musculature.',
+                    whatItDoes: 'Anchors the origin of Pectoralis Major medially, Deltoid anterolaterally, Trapezius posterolaterally, and Sternocleidomastoid at the sternal origin.',
+                    whyWeNeedIt: 'Transmits contractile forces across the shoulder girdle to elevate, rotate, and protract the arm during athletic and daily activities.',
+                    nerveSupply: 'Supraclavicular Nerves (C3-C4), Spinal Accessory Nerve (CN XI) & Pectoral Nerves',
+                    relatedTopics: 'Muscle Origin & Insertion Strain, Clavicular Muscle Imbalance, and Scapular Dyskinesis.',
+                    action: 'Upper Trunk Contractile Force Transmission & Neck Postural Stability',
+                    clinicalPearl: 'The clavicular head of pectoralis major is evaluated with horizontal adduction MMT against manual resistance.'
+                  },
+                  {
+                    id: 2,
+                    title: 'Subclavius Muscle Origin & Anterior Border',
+                    subtitle: 'Subclavian Groove & Grooved Muscular Bed',
+                    whatItMeans: 'Origin zone of the subclavius muscle along the anterior inferior aspect of the clavicular shaft.',
+                    whatItDoes: 'Depresses the lateral clavicle and pulls it medially to secure the sternoclavicular joint during heavy load lifting.',
+                    whyWeNeedIt: 'Acts as a protective muscular cushion safeguarding the underlying subclavian artery, subclavian vein, and brachial plexus.',
+                    nerveSupply: 'Nerve to Subclavius (C5-C6) & Clavipectoral Arterial Network',
+                    relatedTopics: 'Costoclavicular TOS, Subclavius Hypertonicity, and Neurovascular Cushioning.',
+                    action: 'Sternoclavicular Joint Stabilization & Subclavian Neurovascular Shielding',
+                    clinicalPearl: 'Subclavius myofascial release reduces costoclavicular compression in patients presenting with neurogenic arm paresthesias.'
+                  },
+                  {
+                    id: 3,
+                    title: 'Inferior Surface Ligamentous & Muscular Insertion Bed',
+                    subtitle: 'Inferior Grooved Surface & Deep Fascial Attachments',
+                    whatItMeans: 'The rough inferior surface housing attachment zones for subclavius muscle and deep clavipectoral fascial layers.',
+                    whatItDoes: 'Anchors the deep fascial sling of the armpit and stabilizes the inferior clavicular contour against traction.',
+                    whyWeNeedIt: 'Maintains vertical and sagittal position of the clavicle relative to the rib cage.',
+                    nerveSupply: 'Nerve to Subclavius & Subclavian Artery Branches',
+                    relatedTopics: 'Clavipectoral Fascia Strain, Inferior Clavicular Traction, and Axillary Sling Integrity.',
+                    action: 'Fascial Sling Suspension & Inferior Clavicular Stability',
+                    clinicalPearl: 'Deep palpation along the inferior border reproduces subclavius trigger point pain in overhead athletes.'
+                  },
+                  {
+                    id: 4,
+                    title: 'Coracoclavicular Ligament Attachment (Conoid & Trapezoid)',
+                    subtitle: 'Inferolateral Ligamentous Attachment Zones',
+                    whatItMeans: 'Anatomical insertion sites for the conoid (medial) and trapezoid (lateral) ligaments connecting the clavicle to the coracoid process.',
+                    whatItDoes: 'Provides primary static restraint preventing vertical displacement of the clavicle relative to the scapula.',
+                    whyWeNeedIt: 'Transmits arm suspension weight directly to the clavicle, keeping the shoulder girdle in normal alignment.',
+                    nerveSupply: 'Proprioceptive Articular Nerve Endings (C5-C6)',
+                    relatedTopics: 'Coracoclavicular Ligament Tear, Grade III AC Separation, and Scapular Drop.',
+                    action: 'Primary Static Vertical Scapular Suspension',
+                    clinicalPearl: 'CC ligament rupture causes a visible "step-off" deformity at the AC joint (positive spring/keyboard sign).'
+                  },
+                  {
+                    id: 5,
+                    title: 'Costoclavicular Ligament & Sternohyoid Attachments',
+                    subtitle: 'Sternal Medial End Ligamentous & Muscular Footprint',
+                    whatItMeans: 'Medial inferior insertion for the costoclavicular ligament and origin footprint for the sternohyoid muscle.',
+                    whatItDoes: 'Binds the sternal end of the clavicle tightly to the first rib, resisting excessive elevation of the medial clavicle.',
+                    whyWeNeedIt: 'Prevents superior displacement of the sternoclavicular joint during heavy pushing or coughing.',
+                    nerveSupply: 'Ansa Cervicalis (C1-C3) for Sternohyoid & Subclavian Nerve Branches',
+                    relatedTopics: 'Costoclavicular Ligament Sprain, SC Joint Dislocation, and Infrahyoid Muscle Action.',
+                    action: 'Medial Clavicular Restraint & First Rib Anchoring',
+                    clinicalPearl: 'Costoclavicular ligament integrity is essential for maintaining SC joint stability during full overhead arm elevation.'
+                  }
+                ];
+              }
+
+              // DEFAULT BONY LANDMARKS DIAGRAM
               return [
                 {
                   id: 1,
@@ -651,10 +719,14 @@
             }
 
             // DYNAMICALLY EXTRACTED FALLBACK DATASET FOR ANY OTHER UPLOADED IMAGE OR NOTE
-            const cleanTitle = (n.title || 'Uploaded Anatomical Structure').replace(/\.[^/.]+$/, "").replace(/_/g, " ").trim();
+            let cleanTitle = getCleanNoteTitle(n, typeof category !== 'undefined' ? category.name : '');
+            if (/whatsapp|img_\d|pxl_\d|screenshot|scan_\d/i.test(cleanTitle)) {
+              cleanTitle = (typeof category !== 'undefined' ? category.name : 'Anatomy') + ' Interactive Module';
+            }
+
             const cleanContent = (n.content || '').replace(/\[INTERACTIVE_MODULE.*?\]/g, '').replace(/<[^>]*>/g, '').trim();
             const sentences = cleanContent ? cleanContent.split(/(?<=[.?!])\s+/).filter(s => s.trim().length > 10) : [];
-            const summarySnippet = sentences.length > 0 ? sentences.slice(0, 2).join(' ') : `Anatomical structure, tissue composition, and spatial orientation of ${cleanTitle}.`;
+            const summarySnippet = sentences.length > 0 ? sentences.slice(0, 2).join(' ') : `Anatomical cross-section, tissue architecture, and structural landmarks for ${cleanTitle}.`;
             const actionSnippet = sentences.length > 2 ? sentences.slice(2, 4).join(' ') : `Facilitates dynamic physiological movement, structural load transmission, and functional stability in ${cleanTitle}.`;
             const importanceSnippet = sentences.length > 4 ? sentences.slice(4, 6).join(' ') : `Protects underlying neurovascular structures, maintains anatomical integrity, and supports normal kinetic chain function.`;
 
@@ -876,7 +948,7 @@
 
                         <% const displayImg = (note.file_url && note.file_url !== '/images/logo-icon.png') ? note.file_url : 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&auto=format&fit=crop&q=80'; %>
                         <div class="position-relative w-100 text-center my-auto p-2 bg-white rounded-3 shadow-xs border" style="max-height: 520px; display: flex; align-items: center; justify-content: center;">
-                          <img src="<%= displayImg %>" alt="<%= note.title %>" class="img-fluid rounded-3 w-100" style="max-height: 480px; object-fit: contain; cursor: zoom-in;" onclick="window.open(this.src, '_blank')">
+                          <img src="<%= displayImg %>" alt="<%= getCleanNoteTitle(note, typeof category !== 'undefined' ? category.name : '') %>" class="img-fluid rounded-3 w-100" style="max-height: 480px; object-fit: contain; cursor: zoom-in;" onclick="window.open(this.src, '_blank')">
 
                           <!-- 5 NUMBERED INTERACTIVE PIN BUTTONS OVERLAID ON IMAGE -->
                           <% 
