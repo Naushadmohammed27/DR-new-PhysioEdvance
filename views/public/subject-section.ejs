@@ -1492,6 +1492,7 @@
                           <span class="badge bg-white text-secondary border rounded-pill px-2.5 py-1">High-Res Diagram</span>
                         </div>
 
+                        <% const displayImg = (note.file_url && note.file_url !== '/images/logo-icon.png') ? note.file_url : '/images/anatomy/clavicle-bony-landmarks.jpeg'; %>
                         <div class="position-relative w-100 text-center my-auto p-2 bg-white rounded-3 shadow-xs border" style="max-height: 520px; display: flex; align-items: center; justify-content: center;">
                           <img src="<%= displayImg %>" 
                                alt="<%= getCleanNoteTitle(note, typeof category !== 'undefined' ? category.name : '') %>" 
