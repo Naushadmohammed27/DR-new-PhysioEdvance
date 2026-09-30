@@ -333,6 +333,7 @@
                 const isImage = itemType === 'text_image';
                 const is3d = itemType === '3d_model';
                 const isPdf = itemType === 'pdf';
+                const cleanDisplayTitle = getCleanNoteTitle(n, typeof category !== 'undefined' ? category.name : '');
               %>
               <button type="button" 
                       data-type="<%= itemType %>" 
@@ -341,11 +342,11 @@
                       style="<%= idx === 0 ? 'background: linear-gradient(135deg, #0a5dc2 0%, #0284c7 100%); border: none;' : '' %>" 
                       onclick="switchActiveNote(<%= idx %>, this)">
                 <% if (isImage) { %>
-                  <i class="ri-image-fill text-success me-1.5 fs-6"></i> <%= n.title %> <span class="badge bg-success-subtle text-success ms-1 small">Text Image</span>
+                  <i class="ri-image-fill text-success me-1.5 fs-6"></i> <%= cleanDisplayTitle %> <span class="badge bg-success-subtle text-success ms-1 small">Text Image</span>
                 <% } else if (is3d) { %>
-                  <i class="ri-sparkles-fill text-info me-1.5 fs-6"></i> <%= n.title %> <span class="badge bg-info-subtle text-info ms-1 small">Interactive Module</span>
+                  <i class="ri-sparkles-fill text-info me-1.5 fs-6"></i> <%= cleanDisplayTitle %> <span class="badge bg-info-subtle text-info ms-1 small">Interactive Module</span>
                 <% } else { %>
-                  <i class="<%= isPdf ? 'ri-file-pdf-2-fill text-danger' : 'ri-file-word-fill text-primary' %> me-1.5 fs-6"></i> <%= n.title %>
+                  <i class="<%= isPdf ? 'ri-file-pdf-2-fill text-danger' : 'ri-file-word-fill text-primary' %> me-1.5 fs-6"></i> <%= cleanDisplayTitle %>
                 <% } %>
               </button>
             <% }) %>
@@ -427,63 +428,63 @@
               return [
                 {
                   id: 1,
-                  title: 'Acromioclavicular (AC) Joint & Acromial End',
-                  subtitle: 'Lateral Articular Component & Ligamentous Suspension',
-                  whatItMeans: 'The acromial end of the clavicle features a flattened facet that articulates with the medial border of the acromion process of the scapula.',
-                  whatItDoes: 'Transmits mechanical forces from the upper limb to the axial skeleton while permitting scapular rotation during arm elevation overhead.',
-                  whyWeNeedIt: 'Provides a rigid anterior strut that suspends the upper extremity away from the thorax, enabling full 180° shoulder abduction and overhead reach.',
-                  nerveSupply: 'Suprascapular Nerve, Lateral Pectoral Nerve & Thoracoacromial Artery',
-                  relatedTopics: 'AC Joint Separation (Rockwood Classification), Acromioclavicular Osteoarthritis, and Subacromial Impingement Syndrome.',
-                  action: 'Scapular Rotation Suspension & Axial Upper Limb Load Transmission',
-                  clinicalPearl: 'Cross-Body Adduction test and active compression (O-Brien test) isolate AC joint pathology. Palpable step-off indicates high-grade ligamentous tear.'
+                  title: 'Shaft of Clavicle (Bony Body)',
+                  subtitle: 'S-Shaped Tubular Mid-Shaft Segment',
+                  whatItMeans: 'The shaft is the double-curved S-shaped central body of the clavicle, featuring an anteriorly convex medial two-thirds and an anteriorly concave lateral one-third.',
+                  whatItDoes: 'Transmits mechanical compressive forces from the upper limb to the axial skeleton while protecting the underlying subclavian vessels and brachial plexus.',
+                  whyWeNeedIt: 'Provides structural leverage for shoulder abduction and overhead arm elevation while absorbing impact loads during physical activity.',
+                  nerveSupply: 'Supraclavicular Nerves (C3-C4) & Subclavian Artery Periosteal Branches',
+                  relatedTopics: 'Mid-Shaft Clavicle Fracture (80% of all clavicle fractures), FOOSH Injury, Subclavian Vessel Protection, and Operative Plating.',
+                  action: 'Mechanical Load Transmission, Upper Limb Suspension & Neurovascular Shielding',
+                  clinicalPearl: 'Over 80% of clavicle fractures occur at the middle third of the shaft. Palpate along the subcutaneous border for bony step-off or crepitus.'
                 },
                 {
                   id: 2,
-                  title: 'Clavicular Shaft (Mid-Shaft Bony Convexity)',
-                  subtitle: 'Tubular S-Shaped Medial Two-Thirds & Lateral One-Third Junction',
-                  whatItMeans: 'The middle third of the clavicle represents the dynamic transition zone between its anteriorly convex medial two-thirds and anteriorly concave lateral one-third.',
-                  whatItDoes: 'Absorbs indirect axial impacts from falls onto an outstretched hand (FOOSH) and protects the underlying subclavian neurovascular bundle.',
-                  whyWeNeedIt: 'Acts as a protective structural bridge over the brachial plexus and subclavian vessels while anchoring pectoralis major and sternocleidomastoid muscles.',
-                  nerveSupply: 'Supraclavicular Nerves (C3-C4) & Subclavian Artery Periosteal Branches',
-                  relatedTopics: 'Mid-Shaft Clavicle Fracture, Brachial Plexus Stretch Injury, Non-Union / Mal-Union, and Subclavian Vein Compression.',
-                  action: 'FOOSH Impact Shock Absorption & Brachial Neurovascular Protection',
-                  clinicalPearl: 'Over 80% of all clavicle fractures occur at the middle third. Assess distal neurovascular status (radial pulse, finger sensation) in all acute injuries.'
+                  title: 'Right Clavicle - Superior View & Articular Ends',
+                  subtitle: 'Subcutaneous Top Surface & End Facets',
+                  whatItMeans: 'The smooth subcutaneous upper surface of the right clavicle, extending between the rounded sternal (medial) end and flattened acromial (lateral) end.',
+                  whatItDoes: 'Anchors the origin of deltoid laterally, insertion of trapezius posteriorly, and pectoralis major medially while guiding shoulder rotation.',
+                  whyWeNeedIt: 'Enables multi-axial rotation, elevation, and protraction of the shoulder girdle during functional arm movement.',
+                  nerveSupply: 'Supraclavicular Nerves (C3-C4) & Suprascapular Artery Branches',
+                  relatedTopics: 'Acromioclavicular (AC) Joint Alignment, Sternoclavicular (SC) Pivot Joint, and Subcutaneous Palpation.',
+                  action: 'Multi-Axial Shoulder Kinematic Pivot & Subcutaneous Muscle Attachment',
+                  clinicalPearl: 'Easily palpable throughout its length under the skin. Point tenderness or localized prominence indicates fracture displacement or joint sprain.'
                 },
                 {
                   id: 3,
-                  title: 'Subclavian Groove & Subclavius Muscle Anchor',
-                  subtitle: 'Inferior Surface Grooved Insertion & Protective Fascial Shield',
-                  whatItMeans: 'A smooth longitudinal depression situated on the inferior surface of the middle third of the clavicle.',
-                  whatItDoes: 'Anchors the subclavius muscle and clavipectoral fascia, acting as a muscular buffer between a fractured clavicle and the subclavian artery and vein.',
-                  whyWeNeedIt: 'Depresses the clavicle and pulls it medially to stabilize the sternoclavicular joint during heavy pushing and pulling activities.',
+                  title: 'Right Clavicle - Inferior View & Attachment Sites',
+                  subtitle: 'Rough Underside Surface & Ligamentous Ridges',
+                  whatItMeans: 'The rough underside surface of the clavicle containing key ridges, grooves, and impressions for muscular insertions and ligament attachments.',
+                  whatItDoes: 'Anchors the subclavius muscle, costoclavicular ligament medially, and coracoclavicular (CC) ligaments inferolaterally.',
+                  whyWeNeedIt: 'Provides robust static and dynamic restraint preventing superior and lateral dislocation of the clavicle under heavy loads.',
                   nerveSupply: 'Nerve to Subclavius (C5-C6) & Clavipectoral Arterial Branches',
-                  relatedTopics: 'Costoclavicular Space Compression, Thoracic Outlet Syndrome (TOS), and Clavipectoral Fascia Tightness.',
-                  action: 'Inferior Clavicular Depressions & Subclavian Neurovascular Shielding',
-                  clinicalPearl: 'Subclavius muscle hypertonicity narrows the costoclavicular space, contributing to neurogenic Thoracic Outlet Syndrome.'
+                  relatedTopics: 'Subclavius Muscle Insertion, Clavipectoral Fascia Shield, and Inferior Neurovascular Relationships.',
+                  action: 'Inferior Ligamentous Restraint & Deep Muscular Anchor',
+                  clinicalPearl: 'The inferior surface lies directly superior to the subclavian artery, subclavian vein, and brachial plexus cords.'
                 },
                 {
                   id: 4,
                   title: 'Conoid Tubercle & Coracoclavicular (CC) Ligaments',
-                  subtitle: 'Inferolateral Structural Anchor (Conoid & Trapezoid Ligaments)',
-                  whatItMeans: 'A prominent bony eminence on the inferior posterior margin of the lateral clavicle, anchoring the dense conoid ligament.',
-                  whatItDoes: 'Primary vertical passive stabilizer of the acromioclavicular joint, checking superior displacement of the clavicle relative to the coracoid process.',
-                  whyWeNeedIt: 'Provides the primary static restraint preventing the weight of the arm from pulling the scapula downward away from the clavicle.',
+                  subtitle: 'Posteromedial Inferior Bony Eminence',
+                  whatItMeans: 'A prominent bony eminence on the posterior inferior margin of the lateral third of the clavicle, anchoring the dense conoid ligament.',
+                  whatItDoes: 'Acts as the primary vertical passive stabilizer of the AC joint, preventing superior displacement of the clavicle relative to the scapula.',
+                  whyWeNeedIt: 'Prevents the weight of the upper limb from pulling the scapula downward away from the clavicle.',
                   nerveSupply: 'Proprioceptive Articular Branches of Suprascapular & Subclavian Nerves',
-                  relatedTopics: 'Coracoclavicular Ligament Disruption, Type III AC Joint Separation, Scapular Dyskinesis, and Operative CC Reconstruction.',
+                  relatedTopics: 'Coracoclavicular Ligament Disruption, Type III-VI AC Joint Separation, and Operative CC Reconstruction.',
                   action: 'Vertical Static Suspension & Restraint Against Superior Clavicular Displacement',
-                  clinicalPearl: 'Tenderness over the conoid tubercle with a positive distal clavicular keyboard/ballottement sign confirms CC ligament disruption.'
+                  clinicalPearl: 'Disruption of CC ligaments at the conoid tubercle causes a prominent "step-off" deformity and positive clavicular keyboard sign.'
                 },
                 {
                   id: 5,
-                  title: 'Sternoclavicular (SC) Joint & Sternal Articular Facet',
-                  subtitle: 'Medial Synovial Articulation with Manubrium Sterni',
-                  whatItMeans: 'An enlarged bulbous articular facet at the medial end of the clavicle that articulates with the clavicular notch of the manubrium and first costal cartilage.',
-                  whatItDoes: 'Forms the sole true skeletal articulation uniting the upper extremity to the axial skeleton, housing a fibrocartilaginous articular disc.',
-                  whyWeNeedIt: 'Provides multi-axial freedom of motion (elevation, depression, protraction, retraction, axial rotation) while absorbing forces transmitted from the arm.',
-                  nerveSupply: 'Medial Supraclavicular Nerve (C3-C4), Nerve to Subclavius & Internal Thoracic Artery',
-                  relatedTopics: 'Sternoclavicular Joint Dislocation (Anterior vs Posterior Emergency), SC Osteoarthritis, and Sternoclavicular Instability.',
-                  action: 'Axial Skeletal Union & Multi-Axial Clavicular Kinematic Pivot',
-                  clinicalPearl: 'Posterior SC joint dislocation is a medical emergency that can compress the trachea, esophagus, or brachiocephalic vein, presenting with dyspnea or dysphagia.'
+                  title: 'Subclavian Groove & Costal Tuberosity',
+                  subtitle: 'Medial Inferior Groove & First Rib Attachment',
+                  whatItMeans: 'A longitudinal groove along the middle third of the inferior clavicle and a medial impression for the costoclavicular ligament.',
+                  whatItDoes: 'Anchors subclavius muscle and attaches the clavicle firmly to the first costal cartilage, depressing the clavicle.',
+                  whyWeNeedIt: 'Shields the subclavian neurovascular bundle during clavicular movement and stabilizes the sternoclavicular joint.',
+                  nerveSupply: 'Nerve to Subclavius (C5-C6) & Internal Thoracic Artery',
+                  relatedTopics: 'Costoclavicular Space Narrowing, Thoracic Outlet Syndrome (TOS), and First Rib Articulation.',
+                  action: 'Subclavian Neurovascular Shielding & SC Joint Stabilization',
+                  clinicalPearl: 'Subclavius hypertonicity or bony callus in the subclavian groove can compress the subclavian vein or brachial plexus (Costoclavicular TOS).'
                 }
               ];
             }
@@ -724,7 +725,7 @@
                   </div>
                 <% } %>
                 <div>
-                  <h6 class="fw-bold text-white mb-0" style="letter-spacing: -0.2px;"><%= note.title %></h6>
+                  <h6 class="fw-bold text-white mb-0" style="letter-spacing: -0.2px;"><%= getCleanNoteTitle(note, typeof category !== 'undefined' ? category.name : '') %></h6>
                   <span class="text-white-50 small" style="font-size: 0.78rem;">
                     <i class="ri-shield-check-line text-success me-1"></i> Verified Subject Module
                   </span>
@@ -1068,7 +1069,7 @@
                           <i class="ri-file-word-fill fs-4"></i>
                         </div>
                         <div>
-                          <h6 class="fw-bold text-dark mb-0"><%= note.title %></h6>
+                          <h6 class="fw-bold text-dark mb-0"><%= getCleanNoteTitle(note, typeof category !== 'undefined' ? category.name : '') %></h6>
                           <span class="text-muted small"><%= ext.toUpperCase() %> Document • In-Page Reader & Study Takeaways</span>
                         </div>
                       </div>
