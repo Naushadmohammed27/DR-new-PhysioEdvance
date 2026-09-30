@@ -302,10 +302,14 @@
                 return 'Vertebral Column & Spinal Segment';
               } else if (text.includes('heart') || text.includes('cardiac') || text.includes('pulmonary') || text.includes('lung')) {
                 return 'Cardiac System & Thoracic Viscera';
-              } else if (text.includes('hand') || text.includes('wrist') || text.includes('carpal')) {
+              } else if (text.includes('hand') || text.includes('wrist') || text.includes('carpal') || text.includes('phalang') || text.includes('metacarpal') || text.includes('finger') || text.includes('thumb')) {
                 return 'Hand & Upper Extremity Complex';
-              } else if (text.includes('foot') || text.includes('ankle') || text.includes('tarsal')) {
+              } else if (text.includes('foot') || text.includes('ankle') || text.includes('tarsal') || text.includes('calcaneus') || text.includes('metatarsal') || text.includes('plantar') || text.includes('hallux')) {
                 return 'Foot & Ankle Biomechanical Unit';
+              } else if (text.includes('hip') || text.includes('pelvis') || text.includes('acetabulum') || text.includes('gluteal') || text.includes('ilium') || text.includes('trochanter')) {
+                return 'Hip Joint & Pelvic Girdle Anatomy';
+              } else if (text.includes('elbow') || text.includes('epicondyle') || text.includes('olecranon') || text.includes('forearm') || text.includes('cubital')) {
+                return 'Elbow Joint & Forearm Anatomy';
               } else {
                 return (categoryName || 'Anatomy') + ' Interactive Module & Diagram';
               }
@@ -714,6 +718,270 @@
                   relatedTopics: 'Coccydynia (tailbone pain), Postpartum Coccyx Subluxation, Pelvic Floor Spasm, and Direct Fall Contusion.',
                   action: 'Pelvic Floor Diaphragm Anchoring, Sitting Tripod Load Distribution & Continence Support',
                   clinicalPearl: 'Bimanual sacrococcygeal joint palpation isolates hypermobility. Treatment includes wedge cushions and pelvic floor relaxation.'
+                }
+              ];
+            }
+
+            // 5. HAND, FINGERS, WRIST & UPPER EXTREMITY BONES
+            if (text.includes('hand') || text.includes('finger') || text.includes('phalang') || text.includes('metacarpal') || text.includes('carpal') || text.includes('wrist') || text.includes('thumb') || text.includes('digit') || text.includes('knuckle')) {
+              return [
+                {
+                  id: 1,
+                  title: 'Phalanges (Finger Bones)',
+                  subtitle: 'Distal, Middle & Proximal Phalanges of Digits I–V',
+                  whatItMeans: 'The phalanges are the 14 slender bones forming the fingers and thumb. Each finger has 3 phalanges (proximal, middle, distal) while the thumb has only 2 (proximal, distal).',
+                  whatItDoes: 'Enable fine dexterity, grip strength, and precision pinch movements essential for all manual tasks. Each joint (DIP, PIP) independently flexes and extends for fine-motor control.',
+                  whyWeNeedIt: 'Critical for manipulating objects, writing, tool use, and daily activities. The distal phalanges house nail beds for additional sensory and protective function.',
+                  nerveSupply: 'Digital Branches of Median Nerve (Digits I–III), Ulnar Nerve (Digits IV–V), Palmar Digital Arteries',
+                  relatedTopics: 'Phalangeal Fractures, Mallet Finger (Distal Phalanx Avulsion), Boutonnière Deformity, Swan-Neck Deformity, and Trigger Finger.',
+                  action: 'Fine Pinch, Power Grip, DIP & PIP Flexion/Extension for Precision Tasks',
+                  clinicalPearl: 'Mallet finger results from avulsion of the extensor tendon at the distal phalanx. Treated with 6–8 weeks of DIP joint splinting in extension.'
+                },
+                {
+                  id: 2,
+                  title: 'Metacarpals (Palm Bones)',
+                  subtitle: '5 Metacarpal Shafts, Heads & Bases (MC1–MC5)',
+                  whatItMeans: 'The metacarpals are 5 long bones forming the palm, connecting the carpal wrist bones to the proximal phalanges. Each has a base, shaft, and rounded distal head forming knuckles.',
+                  whatItDoes: 'Transmit gripping forces from the fingers to the wrist. The first metacarpal (thumb) is shortest and most mobile, enabling opposition. MC4 and MC5 allow some sagittal flexion for the "cup grip".',
+                  whyWeNeedIt: 'Form the structural skeleton of the palm. The metacarpophalangeal (MCP) joints allow flexion, extension, abduction, and adduction of fingers.',
+                  nerveSupply: 'Deep Branch of Ulnar Nerve (intrinsic muscles), Median Nerve (thenar muscles), Princeps Pollicis & Common Palmar Digital Arteries',
+                  relatedTopics: 'Boxer\'s Fracture (5th Metacarpal Neck Fracture), Bennett\'s Fracture (1st Metacarpal Base), Rolando Fracture, and MCP Joint Dislocation.',
+                  action: 'Palm Architecture, Power Grip Foundation & MCP Joint Articulation',
+                  clinicalPearl: 'Boxer\'s fracture (neck of 5th metacarpal) is identified by loss of the 5th knuckle prominence with volar angulation of the distal fragment.'
+                },
+                {
+                  id: 3,
+                  title: 'Carpal Bones (Wrist)',
+                  subtitle: '8 Carpal Bones in Proximal & Distal Row',
+                  whatItMeans: 'The wrist is composed of 8 carpal bones arranged in 2 rows: Proximal row (Scaphoid, Lunate, Triquetrum, Pisiform) and Distal row (Trapezium, Trapezoid, Capitate, Hamate).',
+                  whatItDoes: 'Form the flexible wrist joint (radiocarpal joint) and intercarpal joints enabling wrist flexion, extension, radial/ulnar deviation, and circumduction. The carpal tunnel houses 9 flexor tendons and the median nerve.',
+                  whyWeNeedIt: 'Essential for all fine-motor and gross wrist-hand movements. The Scaphoid and Lunate form the primary radiocarpal articulation transmitting 80% of wrist compressive load.',
+                  nerveSupply: 'Median Nerve (carpal tunnel), Ulnar Nerve (Guyon\'s canal), Radial Artery (dorsal carpal arch), Ulnar Artery (deep palmar arch)',
+                  relatedTopics: 'Scaphoid Fracture (commonest carpal fracture, AVN risk), Carpal Tunnel Syndrome, Kienbock\'s Disease (Lunate AVN), and TFCC Tear.',
+                  action: 'Wrist Flexion/Extension, Radial & Ulnar Deviation, and Force Transmission from Hand to Forearm',
+                  clinicalPearl: 'Scaphoid fractures present with anatomical snuffbox tenderness. X-rays may be negative — MRI or bone scan required to exclude AVN risk.'
+                },
+                {
+                  id: 4,
+                  title: 'Radius & Distal Radioulnar Joint (DRUJ)',
+                  subtitle: 'Wrist Articulation at Radiocarpal & DRUJ Interface',
+                  whatItMeans: 'The distal radius forms the radiocarpal joint (wrist) with the scaphoid and lunate. The DRUJ between the distal radius and ulna allows forearm rotation (pronation/supination).',
+                  whatItDoes: 'Transmits 80% of wrist compressive load (radius) and 20% through the TFCC-ulnar complex. Enables full forearm pronation (palm-down) and supination (palm-up) for hand positioning in space.',
+                  whyWeNeedIt: 'Critical for all hand functional tasks requiring wrist positioning. Distal radius fractures are the most common adult fractures overall.',
+                  nerveSupply: 'Anterior Interosseous Nerve, Posterior Interosseous Nerve (deep radial branch), Radial Artery, Anterior Interosseous Artery',
+                  relatedTopics: 'Colles\' Fracture (distal radius, FOOSH), Smith\'s Fracture (reverse Colles), Barton\'s Fracture, DRUJ Instability, and TFCC Tear.',
+                  action: 'Radiocarpal Load Transmission, Forearm Pronation/Supination (180°), and Wrist Stability',
+                  clinicalPearl: 'Colles\' fracture produces the classic "dinner fork" deformity — dorsal angulation with radial shortening after fall on outstretched hand.'
+                },
+                {
+                  id: 5,
+                  title: 'MCP, PIP & DIP Joint Mechanics & Hand Ligaments',
+                  subtitle: 'Finger Joint Complex & Collateral Ligament Architecture',
+                  whatItMeans: 'The hand contains three types of interphalangeal joints: Metacarpophalangeal (MCP), Proximal Interphalangeal (PIP), and Distal Interphalangeal (DIP) — each stabilized by collateral and volar plate ligaments.',
+                  whatItDoes: 'PIP joints provide the greatest contribution to overall grip power. MCP joints allow both flexion and lateral abduction/adduction. DIP joints fine-tune distal fingertip positioning for precision tasks.',
+                  whyWeNeedIt: 'Collateral ligaments prevent lateral finger deviation under load while volar plates prevent hyperextension injury. Intact joint mechanics are essential for pinch and grip.',
+                  nerveSupply: 'Palmar & Dorsal Digital Arteries, Proprioceptive Mechanoreceptors (Meissner & Pacinian Corpuscles), Digital Palmar Nerves',
+                  relatedTopics: 'Volar Plate Injury, Gamekeeper\'s / Skier\'s Thumb (UCL Tear), PIP Joint Dislocation, Rheumatoid Finger Deformities.',
+                  action: 'Precision Pinch, Full Fist Formation, Lateral Finger Stability & Proprioceptive Fine-Motor Feedback',
+                  clinicalPearl: 'Gamekeeper\'s thumb (UCL tear at MCP joint of thumb) is tested with valgus stress at 30° MCP flexion. >35° laxity or no firm endpoint indicates complete rupture.'
+                }
+              ];
+            }
+
+            // 6. FOOT, ANKLE & LOWER EXTREMITY BONES
+            if (text.includes('foot') || text.includes('ankle') || text.includes('tarsal') || text.includes('metatarsal') || text.includes('calcaneus') || text.includes('talus') || text.includes('toe') || text.includes('plantar') || text.includes('hallux') || text.includes('fibula') || text.includes('achilles')) {
+              return [
+                {
+                  id: 1,
+                  title: 'Talus (Ankle Bone)',
+                  subtitle: 'Keystone of the Ankle Mortise & Hindfoot',
+                  whatItMeans: 'The talus is the central keystone bone of the ankle, articulating above with the tibia and fibula (mortise joint), below with the calcaneus (subtalar joint), and anteriorly with the navicular.',
+                  whatItDoes: 'Transmits the entire body weight from the tibia down into the foot. Controls talocrural dorsiflexion/plantarflexion and subtalar pronation/supination movements critical for ambulation.',
+                  whyWeNeedIt: 'Without the talus, efficient bipedal gait is impossible. It is the only tarsal bone without muscular attachments — entirely covered with articular cartilage.',
+                  nerveSupply: 'Superficial Peroneal, Deep Peroneal & Posterior Tibial Nerves; Anastomotic Vascular Ring (Peroneal, Posterior & Anterior Tibial Arteries)',
+                  relatedTopics: 'Talar Fracture (AVN risk up to 40%), Ankle Fracture-Dislocation, OCD (Osteochondral Defect) of Talus, and Subtalar Instability.',
+                  action: 'Body Weight Transmission, Talocrural Dorsiflexion/Plantarflexion & Subtalar Inversion/Eversion',
+                  clinicalPearl: 'The talus has no muscular attachments — fractures carry high AVN risk (Hawkins classification). Hawkins sign (subchondral lucency) indicates vascular preservation.'
+                },
+                {
+                  id: 2,
+                  title: 'Calcaneus (Heel Bone)',
+                  subtitle: 'Largest Tarsal Bone & Achilles Tendon Insertion',
+                  whatItMeans: 'The calcaneus is the largest and strongest tarsal bone, forming the heel. It articulates with the talus superiorly and the cuboid anteriorly, forming the hindfoot platform.',
+                  whatItDoes: 'Acts as the posterior lever arm of the foot during heel strike. The calcaneal tuberosity is the attachment site for the Achilles tendon, providing plantarflexion power.',
+                  whyWeNeedIt: 'Absorbs the initial heel-strike impact (2–3x body weight) during walking and running. Provides bony attachment for both the Achilles tendon and plantar fascia.',
+                  nerveSupply: 'Medial & Lateral Plantar Nerves (tibial nerve branches), Medial Calcaneal Nerve, Sural Nerve, Peroneal Artery',
+                  relatedTopics: 'Calcaneal Fracture (Sanders Classification), Plantar Fasciitis (heel spur), Achilles Tendon Rupture, and Retrocalcaneal Bursitis.',
+                  action: 'Heel-Strike Load Absorption, Achilles Plantarflexion Lever & Plantar Fascia Anchor',
+                  clinicalPearl: 'Calcaneal fractures from height falls cause intra-articular injury. Böhler\'s angle <20° indicates subtalar collapse. Squeeze test diagnoses stress fractures.'
+                },
+                {
+                  id: 3,
+                  title: 'Metatarsals & Forefoot',
+                  subtitle: '5 Metatarsal Bones & Forefoot Architecture',
+                  whatItMeans: 'The foot contains 5 metatarsal bones connecting the midfoot tarsals to the proximal phalanges. The 1st metatarsal is the largest, bearing most forefoot load during push-off.',
+                  whatItDoes: 'Form the transverse and longitudinal arch keystones during gait push-off phase. The 1st metatarsal head bears 40% of forefoot load while the lesser metatarsals bear 60% collectively.',
+                  whyWeNeedIt: 'Metatarsals act as the dynamic forefoot lever, enabling efficient toe-off propulsion. Medial longitudinal arch absorbs and returns elastic energy during walking and running.',
+                  nerveSupply: 'Medial Plantar Nerve (1st–3rd), Lateral Plantar Nerve (4th–5th), Dorsalis Pedis Artery & Plantar Arterial Arch',
+                  relatedTopics: 'March Fracture (2nd Metatarsal Stress Fracture), Jones Fracture (5th Metatarsal Base), Morton\'s Neuroma (3rd Interspace), and Hallux Valgus (Bunion).',
+                  action: 'Forefoot Load Distribution, Propulsive Push-Off & Longitudinal Arch Support',
+                  clinicalPearl: 'Jones fracture (zone 2, 5th metatarsal base) has poor healing due to vascular watershed — requires surgical fixation in athletes to prevent non-union.'
+                },
+                {
+                  id: 4,
+                  title: 'Ankle Ligament Complex (Lateral & Medial)',
+                  subtitle: 'ATFL, CFL, PTFL (Lateral) & Deltoid Ligament (Medial)',
+                  whatItMeans: 'The ankle is stabilized by the lateral complex (ATFL, CFL, PTFL) and the broader medial deltoid ligament. The ATFL is the weakest and most commonly injured ligament in the body.',
+                  whatItDoes: 'Prevent excessive inversion (lateral ligaments) and eversion (deltoid) of the ankle during dynamic activity. Together they provide static passive stability to the talocrural and subtalar joints.',
+                  whyWeNeedIt: 'Ankle sprains account for 85% of all ankle injuries. Intact ligaments are essential for proprioceptive input, dynamic balance, and prevention of chronic instability.',
+                  nerveSupply: 'Sural, Superficial Peroneal (lateral) & Deep Deltoid Branches (medial); Peroneal Artery Perforators',
+                  relatedTopics: 'Lateral Ankle Sprain (ATFL), Chronic Ankle Instability (CAI), Eversion Sprain (Deltoid), and Ottawa Ankle Rules Fracture Criteria.',
+                  action: 'Passive Ankle Stabilization, Proprioceptive Sensory Feedback & Inversion-Eversion Control',
+                  clinicalPearl: 'Ottawa Ankle Rules guide X-ray need. Anterior Drawer Test (ATFL laxity) and Talar Tilt Test (CFL) are key clinical special tests for lateral ankle instability.'
+                },
+                {
+                  id: 5,
+                  title: 'Plantar Fascia & Intrinsic Foot Muscles',
+                  subtitle: 'Longitudinal Arch Truss & Foot Intrinsic Musculature',
+                  whatItMeans: 'The plantar fascia (aponeurosis) is a thick fibrous band running from the calcaneal tuberosity to the metatarsal heads, forming the medial longitudinal arch truss mechanism.',
+                  whatItDoes: 'Stores and releases elastic energy during gait (windlass mechanism). Intrinsic foot muscles (FDB, AH, FHB) control toe movements, fine balance adjustments, and arch dynamic stabilization.',
+                  whyWeNeedIt: 'The windlass mechanism increases plantar fascia tension during toe extension at push-off, raising the arch and creating a rigid forefoot lever for efficient propulsion.',
+                  nerveSupply: 'Medial & Lateral Plantar Nerves, Medial Calcaneal Nerve (heel pain fibers), Medial Plantar Artery & Lateral Plantar Artery',
+                  relatedTopics: 'Plantar Fasciitis (commonest cause of heel pain), Plantar Fibromatosis (Ledderhose Disease), FHL Tendinopathy, and Pes Planus (Flat Foot).',
+                  action: 'Arch Energy Storage & Return (Windlass), Intrinsic Toe Control & Dynamic Arch Stabilization',
+                  clinicalPearl: 'Plantar fasciitis is worst with the first steps in the morning (post-static dyskinesia). Windlass test and calcaneal squeeze test confirm the diagnosis.'
+                }
+              ];
+            }
+
+            // 7. HIP, PELVIS & PROXIMAL FEMUR
+            if (text.includes('hip') || text.includes('pelvis') || text.includes('acetabulum') || text.includes('ilium') || text.includes('ischium') || text.includes('pubis') || text.includes('gluteal') || text.includes('trochanter') || text.includes('piriformis') || text.includes('groin')) {
+              return [
+                {
+                  id: 1,
+                  title: 'Acetabulum & Femoral Head (Hip Ball-and-Socket)',
+                  subtitle: 'Acetabular Cup & Femoral Head Articular Interface',
+                  whatItMeans: 'The hip joint is a deep ball-and-socket (enarthrosis) joint formed by the acetabulum of the pelvis and the spherical head of the femur, stabilized by the acetabular labrum and strong capsule.',
+                  whatItDoes: 'Bears 3× body weight during walking and up to 7× during running. Allows multi-axial hip motion: flexion (120°), extension (30°), abduction (45°), adduction (30°), and rotation.',
+                  whyWeNeedIt: 'The deep acetabular socket provides inherent bony stability unlike the shallow shoulder. The labrum seals the joint, providing vacuum-effect suction stabilization.',
+                  nerveSupply: 'Femoral Nerve (L2–L4), Obturator Nerve (L2–L4), Superior Gluteal Nerve (L4–S1), Medial Circumflex Femoral Artery',
+                  relatedTopics: 'Hip Osteoarthritis, Femoroacetabular Impingement (FAI — Cam/Pincer), Labral Tear, Hip Dysplasia, and Femoral Head AVN.',
+                  action: 'Multi-Axial Weight-Bearing Articulation, Bipedal Gait & Athletic Hip Rotation',
+                  clinicalPearl: 'FADIR test (Flexion, ADduction, Internal Rotation) is the most sensitive test for FAI and acetabular labral tears. FABER differentiates SI joint from hip pathology.'
+                },
+                {
+                  id: 2,
+                  title: 'Ilium, Ischium & Pubis (Pelvic Ring)',
+                  subtitle: 'Three Fused Bones of the Hemipelvis',
+                  whatItMeans: 'Each hemipelvis is formed by three bones fusing at the acetabulum: ilium (upper wing), ischium (posterior-inferior, "sitting bone"), and pubis (anterior). Together they form the pelvic ring.',
+                  whatItDoes: 'Transmits axial loads from the spine to both lower limbs, protects pelvic viscera (bladder, rectum, uterus), and provides origin for powerful hip and trunk muscles.',
+                  whyWeNeedIt: 'The pelvic ring acts as the structural bridge between the axial and appendicular skeleton. The pubic symphysis and sacroiliac joints together absorb and distribute ground reaction forces.',
+                  nerveSupply: 'Lumbar Plexus (L1–L4), Sacral Plexus (L4–S4), Obturator Nerve, Ilioinguinal & Iliohypogastric Nerves, Internal Iliac Artery',
+                  relatedTopics: 'Pelvic Ring Fractures, Pelvic Avulsion Injuries (in adolescents), Pubic Symphysis Diastasis, Acetabular Fractures, and Osteitis Pubis.',
+                  action: 'Axial Load Distribution, Visceral Protection & Hip Musculature Origin',
+                  clinicalPearl: 'Pelvic avulsion fractures are common in sprinting adolescents — AIIS (rectus femoris), ASIS (sartorius), and ischial tuberosity (hamstrings origin) are the classic sites.'
+                },
+                {
+                  id: 3,
+                  title: 'Greater & Lesser Trochanter (Femoral Tuberosities)',
+                  subtitle: 'Hip Abductor & Iliopsoas Muscular Bony Levers',
+                  whatItMeans: 'The greater trochanter is the large lateral bony projection of the proximal femur serving as the insertion of all three gluteal muscles and the external rotators. The lesser trochanter is the psoas major insertion.',
+                  whatItDoes: 'Greater trochanter increases the mechanical leverage arm of gluteus medius/minimus for hip abduction, preventing Trendelenburg pelvic drop during single-leg stance. Lesser trochanter transmits psoas flexion force.',
+                  whyWeNeedIt: 'Without the trochanteric lever arm, hip abduction force would be 3-4x greater to maintain level pelvis. Critical for efficient single-leg balance and gait mechanics.',
+                  nerveSupply: 'Superior Gluteal Nerve (Greater Trochanter abductors), Femoral Nerve (Lesser Trochanter psoas), Trochanteric Anastomosis',
+                  relatedTopics: 'Greater Trochanteric Pain Syndrome (GTPS), Gluteal Tendinopathy, Trochanteric Bursitis, Lesser Trochanter Avulsion, and IT Band Syndrome.',
+                  action: 'Hip Abductor Leverage, Pelvic Level Stabilization (Trendelenburg Prevention) & Psoas Flexion Anchor',
+                  clinicalPearl: 'Trendelenburg gait (positive sign) indicates ipsilateral gluteus medius weakness. Palpation over greater trochanter reproduces lateral hip pain in GTPS/gluteal tendinopathy.'
+                },
+                {
+                  id: 4,
+                  title: 'Hip Capsule & Iliofemoral Ligament',
+                  subtitle: 'Strongest Ligament in the Body & Joint Capsule Complex',
+                  whatItMeans: 'The hip capsule is reinforced by three capsular ligaments: iliofemoral (Y-ligament, anteriorly — strongest ligament in the human body), ischiofemoral (posterior), and pubofemoral (inferior).',
+                  whatItDoes: 'The iliofemoral ligament limits hip extension and external rotation, creating the "screw-home" locking mechanism that allows upright standing with minimal muscle effort. The capsule also seals synovial fluid.',
+                  whyWeNeedIt: 'Passive standing stability relies on the iliofemoral ligament tension — allows prolonged standing without constant gluteal muscle activation. Capsular integrity prevents hip dislocation.',
+                  nerveSupply: 'Articular Branches from Femoral, Obturator & Superior Gluteal Nerves; Medial & Lateral Circumflex Femoral Arteries',
+                  relatedTopics: 'Hip Dislocation, Capsular Laxity in Dysplasia, FAI Impingement, Posterior Capsule Contracture (limits internal rotation), and Hip Arthroscopy Portals.',
+                  action: 'Passive Standing Stability, Hip Extension Restraint & Joint Capsule Pressure Regulation',
+                  clinicalPearl: 'Hip posterior dislocation occurs in dashboard injuries (knee hits dashboard). Thomas Test reveals hip flexion contracture indicating iliopsoas or anterior capsule tightness.'
+                },
+                {
+                  id: 5,
+                  title: 'Gluteal Muscles (Maximus, Medius, Minimus)',
+                  subtitle: 'Largest & Most Powerful Hip Muscle Group',
+                  whatItMeans: 'The three gluteal muscles form the buttock mass: Gluteus Maximus (largest, hip extension & external rotation), Gluteus Medius (abductor, lateral stabilizer), and Gluteus Minimus (deep abductor, assists medius).',
+                  whatItDoes: 'Gluteus Maximus is the primary stair-climbing and running power generator. Gluteus Medius controls pelvic lateral stability during single-leg stance — essential for preventing Trendelenburg drop.',
+                  whyWeNeedIt: 'Together the gluteal group generates the greatest muscle power output in the body during explosive running, jumping, and uphill locomotion. Weakness causes hip, knee, and low back dysfunction.',
+                  nerveSupply: 'Inferior Gluteal Nerve L5-S2 (Maximus), Superior Gluteal Nerve L4-S1 (Medius & Minimus), Superior & Inferior Gluteal Arteries',
+                  relatedTopics: 'Gluteal Tendinopathy, Piriformis Syndrome, Gluteus Medius Tear, Hamstring Proximal Tendinopathy, and Hip Abductor Weakness in Patellofemoral Pain.',
+                  action: 'Hip Extension Power (Running, Stairs, Squats), Pelvic Lateral Stability & Hip Abduction',
+                  clinicalPearl: '"Dead Butt Syndrome" (gluteal amnesia) from prolonged sitting causes gluteal inhibition. Test with bridge assessment and single-leg squat (Trendelenburg pattern).'
+                }
+              ];
+            }
+
+            // 8. ELBOW, FOREARM & DISTAL HUMERUS
+            if (text.includes('elbow') || text.includes('humerus') || text.includes('ulna') || text.includes('radius') || text.includes('cubital') || text.includes('epicondyle') || text.includes('olecranon') || text.includes('forearm') || text.includes('pronation') || text.includes('supination')) {
+              return [
+                {
+                  id: 1,
+                  title: 'Distal Humerus & Elbow Joint (Humeroulnar & Humeroradial)',
+                  subtitle: 'Composite Hinge & Pivot Joint at Elbow',
+                  whatItMeans: 'The elbow is a compound joint with three articulations in one capsule: humeroulnar (hinge), humeroradial (pivot-hinge), and proximal radioulnar (pivot). Together they enable flexion, extension, and forearm rotation.',
+                  whatItDoes: 'Positions the hand in space for functional tasks. Allows 0–150° elbow flexion/extension. Forearm pronation-supination (180° total arc) performed at both proximal and distal radioulnar joints.',
+                  whyWeNeedIt: 'The elbow precisely positions the forearm and hand in 3D space. As a load-bearing joint in pushing activities, it transmits up to 3× body weight during gymnastics and weightlifting.',
+                  nerveSupply: 'Musculocutaneous (biceps), Radial (triceps, extensors), Median (anterior flexors), Ulnar (FCU, intrinsics); Brachial Artery & Recurrent Branches',
+                  relatedTopics: 'Supracondylar Fractures (commonest children\'s fracture), Elbow Dislocation, Monteggia Fracture, Radial Head Fracture, and Nurse Maid\'s Elbow.',
+                  action: 'Elbow Flexion/Extension (0–150°), Forearm Pronation/Supination (90° each) & Hand Positioning in Space',
+                  clinicalPearl: 'Supracondylar fracture in children risks anterior interosseous nerve (AIN) injury — test pinch "OK" sign. Brachial artery injury causes Volkmann\'s ischemic contracture if missed.'
+                },
+                {
+                  id: 2,
+                  title: 'Medial Epicondyle & UCL (Ulnar Collateral Ligament)',
+                  subtitle: 'Medial Elbow Stabilizer & Thrower\'s Ligament',
+                  whatItMeans: 'The medial epicondyle is a bony prominence from which the UCL (anterior, posterior, and transverse bands) and the common flexor origin arise. The anterior band of UCL is the primary valgus stabilizer.',
+                  whatItDoes: 'Resists the enormous valgus forces generated during overhead throwing (up to 64 Nm). The UCL is the critical restraint preventing medial elbow opening during the late cocking and acceleration phases.',
+                  whyWeNeedIt: 'In throwing athletes, UCL integrity is essential for maintaining elbow stability. UCL reconstruction (Tommy John Surgery) has over 83% return-to-sport rates in baseball pitchers.',
+                  nerveSupply: 'Ulnar Nerve (runs in cubital tunnel posterior to medial epicondyle), Medial Collateral Vessels, Anterior Ulnar Recurrent Artery',
+                  relatedTopics: 'UCL Tear (Tommy John Injury), Cubital Tunnel Syndrome, Medial Epicondyle Apophysitis (Little Leaguer\'s Elbow), and Medial Epicondylitis (Golfer\'s Elbow).',
+                  action: 'Valgus Elbow Stabilization, Flexor-Pronator Mass Origin & Ulnar Nerve Protection',
+                  clinicalPearl: 'Valgus Stress Test and Milking Maneuver assess UCL integrity. Cubital tunnel syndrome from UCL laxity causes ulnar 4th-5th digit numbness and intrinsic hand weakness.'
+                },
+                {
+                  id: 3,
+                  title: 'Lateral Epicondyle & LUCL (Lateral UCL)',
+                  subtitle: 'Common Extensor Origin & Lateral Elbow Stability',
+                  whatItMeans: 'The lateral epicondyle provides the common extensor origin for ECRB, EDC, ECU, and EDM. The lateral ulnar collateral ligament (LUCL) is the primary lateral stabilizer preventing posterolateral rotatory instability (PLRI).',
+                  whatItDoes: 'Common extensor origin enables wrist extension and ulnar deviation required for racket sports and manual labor. LUCL prevents lateral-to-posterior elbow subluxation under supination forces.',
+                  whyWeNeedIt: 'Tennis elbow (lateral epicondylitis) is the commonest cause of lateral elbow pain (1–3% of adults). LUCL injury results in functional instability with simple daily tasks like rising from a chair.',
+                  nerveSupply: 'Posterior Interosseous Nerve (deep radial branch, PIN), Radial Nerve at Radial Head, Posterior Interosseous Artery',
+                  relatedTopics: 'Lateral Epicondylitis / Epicondylosis (Tennis Elbow), LUCL Tear (PLRI), Radial Head Fracture, Posterior Interosseous Nerve Entrapment.',
+                  action: 'Wrist & Finger Extension Force Transmission, Lateral Elbow Stability & PIN Protection',
+                  clinicalPearl: 'Cozen\'s test (resisted wrist extension with elbow extended) and Mill\'s test reproduce lateral epicondyle pain. Eccentric wrist extension exercises are first-line treatment.'
+                },
+                {
+                  id: 4,
+                  title: 'Radial Head & Proximal Radioulnar Joint (PRUJ)',
+                  subtitle: 'Lateral Elbow Pivot & Forearm Rotation Axis',
+                  whatItMeans: 'The disc-shaped radial head articulates with the capitellum (humeroradial joint) and the radial notch of the ulna (PRUJ). It is held in position by the annular ligament encircling the radial neck.',
+                  whatItDoes: 'Transmits 60% of axial compressive force at the elbow during push-up and weight-bearing. Enables forearm rotation (pronation-supination) as the radius rotates around the ulna.',
+                  whyWeNeedIt: 'Radial head is a secondary stabilizer resisting both valgus and posterolateral elbow forces, especially important when the UCL is compromised. Annular ligament integrity prevents "nursemaid\'s elbow" radial head subluxation.',
+                  nerveSupply: 'Posterior Interosseous Nerve (PIN) at Radial Tunnel, Radial Recurrent Artery',
+                  relatedTopics: 'Radial Head Fracture (Mason Classification), Nursemaid\'s Elbow (PRUJ subluxation in children), Radial Tunnel Syndrome, and Essex-Lopresti Injury.',
+                  action: 'Axial Elbow Load Transmission, Forearm Pronation/Supination Pivot & Secondary Valgus Stability',
+                  clinicalPearl: 'Radial head fractures cause painful forearm rotation limitation. Mason Type I (non-displaced) managed conservatively. Mason III requires radial head replacement.'
+                },
+                {
+                  id: 5,
+                  title: 'Olecranon & Elbow Triceps Mechanism',
+                  subtitle: 'Posterior Elbow Prominence & Triceps Insertion',
+                  whatItMeans: 'The olecranon is the posterior bony prominence of the ulna forming the elbow "point." It is the insertion site of the triceps tendon (the primary elbow extensor) and is covered by the olecranon bursa.',
+                  whatItDoes: 'Acts as a biomechanical lever arm amplifying triceps extension force. Articulates in the olecranon fossa of the humerus during full extension, creating a bony block preventing elbow hyperextension.',
+                  whyWeNeedIt: 'Triceps-olecranon mechanism enables pushing, pressing, and throwing release-phase deceleration. Olecranon bursitis is common in direct-impact sports (wrestling) and inflammatory arthritis.',
+                  nerveSupply: 'Radial Nerve (triceps motor, C7), Ulnar Nerve (cutaneous sensation posterior elbow), Posterior Interosseous Artery',
+                  relatedTopics: 'Olecranon Fracture (direct blow), Olecranon Bursitis (student\'s elbow), Triceps Tendon Rupture, Valgus Extension Overload (pitchers), and Elbow Hyperextension Injury.',
+                  action: 'Elbow Extension Torque (Pushing, Overhead Pressing), Hyperextension Block & Olecranon Bursa Protection',
+                  clinicalPearl: 'Olecranon bursitis presents as a fluctuant posterior elbow swelling without joint line involvement. Aspiration with culture differentiates septic from non-septic bursitis.'
                 }
               ];
             }
