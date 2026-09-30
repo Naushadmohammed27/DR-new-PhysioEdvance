@@ -285,6 +285,34 @@
             return 'pdf';
           }
 
+          function getCleanNoteTitle(n, categoryName) {
+            let raw = (n.title || '').trim();
+            const text = ((n.title || '') + ' ' + (n.content || '') + ' ' + (n.file_url || '')).toLowerCase();
+            
+            const isUglyFilename = /whatsapp|img_\d|pxl_\d|screenshot|scan_\d|file_\d|untitled|\.png|\.jpeg|\.jpg|\.gif/i.test(raw);
+            
+            if (isUglyFilename || !raw) {
+              if (text.includes('clavicle') || text.includes('shoulder') || text.includes('acromion')) {
+                return 'Clavicle & Shoulder Girdle Anatomy';
+              } else if (text.includes('head') || text.includes('skull') || text.includes('brain') || text.includes('cranium')) {
+                return 'Cranial Vault & Head Neuroanatomy';
+              } else if (text.includes('knee') || text.includes('patell') || text.includes('femur') || text.includes('tibia')) {
+                return 'Knee Joint & Extensor Mechanism';
+              } else if (text.includes('spine') || text.includes('cervical') || text.includes('lumbar') || text.includes('thoracic') || text.includes('sacrum')) {
+                return 'Vertebral Column & Spinal Segment';
+              } else if (text.includes('heart') || text.includes('cardiac') || text.includes('pulmonary') || text.includes('lung')) {
+                return 'Cardiac System & Thoracic Viscera';
+              } else if (text.includes('hand') || text.includes('wrist') || text.includes('carpal')) {
+                return 'Hand & Upper Extremity Complex';
+              } else if (text.includes('foot') || text.includes('ankle') || text.includes('tarsal')) {
+                return 'Foot & Ankle Biomechanical Unit';
+              } else {
+                return (categoryName || 'Anatomy') + ' Interactive Module & Diagram';
+              }
+            }
+            return raw;
+          }
+
           let pdfCount = 0;
           let textImageCount = 0;
           notes.forEach(n => {
