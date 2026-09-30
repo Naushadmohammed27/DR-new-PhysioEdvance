@@ -294,7 +294,7 @@
           });
         %>
         <!-- NOTE & INTERACTIVE MODULE TITLE SELECTION PILLS WITH TYPE FILTERS -->
-        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white border mb-4">
           <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
             <div class="d-flex align-items-center gap-2.5">
               <div class="p-2 rounded-3 bg-primary-subtle text-primary">
@@ -356,75 +356,140 @@
           function getNoteHotspots(n) {
             const text = ((n.title || '') + ' ' + (n.content || '') + ' ' + (n.file_url || '')).toLowerCase();
             
-            // 1. BRAIN & NEUROLOGICAL SYSTEM (If specifically neuro without spine keywords)
-            if ((text.includes('brain') || text.includes('cerebr') || text.includes('prefrontal') || text.includes('temporal lobe') || text.includes('limbic')) && 
-                !text.includes('spine') && !text.includes('vertebr') && !text.includes('cervical') && !text.includes('lumbar') && !text.includes('sacrum') && !text.includes('1789105558496') && !text.includes('1789119063738') && !text.includes('1789119063739')) {
+            // 1. HEAD, SKULL, BRAIN & CRANIAL NEUROLOGICAL SYSTEM
+            if (text.includes('head') || text.includes('skull') || text.includes('brain') || text.includes('cerebr') || text.includes('cranium') || text.includes('cranial') || text.includes('cephalic') || text.includes('prefrontal') || text.includes('temporal lobe') || text.includes('occipital') || text.includes('parietal') || text.includes('cerebell') || text.includes('brainstem')) {
               return [
                 {
                   id: 1,
-                  title: 'Prefrontal Cortex (Executive Function)',
-                  subtitle: 'Anterior Frontal Neocortex (Brodmann Areas 9, 10, 11, 46, 47)',
-                  whatItMeans: 'The prefrontal cortex constitutes the anterior portion of the frontal lobes. It is the most phylogenetically recent cortical region and coordinates higher-order metacognition, goal-directed behavior, impulse suppression, and personality expression.',
-                  whatItDoes: 'Synthesizes sensory inputs, internal emotional state, and working memory to formulate strategies, evaluate moral consequences, plan motor actions, and regulate emotional reactivity from the underlying limbic system.',
-                  whyWeNeedIt: 'Without prefrontal executive control, human behavior becomes stimulus-driven, impulsive, socially disinhibited, and devoid of foresight or structured planning.',
-                  nerveSupply: 'Anterior Cerebral Artery (ACA), Middle Cerebral Artery (MCA) & Mesocortical Dopaminergic Pathway',
-                  relatedTopics: 'Dysexecutive Syndrome, Traumatic Brain Injury (Frontal Contusion), ADHD, Major Depressive Disorder, and Frontotemporal Dementia (Pick Disease).',
-                  action: 'Executive Decision Making, Working Memory Consolidation & Inhibitory Impulse Control',
-                  clinicalPearl: 'Frontal lobe release signs (grasp, snout, palmomental reflexes) emerge when cortical inhibition fails. Evaluated with the Stroop Color-Word test and Wisconsin Card Sorting Test.'
+                  title: 'Cranial Vault & Prefrontal Cortex (Executive Control)',
+                  subtitle: 'Calvarium & Superior Frontal Neocortex (Brodmann 9, 10, 11, 46)',
+                  whatItMeans: 'The cranial vault forms the protective bony dome of the skull, enclosing the prefrontal cortex situated in the anterior frontal lobes.',
+                  whatItDoes: 'Coordinates higher-order executive function, working memory, impulse suppression, spatial attention, and strategic motor planning.',
+                  whyWeNeedIt: 'Protects fragile cerebral tissue from direct mechanical impact while enabling goal-directed behavior, social cognition, and emotional regulation.',
+                  nerveSupply: 'Anterior Cerebral Artery (ACA), Middle Cerebral Artery (MCA) & CN V1 Meningeal Branches',
+                  relatedTopics: 'Traumatic Brain Injury (TBI), Frontal Lobe Contusions, Concussion Management, and Intracranial Pressure (ICP) Dynamics.',
+                  action: 'Executive Decision Making, Working Memory Consolidation & Inhibitory Control',
+                  clinicalPearl: 'Frontal release signs (grasp, snout, palmomental reflexes) indicate bilateral loss of cortical inhibition. Evaluated with MMSE / MoCA cognitive screening.'
                 },
                 {
                   id: 2,
-                  title: 'Limbic System & Amygdala',
-                  subtitle: 'Subcortical Affective & Threat-Appraisal Circuit',
-                  whatItMeans: 'The limbic system is an interconnected ring of phylogenetically ancient structures including the almond-shaped amygdala, cingulate gyrus, and mamillary bodies situated deep within the medial temporal and subcortical regions.',
-                  whatItDoes: 'Acts as the brain emotional sentinel and survival alarm. Rapidly assesses sensory stimuli for threat, fear, and valence, triggering sympathetic fight-or-flight autonomic cascades via the hypothalamus and pituitary axis.',
-                  whyWeNeedIt: 'Crucial for threat survival and emotional memory tagging. It primes cardiovascular and adrenal responses within milliseconds before conscious cortical evaluation occurs.',
-                  nerveSupply: 'Circle of Willis Branches, Anterior Choroidal Artery & Cholinergic Septal Projections',
-                  relatedTopics: 'Post-Traumatic Stress Disorder (PTSD), Panic Disorder, Generalized Anxiety, Kluver-Bucy Syndrome (bilateral amygdala ablation), and Emotional Dysregulation.',
-                  action: 'Affective Appraisal, Threat Detection, Autonomic Priming & Emotional Memory Consolidation',
-                  clinicalPearl: 'In PTSD and chronic panic states, hyperactive amygdalar output overpowers prefrontal top-down inhibition. Mindful diaphragmatic breathing downregulates sympathetic tone via vagal nerve stimulation.'
+                  title: 'Temporal Lobe & Skull Base (Auditory & Memory)',
+                  subtitle: 'Middle Cranial Fossa & Wernicke Area (Brodmann 22, 41, 42)',
+                  whatItMeans: 'Situated within the middle cranial fossa, housing Heschl gyri (primary auditory cortex) and the medial temporal hippocampal formation.',
+                  whatItDoes: 'Decodes auditory frequencies, language comprehension (Wernicke area), and consolidates short-term experiences into long-term declarative memories.',
+                  whyWeNeedIt: 'Crucial for verbal communication, speech comprehension, acoustic recognition, and spatial navigation.',
+                  nerveSupply: 'Middle Cerebral Artery (MCA) Inferior Division & Posterior Cerebral Artery (PCA)',
+                  relatedTopics: 'Wernicke Receptive Aphasia, Temporal Lobe Epilepsy, Middle Cranial Fossa Fractures, and Alzheimer Disease.',
+                  action: 'Auditory Frequency Decoding, Language Comprehension & Memory Consolidation',
+                  clinicalPearl: 'Wernicke aphasia features fluent, rapid speech that lacks coherent meaning ("word salad") accompanied by loss of auditory comprehension.'
                 },
                 {
                   id: 3,
-                  title: 'Hippocampus & Medial Temporal Lobe',
-                  subtitle: 'Allocortical Seashore-Shaped Memory Keystone',
-                  whatItMeans: 'The hippocampus is a curved seahorse-shaped allocortical structure situated within the medial temporal lobe, forming the core of the circuit of Papez.',
-                  whatItDoes: 'Essential for consolidating immediate and short-term declarative memories into durable long-term storage in neocortical networks, while generating internal cognitive spatial maps for physical navigation.',
-                  whyWeNeedIt: 'Without the hippocampus, new episodic and semantic memories cannot be created (dense anterograde amnesia, as seen in famous patient H.M.).',
-                  nerveSupply: 'Posterior Cerebral Artery (PCA) Branches, Anterior Choroidal Artery & Entorhinal Pathway',
-                  relatedTopics: 'Alzheimer Disease (early neurofibrillary tangle deposition), Anterograde Amnesia, Temporal Lobe Epilepsy (Mesial Temporal Sclerosis), and Chronic Stress Hippocampal Atrophy.',
-                  action: 'Declarative Memory Consolidation, Spatial Navigation & Synaptic Long-Term Potentiation (LTP)',
-                  clinicalPearl: 'Mini-Mental State Examination (MMSE) 3-word delayed recall test is the quickest bedside screen for hippocampal consolidation deficits. Aerobic exercise stimulates brain-derived neurotrophic factor (BDNF), inducing hippocampal neurogenesis.'
+                  title: 'Parieto-Occipital Cortex (Visual & Spatial Processing)',
+                  subtitle: 'Posterior Cranial Vault & Primary Visual Area (Brodmann 17)',
+                  whatItMeans: 'Located in the posterior cerebral hemisphere, bounded by the parieto-occipital sulcus and containing the primary visual cortex along the calcarine fissure.',
+                  whatItDoes: 'Receives visual inputs from the lateral geniculate nucleus, mapping spatial orientation, color, depth, and object recognition.',
+                  whyWeNeedIt: 'Essential for visual acuity, hand-eye coordination, spatial navigation, and reading comprehension.',
+                  nerveSupply: 'Posterior Cerebral Artery (PCA) & Dural Venous Sinus Drainage',
+                  relatedTopics: 'Cortical Blindness, Homonymous Hemianopia, Posterior Circulation Strokes, and Visuospatial Agnosia.',
+                  action: 'Retinotopic Visual Processing, Spatial Depth Perception & Hand-Eye Coordination',
+                  clinicalPearl: 'PCA occlusion causes contralateral homonymous hemianopia with macular sparing due to collateral MCA blood supply.'
                 },
                 {
                   id: 4,
-                  title: 'Temporal Lobe & Auditory Cortex',
-                  subtitle: 'Lateral Temporal Neocortex & Wernicke Area (Brodmann 22, 41, 42)',
-                  whatItMeans: 'The temporal lobe resides below the lateral Sylvian fissure and contains Heschl gyri (primary auditory cortex) and the posterior superior temporal gyrus (Wernicke language comprehension area on the dominant hemisphere).',
-                  whatItDoes: 'Decodes auditory frequencies, rhythm, and phonemes, transforming acoustic waves into intelligible semantic language, while mediating visual face recognition (fusiform gyrus).',
-                  whyWeNeedIt: 'Essential for verbal communication, auditory comprehension, musical interpretation, and linking auditory inputs to stored conceptual memory.',
-                  nerveSupply: 'Middle Cerebral Artery (MCA) Inferior Division & Posterior Cerebral Artery (PCA)',
-                  relatedTopics: 'Wernicke Sensory (Receptive) Aphasia, Auditory Agnosia, Prosopagnosia (Face Blindness), and Temporal Lobe Seizures with auditory hallucinations.',
-                  action: 'Auditory Frequency Decoding, Language Comprehension & Phonological Processing',
-                  clinicalPearl: 'Wernicke aphasia features fluent, rapid speech that lacks coherent meaning ("word salad") accompanied by severe loss of comprehension. The patient is typically unaware of their communication deficit.'
+                  title: 'Cerebellum & Vestibular Balance Center',
+                  subtitle: 'Posterior Cranial Fossa & Infratentorial Compartment',
+                  whatItMeans: 'Lies beneath the tentorium cerebelli in the posterior cranial fossa, featuring high-density Purkinje cell cerebellar cortex and deep nuclei.',
+                  whatItDoes: 'Modulates smooth motor coordination, real-time error correction during movement, postural tone, and vestibulo-ocular gaze stabilization.',
+                  whyWeNeedIt: 'Maintains balance, upright posture against gravity, fluid athletic coordination, and precise fine-motor control.',
+                  nerveSupply: 'Superior Cerebellar Artery (SCA), AICA & Posterior Inferior Cerebellar Artery (PICA)',
+                  relatedTopics: 'Cerebellar Ataxia, Dysmetria, Intention Tremor, Wallenberg Syndrome, and Vestibulo-Ocular Reflex (VOR) Impairment.',
+                  action: 'Motor Error Correction, Dynamic Balance Control & Postural Equilibrium',
+                  clinicalPearl: 'Checked with Finger-to-Nose, Heel-to-Shin, and Rapid Alternating Movement (Dysdiadochokinesia) clinical tests.'
                 },
                 {
                   id: 5,
-                  title: 'Brainstem & Reticular Formation',
-                  subtitle: 'Midbrain, Pons, Medulla & Ascending Reticular Activating System (ARAS)',
-                  whatItMeans: 'The brainstem connects the cerebral hemispheres with the spinal cord, comprising the midbrain, pons, and medulla oblongata, interwoven with diffuse networks of the reticular formation.',
-                  whatItDoes: 'Controls vital autonomous reflex circuits for cardiac rhythm, vascular tone, and spontaneous respiratory drive. Contains nuclei for cranial nerves III through XII and the ARAS regulating arousal, consciousness, and sleep-wake cycles.',
-                  whyWeNeedIt: 'The master biological life-support conduit. Brainstem damage compromises spontaneous respiration and cardiovascular rhythm, leading to coma or brain death.',
-                  nerveSupply: 'Basilar Artery, Vertebral Arteries, Posterior Inferior Cerebellar Artery (PICA) & Anterior Inferior Cerebellar Artery (AICA)',
-                  relatedTopics: 'Brainstem Stroke (Wallenberg Lateral Medullary Syndrome), Locked-In Syndrome (basilar thrombosis), Coma & Brain Death Criteria, and Cranial Nerve Palsies.',
-                  action: 'Autonomic Cardiorespiratory Regulation, Cranial Reflex Arcs & Ascending Reticular Consciousness',
-                  clinicalPearl: 'Brainstem function is tested via the pupillary light reflex (CN II/III), corneal reflex (CN V/VII), vestibulo-ocular doll eyes reflex (CN VIII/III/VI), and gag reflex (CN IX/X).'
+                  title: 'Brainstem & Medulla Oblongata (Vital Autonomic Center)',
+                  subtitle: 'Infratentorial Brainstem & Foramen Magnum Axis',
+                  whatItMeans: 'Comprises the midbrain, pons, and medulla oblongata transitioning through the foramen magnum into the spinal cord.',
+                  whatItDoes: 'Houses vital cardiorespiratory reflex centers, reticular activating system (ARAS for consciousness), and cranial nerve nuclei III through XII.',
+                  whyWeNeedIt: 'Maintains autonomous breathing, cardiac rhythm, vasomotor tone, swallowing reflexes, and ascending arousal.',
+                  nerveSupply: 'Basilar Artery, Vertebral Arteries & PICA',
+                  relatedTopics: 'Brainstem Stroke (Locked-in Syndrome, Wallenberg Syndrome), Cranial Nerve Palsies, and Brainstem Reflex Assessment.',
+                  action: 'Autonomic Cardiorespiratory Regulation, Cranial Reflex Arcs & Ascending Reticular Arousal',
+                  clinicalPearl: 'Tested via pupillary (CN II/III), corneal (CN V/VII), gag (CN IX/X), and vestibulo-ocular (CN VIII/III/VI) reflexes.'
                 }
               ];
             }
 
-            // 2. KNEE & LOWER EXTREMITY (If specifically knee without spine keywords)
-            if ((text.includes('knee') || text.includes('patell') || text.includes('femur') || text.includes('tibia')) && 
+            // 2. CLAVICLE & SHOULDER GIRDLE
+            if (text.includes('clavicle') || text.includes('shoulder') || text.includes('acromion') || text.includes('scapula') || text.includes('rotator') || text.includes('glenohumeral') || text.includes('deltoid') || text.includes('subclavian')) {
+              return [
+                {
+                  id: 1,
+                  title: 'Acromioclavicular (AC) Joint & Acromial End',
+                  subtitle: 'Lateral Articular Component & Ligamentous Suspension',
+                  whatItMeans: 'The acromial end of the clavicle features a flattened facet that articulates with the medial border of the acromion process of the scapula.',
+                  whatItDoes: 'Transmits mechanical forces from the upper limb to the axial skeleton while permitting scapular rotation during arm elevation overhead.',
+                  whyWeNeedIt: 'Provides a rigid anterior strut that suspends the upper extremity away from the thorax, enabling full 180° shoulder abduction and overhead reach.',
+                  nerveSupply: 'Suprascapular Nerve, Lateral Pectoral Nerve & Thoracoacromial Artery',
+                  relatedTopics: 'AC Joint Separation (Rockwood Classification), Acromioclavicular Osteoarthritis, and Subacromial Impingement Syndrome.',
+                  action: 'Scapular Rotation Suspension & Axial Upper Limb Load Transmission',
+                  clinicalPearl: 'Cross-Body Adduction test and active compression (O-Brien test) isolate AC joint pathology. Palpable step-off indicates high-grade ligamentous tear.'
+                },
+                {
+                  id: 2,
+                  title: 'Clavicular Shaft (Mid-Shaft Bony Convexity)',
+                  subtitle: 'Tubular S-Shaped Medial Two-Thirds & Lateral One-Third Junction',
+                  whatItMeans: 'The middle third of the clavicle represents the dynamic transition zone between its anteriorly convex medial two-thirds and anteriorly concave lateral one-third.',
+                  whatItDoes: 'Absorbs indirect axial impacts from falls onto an outstretched hand (FOOSH) and protects the underlying subclavian neurovascular bundle.',
+                  whyWeNeedIt: 'Acts as a protective structural bridge over the brachial plexus and subclavian vessels while anchoring pectoralis major and sternocleidomastoid muscles.',
+                  nerveSupply: 'Supraclavicular Nerves (C3-C4) & Subclavian Artery Periosteal Branches',
+                  relatedTopics: 'Mid-Shaft Clavicle Fracture, Brachial Plexus Stretch Injury, Non-Union / Mal-Union, and Subclavian Vein Compression.',
+                  action: 'FOOSH Impact Shock Absorption & Brachial Neurovascular Protection',
+                  clinicalPearl: 'Over 80% of all clavicle fractures occur at the middle third. Assess distal neurovascular status (radial pulse, finger sensation) in all acute injuries.'
+                },
+                {
+                  id: 3,
+                  title: 'Subclavian Groove & Subclavius Muscle Anchor',
+                  subtitle: 'Inferior Surface Grooved Insertion & Protective Fascial Shield',
+                  whatItMeans: 'A smooth longitudinal depression situated on the inferior surface of the middle third of the clavicle.',
+                  whatItDoes: 'Anchors the subclavius muscle and clavipectoral fascia, acting as a muscular buffer between a fractured clavicle and the subclavian artery and vein.',
+                  whyWeNeedIt: 'Depresses the clavicle and pulls it medially to stabilize the sternoclavicular joint during heavy pushing and pulling activities.',
+                  nerveSupply: 'Nerve to Subclavius (C5-C6) & Clavipectoral Arterial Branches',
+                  relatedTopics: 'Costoclavicular Space Compression, Thoracic Outlet Syndrome (TOS), and Clavipectoral Fascia Tightness.',
+                  action: 'Inferior Clavicular Depressions & Subclavian Neurovascular Shielding',
+                  clinicalPearl: 'Subclavius muscle hypertonicity narrows the costoclavicular space, contributing to neurogenic Thoracic Outlet Syndrome.'
+                },
+                {
+                  id: 4,
+                  title: 'Conoid Tubercle & Coracoclavicular (CC) Ligaments',
+                  subtitle: 'Inferolateral Structural Anchor (Conoid & Trapezoid Ligaments)',
+                  whatItMeans: 'A prominent bony eminence on the inferior posterior margin of the lateral clavicle, anchoring the dense conoid ligament.',
+                  whatItDoes: 'Primary vertical passive stabilizer of the acromioclavicular joint, checking superior displacement of the clavicle relative to the coracoid process.',
+                  whyWeNeedIt: 'Provides the primary static restraint preventing the weight of the arm from pulling the scapula downward away from the clavicle.',
+                  nerveSupply: 'Proprioceptive Articular Branches of Suprascapular & Subclavian Nerves',
+                  relatedTopics: 'Coracoclavicular Ligament Disruption, Type III AC Joint Separation, Scapular Dyskinesis, and Operative CC Reconstruction.',
+                  action: 'Vertical Static Suspension & Restraint Against Superior Clavicular Displacement',
+                  clinicalPearl: 'Tenderness over the conoid tubercle with a positive distal clavicular keyboard/ballottement sign confirms CC ligament disruption.'
+                },
+                {
+                  id: 5,
+                  title: 'Sternoclavicular (SC) Joint & Sternal Articular Facet',
+                  subtitle: 'Medial Synovial Articulation with Manubrium Sterni',
+                  whatItMeans: 'An enlarged bulbous articular facet at the medial end of the clavicle that articulates with the clavicular notch of the manubrium and first costal cartilage.',
+                  whatItDoes: 'Forms the sole true skeletal articulation uniting the upper extremity to the axial skeleton, housing a fibrocartilaginous articular disc.',
+                  whyWeNeedIt: 'Provides multi-axial freedom of motion (elevation, depression, protraction, retraction, axial rotation) while absorbing forces transmitted from the arm.',
+                  nerveSupply: 'Medial Supraclavicular Nerve (C3-C4), Nerve to Subclavius & Internal Thoracic Artery',
+                  relatedTopics: 'Sternoclavicular Joint Dislocation (Anterior vs Posterior Emergency), SC Osteoarthritis, and Sternoclavicular Instability.',
+                  action: 'Axial Skeletal Union & Multi-Axial Clavicular Kinematic Pivot',
+                  clinicalPearl: 'Posterior SC joint dislocation is a medical emergency that can compress the trachea, esophagus, or brachiocephalic vein, presenting with dyspnea or dysphagia.'
+                }
+              ];
+            }
+
+            // 3. KNEE & LOWER EXTREMITY
+            if ((text.includes('knee') || text.includes('patell') || text.includes('femur') || text.includes('tibia') || text.includes('meniscus') || text.includes('acl')) && 
                 !text.includes('spine') && !text.includes('vertebr') && !text.includes('cervical') && !text.includes('lumbar')) {
               return [
                 {
@@ -432,126 +497,198 @@
                   title: 'Femur Head & Neck',
                   subtitle: 'Proximal Femoral Articular Component & Bony Fulcrum',
                   whatItMeans: 'The femur head is a spherical articular bone covered with smooth hyaline cartilage that nests into the acetabulum of the pelvis, supported by the angled femoral neck.',
-                  whatItDoes: 'Transmits ground reaction and gravitational compressive loads from the pelvis to the femoral shaft while facilitating tri-axial hip range of motion: flexion, extension, abduction, adduction, and rotation.',
+                  whatItDoes: 'Transmits ground reaction and gravitational compressive loads from the pelvis to the femoral shaft while facilitating tri-axial hip range of motion.',
                   whyWeNeedIt: 'Provides the massive mechanical lever arm and freedom of movement necessary for bipedal locomotion, stair climbing, running, and athletic agility.',
                   nerveSupply: 'Femoral Nerve, Obturator Nerve, Superior Gluteal Nerve & Medial Circumflex Femoral Artery',
                   relatedTopics: 'Subcapital Femoral Neck Fracture, Avascular Necrosis (AVN) of Femoral Head, Hip Osteoarthritis, and Slipped Capital Femoral Epiphysis (SCFE).',
                   action: 'Bipedal Compressive Weight Bearing, Hip Articulation & Pelvic Load Dissipation',
-                  clinicalPearl: 'Subcapital femoral fractures tear the retinacular vessels arising from the medial circumflex femoral artery, leading to high rates of avascular necrosis. Trendelenburg test evaluates gluteus medius abductor weakness.'
+                  clinicalPearl: 'Subcapital femoral fractures tear retinacular vessels from the medial circumflex femoral artery. Trendelenburg test evaluates abductor integrity.'
                 },
                 {
                   id: 2,
                   title: 'Quadriceps Femoris Tendon',
                   subtitle: 'Common Conjoined Tendon of Quadriceps Musculature',
-                  whatItMeans: 'A thick, fibrous connective tissue band uniting the rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius into the superior base of the patella.',
-                  whatItDoes: 'Transfers the enormous contractile force of the four quadriceps muscles across the patella to extend the knee joint against gravity during walking, jumping, and rising from a chair.',
-                  whyWeNeedIt: 'Primary active stabilizer preventing the knee from buckling into flexion under body weight during the stance phase of walking and running.',
+                  whatItMeans: 'A thick, fibrous connective tissue band uniting rectus femoris, vastus lateralis, vastus medialis, and vastus intermedius into the patellar base.',
+                  whatItDoes: 'Transfers the enormous contractile force of the quadriceps across the patella to extend the knee joint against gravity.',
+                  whyWeNeedIt: 'Primary active stabilizer preventing the knee from buckling into flexion under body weight during stance phase of gait.',
                   nerveSupply: 'Femoral Nerve (L2, L3, L4) & Lateral Circumflex Femoral Artery',
-                  relatedTopics: 'Quadriceps Tendon Rupture, Quadriceps Tendinopathy, Extensor Mechanism Lag, and Patellofemoral Pain Syndrome (PFPS).',
+                  relatedTopics: 'Quadriceps Tendon Rupture, Quadriceps Tendinopathy, Extensor Lag, and Patellofemoral Pain Syndrome (PFPS).',
                   action: 'Active Knee Extension against Gravity & Deceleration during Eccentric Squatting',
-                  clinicalPearl: 'Acute rupture presents with a palpable suprapatellar sulcus gap and total inability to perform an active straight leg raise. Extensor lag indicates vastus medialis weakness requiring targeted terminal knee extensions.'
+                  clinicalPearl: 'Acute rupture presents with a palpable suprapatellar sulcus gap and total inability to perform an active straight leg raise.'
                 },
                 {
                   id: 3,
                   title: 'Anterior Cruciate Ligament (ACL)',
                   subtitle: 'Intra-Articular Primary Passive Knee Stabilizer',
-                  whatItMeans: 'A robust, dense fibrous band originating from the medial aspect of the lateral femoral condyle and inserting onto the anterior intercondylar area of the proximal tibia.',
-                  whatItDoes: 'Provides 85% of total passive resistance preventing anterior translation of the tibia relative to the femur, while checking excessive knee internal rotation and hyperextension.',
-                  whyWeNeedIt: 'Prevents knee subluxation during sudden pivoting, cutting, rapid deceleration, and jump-landing maneuvers in high-velocity athletics.',
-                  nerveSupply: 'Tibial Nerve Articular Branches (Proprioceptive Ruffini/Pacini corpuscles) & Middle Genicular Artery',
-                  relatedTopics: 'ACL Tear (Non-Contact Pivot Injury), Unhappy Triad (O-Donoghue: ACL, MCL, Medial Meniscus), Hemarthrosis, and Post-Op Rehabilitation.',
+                  whatItMeans: 'A robust fibrous band originating from the medial lateral femoral condyle and inserting onto the anterior intercondylar tibia.',
+                  whatItDoes: 'Provides 85% of total passive resistance preventing anterior translation of the tibia relative to the femur and checks internal rotation.',
+                  whyWeNeedIt: 'Prevents knee subluxation during sudden pivoting, cutting, rapid deceleration, and jump-landing maneuvers.',
+                  nerveSupply: 'Tibial Nerve Articular Branches (Proprioceptive Corpuscles) & Middle Genicular Artery',
+                  relatedTopics: 'ACL Tear (Non-Contact Pivot Injury), Unhappy Triad (O-Donoghue), Hemarthrosis, and Post-Op Rehabilitation.',
                   action: 'Restricts Anterior Tibial Translation & Controls Dynamic Rotational Joint Laxity',
-                  clinicalPearl: 'Lachman test at 30° knee flexion is the most sensitive physical exam test for ACL integrity. An acute audible pop followed by rapid tense hemarthrosis within 2 hours indicates an ACL tear until proven otherwise.'
+                  clinicalPearl: 'Lachman test at 30° flexion is the most sensitive physical exam test. Acute pop with rapid hemarthrosis indicates ACL tear.'
                 },
                 {
                   id: 4,
                   title: 'Patellar Ligament (Tendon)',
                   subtitle: 'Distal Fibrous Continuation of Quadriceps Extensor Mechanism',
-                  whatItMeans: 'A thick, flat, heavy fibrous band extending from the inferior apex and margins of the patella to the tibial tuberosity, measuring roughly 4.5 cm in length.',
-                  whatItDoes: 'Transmits quadriceps contractile tensile forces from the patella to the tibia, utilizing the patella as a mechanical pulley to increase quadriceps extensor mechanical advantage by 30%.',
-                  whyWeNeedIt: 'Enables high-torque knee extension and absorbs intense eccentric shock loads during deceleration and ground impact.',
+                  whatItMeans: 'A thick fibrous band extending from the inferior patellar apex to the tibial tuberosity, measuring roughly 4.5 cm in length.',
+                  whatItDoes: 'Transmits quadriceps tensile force to the tibia, utilizing the patella as a mechanical pulley to increase quadriceps mechanical advantage by 30%.',
+                  whyWeNeedIt: 'Enables high-torque knee extension and absorbs intense eccentric shock loads during deceleration.',
                   nerveSupply: 'Femoral Nerve Articular Branches (L3–L4) & Inferior Genicular Arteries',
-                  relatedTopics: 'Patellar Tendinopathy (Jumper Knee), Patellar Tendon Rupture, Sinding-Larsen-Johansson Syndrome, and Patellar Reflex Arc (L3-L4).',
+                  relatedTopics: 'Patellar Tendinopathy (Jumper Knee), Patellar Tendon Rupture, Sinding-Larsen-Johansson Syndrome, and Patellar Reflex Arc.',
                   action: 'Transmits Extensor Tensile Force to Tibia & Facilitates Deep Tendon Reflex Arc',
-                  clinicalPearl: 'Tapping the patellar ligament tests the L3-L4 monosynaptic stretch reflex. Eccentric decline-board squats are the gold standard evidence-based physical therapy for recalcitrant patellar tendinopathy.'
+                  clinicalPearl: 'Tapping patellar ligament tests L3-L4 monosynaptic stretch reflex. Eccentric decline squats are gold standard physical therapy.'
                 },
                 {
                   id: 5,
                   title: 'Tibial Tuberosity',
                   subtitle: 'Anterior Proximal Tibial Apophysis & Insertion Landmark',
-                  whatItMeans: 'An oblong, prominent bony elevation located on the anterior proximal surface of the tibia, just distal to the tibial condyles.',
-                  whatItDoes: 'Acts as the definitive bony insertion anchor for the patellar ligament, serving as the terminal leverage point for the entire quadriceps extensor apparatus.',
-                  whyWeNeedIt: 'Provides a rigid bony attachment point with adequate mechanical offset from the knee joint axis, optimizing quadriceps torque production.',
+                  whatItMeans: 'An oblong bony elevation located on the anterior proximal surface of the tibia, just distal to the condyles.',
+                  whatItDoes: 'Acts as the definitive bony insertion anchor for the patellar ligament, serving as the terminal leverage point for the quadriceps extensor apparatus.',
+                  whyWeNeedIt: 'Provides a rigid bony attachment point with adequate mechanical offset from the knee joint axis, optimizing extension torque.',
                   nerveSupply: 'Periosteal Sensory Nerve Endings & Anterior Tibial Recurrent Artery',
-                  relatedTopics: 'Osgood-Schlatter Disease (Traction Apophysitis in adolescents), Tibial Tuberosity Avulsion Fracture, and Superficial Infrapatellar Bursitis.',
+                  relatedTopics: 'Osgood-Schlatter Disease (Traction Apophysitis), Tibial Tuberosity Avulsion Fracture, and Infrapatellar Bursitis.',
                   action: 'Distal Anchor for Extensor Mechanism & Mechanical Torque Production Leverage Point',
-                  clinicalPearl: 'In adolescent athletes undergoing rapid growth spurts, repetitive quadriceps traction causes micro-avulsions of the secondary ossification center, resulting in painful prominence known as Osgood-Schlatter disease.'
+                  clinicalPearl: 'In adolescent athletes undergoing rapid growth spurts, repetitive quadriceps traction causes painful apophysitis (Osgood-Schlatter disease).'
                 }
               ];
             }
 
-            // 3. PRIMARY ANATOMICAL SPINAL COLUMN (CERVICAL, THORACIC, LUMBAR, SACRUM, COCCYX)
-            // This is the default anatomical dataset matching the spine diagram with pins 1-5!
+            // 4. SPINAL COLUMN (CERVICAL, THORACIC, LUMBAR, SACRUM, COCCYX)
+            if (text.includes('spine') || text.includes('vertebr') || text.includes('cervical') || text.includes('thoracic') || text.includes('lumbar') || text.includes('sacrum') || text.includes('coccyx') || text.includes('disc') || text.includes('spinal')) {
+              return [
+                {
+                  id: 1,
+                  title: 'Cervical Spine (C1 - C7)',
+                  subtitle: 'Lordotic Mobile Cranio-Cervical Segment (Neck)',
+                  whatItMeans: 'The cervical spine comprises 7 specialized vertebrae (C1 to C7) located in the neck. C1 (Atlas) and C2 (Axis) form a dedicated pivot joint facilitating 50% of all head rotation.',
+                  whatItDoes: 'Supports the cranium (4.5–5.5 kg) while permitting 80–90° axial rotation, 45–50° flexion/extension, and shields the cervical spinal cord.',
+                  whyWeNeedIt: 'Allows independent visual and auditory head orientation without turning the torso, with lordotic arch dampening ground shocks.',
+                  nerveSupply: 'C1–C8 Cervical Spinal Nerves, Brachial Plexus (C5–T1), Phrenic Nerve (C3–C5), & Vertebral Arteries',
+                  relatedTopics: 'Cervical Radiculopathy, Whiplash Injury, Cervical Spondylosis, Text Neck Syndrome, and Vertebrobasilar Insufficiency.',
+                  action: 'Head & Neck Rotation (80-90°), Sagittal Flexion/Extension, and Axial Cranial Support',
+                  clinicalPearl: 'Spurling test evaluates cervical nerve root compromise. C3, C4, C5 keep the diaphragm alive via the phrenic nerve.'
+                },
+                {
+                  id: 2,
+                  title: 'Thoracic Spine (T1 - T12 / D1 - D12)',
+                  subtitle: 'Kyphotic Rigid Cage & Cardiopulmonary Protective Segment (Mid-Back)',
+                  whatItMeans: 'Consists of 12 robust vertebrae (T1 to T12) in the mid-back articulating with 12 pairs of ribs at costovertebral joints.',
+                  whatItDoes: 'Provides high structural rigidity to anchor the cardiopulmonary cage, protecting heart, lungs, and major thoracic vessels.',
+                  whyWeNeedIt: 'Acts as a protective vault around vital organs while providing biomechanical expansion for negative-pressure breathing.',
+                  nerveSupply: 'Thoracic Spinal Nerves (T1–T12), Intercostal Nerves & Posterior Intercostal Arteries',
+                  relatedTopics: 'Postural Hyperkyphosis, Adolescent Idiopathic Scoliosis, Costochondritis, and Costovertebral Joint Hypomobility.',
+                  action: 'Thoracic Cage Stabilization, Axial Trunk Rotation & Costal Kinematics for Respiration',
+                  clinicalPearl: 'Costovertebral joint hypomobility directly impairs pulmonary vital capacity. Thoracic extension mobilizations restore breathing mechanics.'
+                },
+                {
+                  id: 3,
+                  title: 'Lumbar Spine (L1 - L5)',
+                  subtitle: 'Lordotic Massive Axial Weight-Bearing Fulcrum (Lower Back)',
+                  whatItMeans: 'Composed of 5 massive, kidney-shaped vertebrae (L1 to L5) in the lower back with thick intervertebral discs and sagittal facets.',
+                  whatItDoes: 'Acts as the central load-bearing fulcrum of the skeleton, carrying upper body weight and facilitating sagittal trunk flexion/extension.',
+                  whyWeNeedIt: 'Transfers upper body gravitational load into the pelvis and legs during standing, lifting, running, and jumping.',
+                  nerveSupply: 'Lumbar Plexus (L1–L4), Sciatic Nerve Roots (L4–S3), Lumbar Arteries & Radicular Arteries',
+                  relatedTopics: 'L4–L5 & L5–S1 Disc Herniation, Sciatica / Lumbar Radiculopathy, Spinal Stenosis, and Spondylolisthesis.',
+                  action: 'Trunk Flexion/Extension, Axial Weight Distribution & Center-of-Gravity Stabilization',
+                  clinicalPearl: 'Straight Leg Raise (Lasegue test) between 35°–70° isolates sciatic/L5-S1 disc tension. McGill Big 3 exercises build core stiffness.'
+                },
+                {
+                  id: 4,
+                  title: 'Sacrum (Pelvic Vertebrae S1 - S5)',
+                  subtitle: 'Fused Triangular Pelvic Keystone & Weight-Distribution Base',
+                  whatItMeans: 'A large triangular bone formed by fusion of 5 sacral vertebrae (S1 to S5), forming bilateral sacroiliac (SI) joints.',
+                  whatItDoes: 'Serves as the structural keystone of the pelvic ring, receiving descending axial forces and channeling them laterally into pelvic bones.',
+                  whyWeNeedIt: 'Bridges axial spine with lower extremities. Without sacral wedge fit and SI ligaments, pelvis would collapse outward under weight.',
+                  nerveSupply: 'Sacral Plexus (S1–S4), Sciatic Nerve (L4–S3), Pudendal Nerve (S2–S4), Superior & Inferior Gluteal Arteries',
+                  relatedTopics: 'Sacroiliac (SI) Joint Dysfunction, Sacroiliitis, Piriformis Syndrome, and Pelvic Girdle Pain.',
+                  action: 'Sacroiliac Joint Force Distribution, Pelvic Ring Load Transmission & Nutation Kinematics',
+                  clinicalPearl: 'Patrick (FABER) and Gaenslen provocative tests isolate SI joint inflammation. Sacral nutation wedges sacrum tighter for stability.'
+                },
+                {
+                  id: 5,
+                  title: 'Coccyx (Tailbone Co1 - Co4)',
+                  subtitle: 'Vestigial Distal Anchor & Pelvic Diaphragm Base',
+                  whatItMeans: 'The terminal caudal segment of the vertebral column, consisting of 3 to 5 fused rudimentary segments articulating with sacrum.',
+                  whatItDoes: 'Acts as an anchor for pelvic floor muscles (levator ani, coccygeus) and forms a 3-point sitting tripod with ischial tuberosities.',
+                  whyWeNeedIt: 'Maintains pelvic floor diaphragm integrity, supporting pelvic viscera against intra-abdominal pressures from coughing and lifting.',
+                  nerveSupply: 'Coccygeal Nerve (Co1), Anococcygeal Nerves & Middle Sacral Artery',
+                  relatedTopics: 'Coccydynia (tailbone pain), Postpartum Coccyx Subluxation, Pelvic Floor Spasm, and Direct Fall Contusion.',
+                  action: 'Pelvic Floor Diaphragm Anchoring, Sitting Tripod Load Distribution & Continence Support',
+                  clinicalPearl: 'Bimanual sacrococcygeal joint palpation isolates hypermobility. Treatment includes wedge cushions and pelvic floor relaxation.'
+                }
+              ];
+            }
+
+            // DYNAMICALLY EXTRACTED FALLBACK DATASET FOR ANY OTHER UPLOADED IMAGE OR NOTE
+            const cleanTitle = (n.title || 'Uploaded Anatomical Structure').replace(/\.[^/.]+$/, "").replace(/_/g, " ").trim();
+            const cleanContent = (n.content || '').replace(/\[INTERACTIVE_MODULE.*?\]/g, '').replace(/<[^>]*>/g, '').trim();
+            const sentences = cleanContent ? cleanContent.split(/(?<=[.?!])\s+/).filter(s => s.trim().length > 10) : [];
+            const summarySnippet = sentences.length > 0 ? sentences.slice(0, 2).join(' ') : `Anatomical structure, tissue composition, and spatial orientation of ${cleanTitle}.`;
+            const actionSnippet = sentences.length > 2 ? sentences.slice(2, 4).join(' ') : `Facilitates dynamic physiological movement, structural load transmission, and functional stability in ${cleanTitle}.`;
+            const importanceSnippet = sentences.length > 4 ? sentences.slice(4, 6).join(' ') : `Protects underlying neurovascular structures, maintains anatomical integrity, and supports normal kinetic chain function.`;
+
             return [
               {
                 id: 1,
-                title: 'Cervical Spine (C1 - C7)',
-                subtitle: 'Lordotic Mobile Cranio-Cervical Segment (Neck)',
-                whatItMeans: 'The cervical spine comprises 7 specialized vertebrae (C1 to C7) located in the neck. C1 (Atlas) and C2 (Axis) form a dedicated pivot joint facilitating 50% of all head rotation. C3–C7 possess unique transverse foramina that create a protective bony conduit for the ascending vertebral arteries supplying the brain.',
-                whatItDoes: 'Supports the cranium (4.5–5.5 kg) while permitting the greatest multi-axial range of motion of any spinal segment: 80–90° axial rotation, 45–50° flexion/extension, and 45° lateral bending. It shields the cervical spinal cord and routes 8 pairs of cervical spinal nerves (C1–C8) controlling the diaphragm, neck, shoulders, arms, and hands.',
-                whyWeNeedIt: 'Allows independent visual, auditory, and vestibular orientation without turning the entire torso. Its gentle anterior lordotic curvature acts as a hydraulic shock absorber, dampening mechanical ground impact forces before they reach the skull and brain.',
-                nerveSupply: 'C1–C8 Cervical Spinal Nerves, Brachial Plexus (C5–T1), Phrenic Nerve (C3–C5), & Vertebral Arteries',
-                relatedTopics: 'Cervical Radiculopathy (C6-C7 pinched nerve), Whiplash Acceleration-Deceleration Injury, Cervical Spondylosis, Text Neck / Forward Head Posture Syndrome, and Vertebrobasilar Insufficiency (VBI).',
-                action: 'Head & Neck Rotation (80-90°), Sagittal Flexion/Extension, and Axial Cranial Load Support',
-                clinicalPearl: 'Spurling test evaluates cervical nerve root compromise. C3, C4, C5 nerve roots keep the diaphragm alive via the phrenic nerve. Deep neck flexor endurance training (longus colli/capitis) is fundamental in cervical physical rehabilitation.'
+                title: cleanTitle + ' - Superior Landmark & Overview',
+                subtitle: cleanTitle + ' (Anatomical Region 1)',
+                whatItMeans: summarySnippet,
+                whatItDoes: actionSnippet,
+                whyWeNeedIt: importanceSnippet,
+                nerveSupply: 'Regional Somatic Innervation & Arterial Vascular Supply',
+                relatedTopics: cleanTitle + ' Assessment, Biomechanical Kinematics & Clinical Pathologies',
+                action: 'Primary Load Transmission & Structural Support',
+                clinicalPearl: 'Palpation and targeted clinical motion testing isolate structural dysfunction and alignment in ' + cleanTitle + '.'
               },
               {
                 id: 2,
-                title: 'Thoracic Spine (T1 - T12 / D1 - D12)',
-                subtitle: 'Kyphotic Rigid Cage & Cardiopulmonary Protective Segment (Mid-Back)',
-                whatItMeans: 'The thoracic spine consists of 12 robust vertebrae (T1 to T12 or D1 to D12) occupying the mid-back. Each vertebra features specialized costal facets that articulate directly with 12 pairs of ribs at costovertebral and costotransverse synovial joints, forming the posterior foundation of the thoracic cage.',
-                whatItDoes: 'Provides high structural rigidity to anchor the cardiopulmonary cage, protecting the heart, lungs, and great vessels from trauma. Due to overlapping spinous processes and rib attachments, flexion/extension is strictly limited, while accommodating axial rotation and bucket-handle / pump-handle rib expansion during breathing.',
-                whyWeNeedIt: 'Acts as an indispensable protective vault around life-sustaining cardiopulmonary organs while providing the biomechanical expansion necessary for negative-pressure pulmonary ventilation and upright posture against gravity.',
-                nerveSupply: 'Thoracic Spinal Nerves (T1–T12), Intercostal Nerves & Posterior Intercostal Arteries',
-                relatedTopics: 'Postural Hyperkyphosis (Dowager Hump), Adolescent Idiopathic Scoliosis (Cobb angle), Costochondritis & Tietze Syndrome, Thoracic Outlet Syndrome (TOS), and Costovertebral Joint Hypomobility.',
-                action: 'Thoracic Cage Stabilization, Axial Trunk Rotation & Costal Kinematics for Respiration',
-                clinicalPearl: 'Hypomobility in costovertebral joints directly impairs pulmonary vital capacity and promotes shoulder impingement. Thoracic extension mobilizations and foam-roller thoracic openers restore normal respiratory and shoulder mechanics.'
+                title: cleanTitle + ' - Structural Architecture & Biomechanics',
+                subtitle: cleanTitle + ' (Anatomical Region 2)',
+                whatItMeans: `Detailed anatomical composition and connective tissue arrangement of ${cleanTitle}.`,
+                whatItDoes: `Facilitates specialized physiological motion, structural alignment, and force absorption across ${cleanTitle}.`,
+                whyWeNeedIt: `Ensures stability under mechanical loads and prevents pathological shear forces within ${cleanTitle}.`,
+                nerveSupply: 'Subcortical Sensory Endings & Periosteal / Articular Vascular Networks',
+                relatedTopics: cleanTitle + ' Stress-Strain Dynamics & Structural Stability',
+                action: 'Biomechanical Force Absorption & Joint Alignment',
+                clinicalPearl: 'Assess active and passive range of motion to determine capsular versus non-capsular restriction patterns.'
               },
               {
                 id: 3,
-                title: 'Lumbar Spine (L1 - L5)',
-                subtitle: 'Lordotic Massive Axial Weight-Bearing Fulcrum (Lower Back)',
-                whatItMeans: 'The lumbar spine is composed of 5 massive, thick, kidney-shaped vertebrae (L1 to L5) in the lower back. They are equipped with broad intervertebral discs and vertically oriented sagittal facet joints built specifically to withstand immense axial compressive loads.',
-                whatItDoes: 'Acts as the central load-bearing fulcrum of the human skeleton, carrying the weight of the head, torso, and upper limbs. It provides generous sagittal trunk flexion (40–60°) and extension (20–35°), while interlocking sagittal facets deliberately restrict rotation to protect discs from torsional tearing.',
-                whyWeNeedIt: 'Transfers the gravitational and dynamic load of the upper body down through the sacral base into the pelvic ring and legs during standing, lifting, running, and jumping. Its natural lordotic arch dampens ground impact forces like a heavy-duty spring.',
-                nerveSupply: 'Lumbar Plexus (L1–L4), Sciatic Nerve Roots (L4–S3), Lumbar Arteries & Radicular Arteries',
-                relatedTopics: 'L4–L5 & L5–S1 Disc Herniation, Sciatica / Lumbar Radiculopathy, Spinal Stenosis (Neurogenic Claudication), Spondylolysis / Spondylolisthesis (Scottie dog sign), and Core Musculature Instability.',
-                action: 'Trunk Flexion/Extension, Axial Weight Distribution & Center-of-Gravity Stabilization',
-                clinicalPearl: 'Straight Leg Raise (Lasegue test) between 35°–70° isolates sciatic/L5-S1 disc tension. McGill Big 3 exercises (Curl-up, Side-bridge, Bird-dog) build 360° muscular spine stiffness without compressive shear.'
+                title: cleanTitle + ' - Physiological Function & Clinical Purpose',
+                subtitle: cleanTitle + ' (Anatomical Region 3)',
+                whatItMeans: `Functional unit contributing to systemic biological homeostasis and motor coordination in ${cleanTitle}.`,
+                whatItDoes: `Provides dynamic motor leverage and passive structural restraint during functional activity.`,
+                whyWeNeedIt: `Essential for preserving normal kinetic chain function and preventing compensatory overload in adjacent segments.`,
+                nerveSupply: 'Segmental Motor Branches & Deep Venous Drainage',
+                relatedTopics: cleanTitle + ' Functional Rehabilitation & Kinetic Chain Biomechanics',
+                action: 'Dynamic Motor Leverage & Passive Restraint',
+                clinicalPearl: 'Resisted isometric strength testing isolates muscular weakness from non-contractile tissue pathology.'
               },
               {
                 id: 4,
-                title: 'Sacrum (Pelvic Vertebrae S1 - S5)',
-                subtitle: 'Fused Triangular Pelvic Keystone & Weight-Distribution Base',
-                whatItMeans: 'The sacrum is a large, triangular, wedge-shaped bone formed by the fusion of 5 sacral vertebrae (S1 to S5). Positioned like an inverted pyramid between the left and right iliac bones, it forms the bilateral sacroiliac (SI) synovial joints and posterior pelvic wall.',
-                whatItDoes: 'Serves as the structural keystone of the pelvic ring. It receives all descending axial forces from the L5-S1 lumbosacral junction and channels them laterally across the sacroiliac joints into the pelvic girdle, acetabula, and femoral heads during both bilateral stance and reciprocal walking.',
-                whyWeNeedIt: 'Bridges the axial spine with the appendicular lower extremities. Without the sacrum wedge fit, form closure, and dense ligamentous network, the human pelvis would collapse outward under the torso weight during gait.',
-                nerveSupply: 'Sacral Plexus (S1–S4), Sciatic Nerve (L4–S3), Pudendal Nerve (S2–S4), Superior & Inferior Gluteal Arteries',
-                relatedTopics: 'Sacroiliac (SI) Joint Dysfunction, Sacroiliitis (Ankylosing Spondylitis / HLA-B27), Piriformis Syndrome, Sacral Stress Fractures, and Pregnancy-Related Pelvic Girdle Pain (Relaxin laxity).',
-                action: 'Sacroiliac Joint Force Distribution, Pelvic Ring Load Transmission & Nutation Kinematics',
-                clinicalPearl: 'Patrick (FABER) and Gaenslen provocative tests isolate SI joint inflammation. Sacral nutation (forward-inferior sacral base tilt) wedges the sacrum tighter between ilia, creating self-locking stability during heel-strike gait.'
+                title: cleanTitle + ' - Neurovascular & Arterial Supply Pathway',
+                subtitle: cleanTitle + ' (Anatomical Region 4)',
+                whatItMeans: `Neurovascular bundle routing sensory, motor, and autonomic fibers through ${cleanTitle}.`,
+                whatItDoes: `Delivers oxygenated blood and nutrient supply while providing proprioceptive biofeedback to the central nervous system.`,
+                whyWeNeedIt: `Critical for tissue viability, rapid cellular repair, and reflex motor control.`,
+                nerveSupply: 'Major Regional Nerve Plexus & Branching Arterial Network',
+                relatedTopics: cleanTitle + ' Ischemic Syndromes, Nerve Compression & Entrapment Neuropathies',
+                action: 'Proprioceptive Biofeedback & Vascular Perfusion',
+                clinicalPearl: 'Screen for dermatomal sensory alterations, myotomal weakness, and peripheral pulse symmetry.'
               },
               {
                 id: 5,
-                title: 'Coccyx (Tailbone Co1 - Co4)',
-                subtitle: 'Vestigial Distal Anchor & Pelvic Diaphragm Base',
-                whatItMeans: 'The coccyx is the terminal caudal segment of the vertebral column, consisting of 3 to 5 (typically 4) fused rudimentary vertebral segments that articulate with the sacral apex via a fibrocartilaginous sacrococcygeal symphysis.',
-                whatItDoes: 'Acts as an indispensable muscular and ligamentous anchor for the pelvic floor diaphragm (levator ani, coccygeus, pubococcygeus) and external anal sphincter. When seated leaning back, the coccyx and two ischial tuberosities form an equitable 3-point weight-bearing tripod.',
-                whyWeNeedIt: 'Maintains the structural integrity of the pelvic floor, providing basal support for the bladder, rectum, and pelvic viscera against intra-abdominal pressures generated by coughing, sneezing, and heavy lifting. Without this anchor, incontinence or prolapse occur.',
-                nerveSupply: 'Coccygeal Nerve (Co1), Anococcygeal Nerves, Middle Sacral Artery & Coccygeal Plexus',
-                relatedTopics: 'Coccydynia (chronic tailbone pain), Postpartum Coccyx Subluxation, Pelvic Floor Hypertonicity & Spasm, Direct Fall / Contusion Injuries, and Levator Ani Syndrome.',
-                action: 'Pelvic Floor Diaphragm Anchoring, Sitting Tripod Load Distribution & Continence Support',
-                clinicalPearl: 'Bimanual palpation of the sacrococcygeal joint isolates painful hypermobility. Conservative physiotherapy management includes coccygeal wedge cushions, internal levator ani myofascial release, and pelvic floor relaxation protocols.'
+                title: cleanTitle + ' - High-Yield Clinical Pearl & Diagnostic Assessment',
+                subtitle: cleanTitle + ' (Anatomical Region 5)',
+                whatItMeans: `Core clinical examination findings, provocative testing, and diagnostic evaluation for ${cleanTitle}.`,
+                whatItDoes: `Guides evidence-based physical diagnosis, manual therapy interventions, and therapeutic exercise prescription.`,
+                whyWeNeedIt: `Prevents misdiagnosis, optimizes patient outcomes, and prevents chronic functional disability.`,
+                nerveSupply: 'Reflex Arc Fibers & Autonomic Vasomotor Regulation',
+                relatedTopics: cleanTitle + ' Provocative Physical Examination Tests & Rehabilitation Protocols',
+                action: 'Diagnostic Clinical Evaluation & Functional Recovery',
+                clinicalPearl: 'Combine clinical special tests with high-resolution imaging for definitive diagnosis of structural lesions in ' + cleanTitle + '.'
               }
             ];
           }
@@ -568,17 +705,23 @@
             const noteHotspots = getNoteHotspots(note);
             const firstHotspot = noteHotspots[0];
           %>
-          <div class="rounded-4 overflow-hidden bg-white mb-4 note-viewer-card w-100 <%= idx === 0 ? '' : 'd-none' %>" id="note-card-<%= idx %>" style="box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07); border: none;">
+          <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white border mb-4 note-viewer-card <%= idx === 0 ? '' : 'd-none' %>" id="note-card-<%= idx %>">
             
             <!-- HEADER BAR WITH TITLE & EXPAND TOGGLE -->
-            <div class="card-header p-3.5 d-flex align-items-center justify-content-between flex-wrap gap-2 text-white" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-bottom: none;">
+            <div class="card-header p-3.5 d-flex align-items-center justify-content-between flex-wrap gap-2 text-white" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-bottom: 1px solid rgba(255,255,255,0.1);">
               <div class="d-flex align-items-center gap-2.5">
                 <% if (isImage) { %>
-                  <i class="ri-image-fill text-success fs-4 me-1"></i>
+                  <div class="bg-success text-white rounded-3 px-2 py-1 shadow-sm d-flex align-items-center justify-content-center">
+                    <i class="ri-image-line fs-5"></i>
+                  </div>
                 <% } else if (is3d) { %>
-                  <i class="ri-sparkles-fill text-info fs-4 me-1"></i>
+                  <div class="bg-info text-dark rounded-3 px-2 py-1 shadow-sm d-flex align-items-center justify-content-center">
+                    <i class="ri-sparkles-line fs-5"></i>
+                  </div>
                 <% } else { %>
-                  <i class="ri-file-pdf-2-fill text-danger fs-4 me-1"></i>
+                  <div class="bg-danger text-white rounded-3 px-2 py-1 shadow-sm d-flex align-items-center justify-content-center">
+                    <i class="ri-file-pdf-2-fill fs-5"></i>
+                  </div>
                 <% } %>
                 <div>
                   <h6 class="fw-bold text-white mb-0" style="letter-spacing: -0.2px;"><%= note.title %></h6>
@@ -703,7 +846,7 @@
                         </div>
 
                         <% const displayImg = (note.file_url && note.file_url !== '/images/logo-icon.png') ? note.file_url : 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&auto=format&fit=crop&q=80'; %>
-                        <div class="position-relative w-100 text-center my-auto bg-white rounded-3 overflow-hidden" style="max-height: 520px; display: flex; align-items: center; justify-content: center; border: 0;">
+                        <div class="position-relative w-100 text-center my-auto p-2 bg-white rounded-3 shadow-xs border" style="max-height: 520px; display: flex; align-items: center; justify-content: center;">
                           <img src="<%= displayImg %>" alt="<%= note.title %>" class="img-fluid rounded-3 w-100" style="max-height: 480px; object-fit: contain; cursor: zoom-in;" onclick="window.open(this.src, '_blank')">
 
                           <!-- 5 NUMBERED INTERACTIVE PIN BUTTONS OVERLAID ON IMAGE -->
@@ -737,7 +880,7 @@
 
                     <!-- RIGHT COLUMN: DYNAMIC & CLICKABLE PIN STRUCTURE DETAIL CARD -->
                     <div class="col-lg-7 col-md-6">
-                      <div class="p-3.5 p-md-4 bg-white rounded-4 h-100 d-flex flex-column justify-content-between" id="pinDetailCard-<%= idx %>" style="border: 1px solid #f1f5f9;">
+                      <div class="p-3.5 p-md-4 bg-white rounded-4 border h-100 d-flex flex-column justify-content-between shadow-xs" id="pinDetailCard-<%= idx %>" style="border-color: #e2e8f0;">
                         
                         <div>
                           <!-- TOP INTERACTIVE PIN SELECTOR STRIP -->
@@ -915,7 +1058,7 @@
                     </div>
                   </div>
                 <% } else if (ext === 'pdf') { %>
-                  <iframe src="<%= note.file_url %>#view=FitW&toolbar=0&navpanes=0&scrollbar=1" title="<%= note.title %>" style="width: 100%; height: 88vh; border: 0; outline: none; display: block; margin: 0; background: #ffffff;" allowfullscreen onload="checkIframeNotLogin(this)"></iframe>
+                  <iframe src="<%= note.file_url %>#view=FitH&toolbar=0&navpanes=0&scrollbar=1" title="<%= note.title %>" style="width: 100%; height: 85vh; border: none; background: #ffffff;" allowfullscreen onload="checkIframeNotLogin(this)"></iframe>
                 <% } else { %>
                   <!-- DOCX / DOC / TXT / PPT IN-PAGE DOCUMENT VIEWER & DOWNLOAD TOOLBAR -->
                   <div class="p-4 p-md-5 bg-white font-sans text-dark">
