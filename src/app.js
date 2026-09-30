@@ -193,18 +193,19 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render('public/500', { title: 'Server Error', layout: 'layouts/main', error: env.isProduction ? null : err });
 });
 
-migrate()
-  .then(() => {
-    app.listen(env.port, () => {
-      logger.info(`PhysioEdvance running at http://localhost:${env.port}`);
-      console.log(`\n🧑‍⚕️ PhysioEdvance running at http://localhost:${env.port}\n`);
+const server = app.listen(env.port, '0.0.0.0', () => {
+  logger.info(`PhysioEdvance running on 0.0.0.0:${env.port}`);
+  console.log(`\n🧑‍⚕️ PhysioEdvance running on port ${env.port} (0.0.0.0)\n`);
+
+  migrate()
+    .then(() => {
+      logger.info('Database schema migration completed successfully.');
+      console.log('✅ Database schema migration completed successfully.');
+    })
+    .catch(err => {
+      logger.error('Failed to apply database schema', { stack: err.stack });
+      console.error('❌ Failed to apply database schema:', err.message);
     });
-  })
-  .catch(err => {
-    logger.error('Failed to apply database schema', { stack: err.stack });
-    console.error('❌ Failed to apply database schema:', err.message);
-    console.error('   Check your PostgreSQL connection settings in .env (PGHOST, PGPORT, PGUSER, PGPASSWORD, PGDATABASE)');
-    process.exit(1);
-  });
+});
 
 module.exports = app;
