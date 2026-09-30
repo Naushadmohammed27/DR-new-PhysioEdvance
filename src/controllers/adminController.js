@@ -1066,9 +1066,17 @@ exports.createNote = async (req, res) => {
     file_url = `/uploads/notes/${req.file.filename}`;
   }
   const { category_id, title, content, year, item_type } = req.body;
-  const cat = await db.prepare(`SELECT year FROM categories WHERE id = ?`).get(category_id);
+  const cat = await db.prepare(`SELECT year, name FROM categories WHERE id = ?`).get(category_id);
   const noteYear = year || (cat ? cat.year : 1);
-  
+
+  // Sanitize ugly auto-filled WhatsApp / screenshot filenames used as titles
+  let cleanTitle = (title || '').trim();
+  const isUglyTitle = /whatsapp\s*image|img_\d|pxl_\d|screenshot|scan_\d|file_\d|^untitled/i.test(cleanTitle);
+  if (!cleanTitle || isUglyTitle) {
+    const subjectName = cat ? cat.name : 'Anatomy';
+    cleanTitle = `${subjectName} Interactive Diagram`;
+  }
+
   let finalContent = content || '';
   if (item_type === 'text_image' && !finalContent.includes('[INTERACTIVE_MODULE:TEXT_IMAGE]')) {
     finalContent = `[INTERACTIVE_MODULE:TEXT_IMAGE]\n` + finalContent;
@@ -1078,7 +1086,7 @@ exports.createNote = async (req, res) => {
 
   await Notes.create({
     category_id: parseInt(category_id, 10),
-    title: title || 'Untitled Interactive Note',
+    title: cleanTitle,
     content: finalContent,
     file_url: file_url || null,
     year: noteYear,

@@ -388,7 +388,285 @@
         <%
           function getNoteHotspots(n) {
             const text = ((n.title || '') + ' ' + (n.content || '') + ' ' + (n.file_url || '')).toLowerCase();
-            
+            const fileUrl = (n.file_url || '').toLowerCase();
+
+            // =====================================================================
+            // PRIORITY 0: EXACT FILE-URL MATCHING (most reliable - matches specific images)
+            // =====================================================================
+
+            // Right Clavicle - Bony Landmarks (Superior & Inferior Views)
+            if (fileUrl.includes('note-1790741296158') || 
+                (text.includes('clavicle') && text.includes('superior') && text.includes('inferior') && text.includes('shaft')) ||
+                (text.includes('right clavicle') && (text.includes('bony') || text.includes('superior view') || text.includes('inferior view') || text.includes('acromial') || text.includes('costal tuberosity')))) {
+              return [
+                {
+                  id: 1,
+                  title: 'Shaft of the Clavicle',
+                  subtitle: 'S-Curved Tubular Mid-Shaft — Superior View',
+                  whatItMeans: 'The shaft is the long S-shaped central body of the clavicle, seen here in both superior and inferior views. It has an anteriorly convex medial two-thirds and an anteriorly concave lateral one-third.',
+                  whatItDoes: 'Transmits mechanical forces from the upper limb to the axial skeleton. Protects the subclavian vessels and brachial plexus beneath it.',
+                  whyWeNeedIt: 'Provides the structural strut that keeps the arm away from the thorax, enabling free overhead shoulder movement and force transmission.',
+                  nerveSupply: 'Supraclavicular Nerves (C3–C4) · Subclavian Artery periosteal branches',
+                  relatedTopics: 'Mid-shaft clavicle fracture (commonest, 80% of clavicle fractures) · FOOSH mechanism · Operative plating vs conservative sling',
+                  action: 'Load Transmission · Upper Limb Suspension · Neurovascular Protection',
+                  clinicalPearl: 'Over 80% of clavicle fractures occur at the middle third. Palpate along the subcutaneous border for bony step-off or crepitus. Most heal with conservative management.'
+                },
+                {
+                  id: 2,
+                  title: 'Acromial (Lateral) End & Acromial Facet',
+                  subtitle: 'Flat Lateral End — Acromioclavicular (AC) Joint',
+                  whatItMeans: 'The acromial end is the flattened lateral extremity of the clavicle that articulates with the acromion of the scapula at the acromioclavicular (AC) joint.',
+                  whatItDoes: 'Forms the AC joint which allows gliding movements during shoulder elevation, rotation, and arm overhead activities. The deltoid muscle inserts along the lateral surface.',
+                  whyWeNeedIt: 'Essential for full shoulder range of motion (especially overhead elevation). Acts as the distal anchor of the entire shoulder girdle strut.',
+                  nerveSupply: 'Suprascapular Nerve (articular branch) · Supraclavicular Nerves (C3–C4)',
+                  relatedTopics: 'AC Joint Sprain (Grade I–VI) · Shoulder Separation · Distal Clavicle Osteolysis · AC Joint Arthrosis',
+                  action: 'AC Joint Gliding · Arm Elevation Kinematics · Deltoid Origin Anchor',
+                  clinicalPearl: 'AC joint sprains tested with Cross-Body Adduction (Scarf Test). Grade III+ shows visible step-deformity. Distal clavicle resection relieves chronic AC arthritis.'
+                },
+                {
+                  id: 3,
+                  title: 'Sternal (Medial) End & Sternal Facet',
+                  subtitle: 'Rounded Medial End — Sternoclavicular (SC) Joint',
+                  whatItMeans: 'The sternal end is the large rounded medial extremity of the clavicle articulating with the manubrium sterni and first costal cartilage at the sternoclavicular (SC) joint.',
+                  whatItDoes: 'The SC joint is the ONLY true articulation between the upper limb and the axial skeleton. It allows all clavicular movements: elevation, depression, protraction, retraction, and rotation.',
+                  whyWeNeedIt: 'Without the SC joint, the shoulder girdle would have no attachment to the thorax. It absorbs and transmits all upper limb loading forces to the sternum.',
+                  nerveSupply: 'Medial Supraclavicular Nerve (C3–C4) · Internal Thoracic Artery branches',
+                  relatedTopics: 'SC Joint Dislocation (anterior/posterior) · SC Joint Arthritis · Posterior SC Dislocation (life-threatening) · Medial Clavicle Fracture',
+                  action: 'Axial Skeleton–Upper Limb Link · Multi-Directional Clavicular Movement Pivot',
+                  clinicalPearl: 'Posterior SC joint dislocation is rare but life-threatening — can compress trachea, great vessels, or esophagus. Requires immediate CT and surgical reduction.'
+                },
+                {
+                  id: 4,
+                  title: 'Conoid Tubercle & Trapezoid Line',
+                  subtitle: 'Inferior Lateral Ligament Attachment Zone',
+                  whatItMeans: 'The conoid tubercle is a bony eminence and the trapezoid line is a rough ridge on the inferior surface of the lateral clavicle, serving as attachment sites for the coracoclavicular (CC) ligaments.',
+                  whatItDoes: 'The conoid and trapezoid parts of the CC ligament attach here, suspending the scapula from the clavicle and preventing vertical separation of the AC joint.',
+                  whyWeNeedIt: 'The CC ligaments are the primary vertical suspensors of the arm weight. Rupture causes the "step-deformity" of the AC joint and loss of arm suspension.',
+                  nerveSupply: 'Proprioceptive articular nerve endings (C5–C6)',
+                  relatedTopics: 'Coracoclavicular Ligament Disruption · Type III–VI AC Separation · CC Ligament Reconstruction · Scapular Drop Deformity',
+                  action: 'Primary Vertical Scapular Suspension · Static AC Joint Restraint',
+                  clinicalPearl: 'CC ligament disruption (conoid + trapezoid) causes visible "piano key" or "keyboard" sign — the clavicle springs down when pressed and rebounds up.'
+                },
+                {
+                  id: 5,
+                  title: 'Subclavian Groove & Costal Tuberosity',
+                  subtitle: 'Inferior Surface Grooves — Costoclavicular Ligament Attachment',
+                  whatItMeans: 'The subclavian groove is a longitudinal depression on the inferior clavicular shaft where the subclavius muscle originates. The costal tuberosity is a medial impression for the costoclavicular ligament.',
+                  whatItDoes: 'Subclavius muscle depresses the lateral clavicle and cushions the subclavian neurovascular bundle. The costoclavicular ligament binds the clavicle to the first rib, preventing excess elevation.',
+                  whyWeNeedIt: 'The subclavius creates a protective muscular "seatbelt" over the subclavian artery, subclavian vein, and brachial plexus beneath the clavicle.',
+                  nerveSupply: 'Nerve to Subclavius (C5–C6) · First Rib Periosteal Branches · Internal Thoracic Artery',
+                  relatedTopics: 'Costoclavicular TOS (Thoracic Outlet Syndrome) · Subclavius Hypertonicity · SC Joint Ligament Injury · First Rib Anomaly',
+                  action: 'Neurovascular Shield · SC Joint Anchoring · First Rib–Clavicle Binding',
+                  clinicalPearl: 'Subclavius hypertonicity narrows the costoclavicular space, compressing the subclavian vein or brachial plexus — a common cause of neurogenic TOS.'
+                }
+              ];
+            }
+
+            // Bones of the Hand (Right Hand - Dorsal View)
+            if (fileUrl.includes('note-1790741296162') ||
+                (text.includes('hand') && (text.includes('phalang') || text.includes('metacarpal') || text.includes('carpal') || text.includes('scaphoid') || text.includes('dorsal view')))) {
+              return [
+                {
+                  id: 1,
+                  title: 'Phalanges — Finger Bones',
+                  subtitle: 'Distal · Middle · Proximal Phalanges of Digits I–V',
+                  whatItMeans: 'The hand has 14 phalanges total — each finger (digits II–V) has 3 phalanges: proximal, middle, and distal. The thumb (digit I) has only 2 (proximal and distal). Shown in green in this diagram.',
+                  whatItDoes: 'Enable fine motor dexterity: precision pinch at the distal phalanx tip, strong grip by all three, and individual finger flexion through DIP, PIP, and MCP joints.',
+                  whyWeNeedIt: 'Phalanges are essential for all daily activities — writing, gripping tools, typing, and manipulating objects. The distal phalanx tip contains nail bed and dense sensory nerve endings for fine touch.',
+                  nerveSupply: 'Palmar Digital Branches of Median Nerve (Digits I–III) · Ulnar Nerve (Digits IV–V) · Dorsal Digital Arteries',
+                  relatedTopics: 'Mallet Finger (extensor tendon avulsion at distal phalanx) · Boutonnière Deformity · Swan-Neck Deformity · Trigger Finger · Phalangeal Fracture',
+                  action: 'Fine Pinch · Power Grip · DIP/PIP Flexion-Extension for Precision Tasks',
+                  clinicalPearl: 'Mallet finger (dropped fingertip) = extensor tendon avulsion at the distal phalanx. Treated with 6–8 weeks of continuous DIP joint splinting in extension — NO exceptions.'
+                },
+                {
+                  id: 2,
+                  title: 'Metacarpals — Palm Bones',
+                  subtitle: '5 Metacarpal Bones (MC1–MC5) — Shown in Orange',
+                  whatItMeans: 'The 5 metacarpals are the long bones of the palm, connecting the carpal wrist bones to the proximal phalanges. Each has a base (proximally), a shaft, and a rounded head (knuckle) distally. Shown in orange in this diagram.',
+                  whatItDoes: 'Transmit gripping and pinching forces from fingers to the wrist. The 1st metacarpal (thumb) allows opposition. MC4 and MC5 flex for a cupped-palm grip. The metacarpal heads form the knuckles.',
+                  whyWeNeedIt: 'The metacarpal framework gives the palm structural rigidity while allowing some mobility at the 4th and 5th metacarpals for cupping movements essential for grasping round objects.',
+                  nerveSupply: 'Deep Branch of Ulnar Nerve (intrinsic muscles) · Median Nerve (thenar muscles) · Dorsal Metacarpal Arteries · Palmar Metacarpal Arteries',
+                  relatedTopics: "Boxer's Fracture (5th Metacarpal Neck Fracture) · Bennett's Fracture (1st Metacarpal Base) · Rolando Fracture · MCP Joint Dislocation",
+                  action: 'Palm Architecture · Power Grip Foundation · MCP Joint Articulation · Knuckle Formation',
+                  clinicalPearl: "Boxer's fracture (neck of MC5) is the commonest metacarpal fracture. Loss of the 5th knuckle prominence with >40° volar angulation requires surgical reduction."
+                },
+                {
+                  id: 3,
+                  title: 'Carpal Bones — The Wrist (8 Bones)',
+                  subtitle: 'Proximal Row: Scaphoid · Lunate · Triquetrum · Pisiform | Distal Row: Trapezium · Trapezoid · Capitate · Hamate',
+                  whatItMeans: 'The wrist contains 8 carpal bones arranged in two rows, shown in blue in this diagram. Proximal row (articulates with radius): Scaphoid (1), Lunate (2), Triquetrum (3), Pisiform (4). Distal row: Hamate (5), Capitate (6), Trapezoid (7), Trapezium (8).',
+                  whatItDoes: 'Form the flexible radiocarpal (wrist) joint and intercarpal joints allowing wrist flexion (80°), extension (70°), radial deviation (20°), and ulnar deviation (30°). The carpal tunnel between the flexor retinaculum and carpal bones channels 9 flexor tendons and the median nerve.',
+                  whyWeNeedIt: 'Carpal bones transmit 80% of wrist compressive loads through the scaphoid-lunate articulation. The proximal row acts as an intercalated mobile segment linking forearm rotation to hand positioning.',
+                  nerveSupply: 'Median Nerve (carpal tunnel) · Ulnar Nerve (Guyon canal) · Radial Artery (dorsal carpal arch) · Ulnar Artery (deep palmar arch)',
+                  relatedTopics: 'Scaphoid Fracture (anatomical snuffbox tenderness, AVN risk) · Carpal Tunnel Syndrome (median nerve compression) · Lunate AVN (Kienböck disease) · TFCC Tear · Perilunate Dislocation',
+                  action: 'Wrist Flexion/Extension · Radial & Ulnar Deviation · Force Transmission from Hand to Forearm',
+                  clinicalPearl: 'Scaphoid fractures: X-rays may be NEGATIVE for 10–14 days. Clinical diagnosis = anatomical snuffbox tenderness + scaphoid compression test → MRI or bone scan to rule out AVN risk.'
+                },
+                {
+                  id: 4,
+                  title: 'Radius — Distal End & Radiocarpal Joint',
+                  subtitle: 'Primary Wrist Load-Bearing Bone · Radiocarpal Articulation',
+                  whatItMeans: 'The distal radius is the larger of the two forearm bones (radius and ulna), seen at the base of this hand diagram. Its distal articular surface forms the radiocarpal joint with the scaphoid and lunate.',
+                  whatItDoes: 'Bears 80% of total wrist compressive load. The distal radius and the DRUJ (distal radioulnar joint) together allow forearm pronation and supination (180° total arc) for hand positioning in space.',
+                  whyWeNeedIt: 'The most commonly fractured bone in adults overall. The radiocarpal joint surface must be anatomically restored after fracture to prevent wrist arthritis and functional limitation.',
+                  nerveSupply: 'Anterior Interosseous Nerve · Posterior Interosseous Nerve (deep radial branch) · Radial Artery · Anterior Interosseous Artery',
+                  relatedTopics: "Colles' Fracture (dinner-fork deformity after FOOSH) · Smith's Fracture (reverse Colles') · Barton Fracture · DRUJ Instability · Distal Radius Malunion",
+                  action: 'Radiocarpal Load Transmission · Wrist Stability · Forearm Rotation (via DRUJ)',
+                  clinicalPearl: "Colles' fracture = dorsal angulation + radial shortening + supination deformity after a fall on outstretched hand (FOOSH). Produces the classic \"dinner-fork\" wrist deformity."
+                },
+                {
+                  id: 5,
+                  title: 'Ulna — Distal End & DRUJ',
+                  subtitle: 'Medial Forearm Bone · Distal Radioulnar Joint (DRUJ) · TFCC',
+                  whatItMeans: 'The ulna is the medial forearm bone visible at the base of the hand diagram. The distal ulna articulates with the ulnar notch of the radius at the DRUJ. The TFCC (triangular fibrocartilage complex) covers the ulnar head and stabilizes the DRUJ.',
+                  whatItDoes: 'Bears 20% of wrist compressive load through the TFCC. Enables forearm rotation — during pronation/supination, the radius rotates around the stable ulna. The ulnar styloid is the attachment for key wrist ligaments.',
+                  whyWeNeedIt: 'DRUJ instability (from distal ulna fracture or TFCC tear) causes painful forearm rotation and wrist instability. The TFCC acts as the "wrist meniscus" distributing ulnar-sided wrist loads.',
+                  nerveSupply: 'Ulnar Nerve (C8–T1) · Dorsal Cutaneous Branch of Ulnar Nerve · Anterior Interosseous Artery · Posterior Interosseous Artery',
+                  relatedTopics: 'Galeazzi Fracture (radial shaft + DRUJ dislocation) · TFCC Tear · Ulnar Styloid Fracture · Ulnar Impaction Syndrome · DRUJ Instability',
+                  action: 'Forearm Rotation Axis · DRUJ Stability · Ulnar-Sided Wrist Load Bearing via TFCC',
+                  clinicalPearl: 'TFCC tears cause ulnar-sided wrist pain worsened by forearm rotation. Provocative test: ulnar grind test (axial load + rotation of ulnar-deviated wrist). MRI arthrography is gold standard.'
+                }
+              ];
+            }
+
+            // Movements of the Right Clavicle (Sternoclavicular Joint)
+            if (fileUrl.includes('note-1790741296165') ||
+                (text.includes('clavicle') && (text.includes('elevation') || text.includes('depression') || text.includes('protraction') || text.includes('retraction') || text.includes('movement')))) {
+              return [
+                {
+                  id: 1,
+                  title: 'Elevation of the Clavicle',
+                  subtitle: 'Upward Movement at the Sternoclavicular (SC) Joint',
+                  whatItMeans: 'Elevation is the upward movement of the clavicle at the SC joint (shown by the blue upward arrow in the diagram). It raises the lateral end of the clavicle, lifting the entire shoulder girdle.',
+                  whatItDoes: 'Occurs during shrugging, raising the arm overhead (above 90°), carrying heavy bags, and during overhead throwing. Range is approximately 30–45° of elevation.',
+                  whyWeNeedIt: 'Clavicular elevation is essential for full overhead arm motion. Without elevation at the SC joint, the arm cannot reach above 90° of shoulder abduction.',
+                  nerveSupply: 'Spinal Accessory Nerve (CN XI) for Trapezius · Cervical Nerve Roots (C2–C4) for Levator Scapulae · Supraclavicular Artery',
+                  relatedTopics: 'SC Joint Elevation Restriction · Trapezius Weakness · Shoulder Impingement (insufficient elevation) · Cervicogenic Shoulder Dysfunction',
+                  action: 'Overhead Arm Elevation · Shoulder Girdle Shrugging · Heavy Bag Carrying',
+                  clinicalPearl: 'Loss of clavicular elevation at the SC joint (from SC arthritis or stiffness) limits full shoulder elevation — often missed as the cause of apparent "rotator cuff" symptoms.'
+                },
+                {
+                  id: 2,
+                  title: 'Depression of the Clavicle',
+                  subtitle: 'Downward Movement at the SC Joint',
+                  whatItMeans: 'Depression is the downward movement of the clavicle (shown by the purple downward arrow). It lowers the shoulder girdle toward the ribcage.',
+                  whatItDoes: 'Occurs when pushing down on an armrest (chair-to-stand transfer), doing parallel bar dips, pressing shoulder pads, or during the downstroke in swimming. Range is approximately 5–15°.',
+                  whyWeNeedIt: 'Clavicular depression allows the shoulder girdle to descend, which is critical for functional activities like pushing up from a chair — important in rehabilitation after lower limb injury.',
+                  nerveSupply: 'Ansa Cervicalis (C1–C3) for Sternohyoid/Omohyoid · Pectoral Nerves for Pectoralis Minor',
+                  relatedTopics: 'Clavicular Depression Weakness · Sternocleidomastoid Tightness · Shoulder Girdle Asymmetry',
+                  action: 'Chair-to-Stand Transfers · Arm Push-Down Power · Swimming Downstroke',
+                  clinicalPearl: 'Restricted clavicular depression can limit shoulder girdle mobility. Mobilization of the SC joint can restore full elevation-depression range critical for overhead athletes.'
+                },
+                {
+                  id: 3,
+                  title: 'Protraction & Retraction of the Clavicle',
+                  subtitle: 'Forward (Orange) & Backward Movements at the SC Joint',
+                  whatItMeans: 'Protraction is the forward movement of the clavicle at the SC joint (orange arrow), moving the shoulder forward around the chest wall. Retraction (blue arrow) brings the shoulder backward toward the spine.',
+                  whatItDoes: 'Protraction occurs during reaching forward, pushing, punching, and typing. Retraction happens during rowing, pulling, posture correction, and scapular retraction exercises.',
+                  whyWeNeedIt: 'These movements allow the shoulder girdle to move around the curved chest wall, enabling reaching and pulling in all directions. Combined with rotation, they allow full scapulothoracic movement.',
+                  nerveSupply: 'Long Thoracic Nerve (C5–C7) for Serratus Anterior (protraction) · Dorsal Scapular Nerve (C5) for Rhomboids (retraction)',
+                  relatedTopics: 'Winged Scapula (Serratus Anterior Weakness) · Rounded Shoulder Posture · Scapular Dyskinesis · Retraction Strengthening for Posture Correction',
+                  action: 'Reaching Forward · Punching · Shoulder Posture Control · Rowing & Pulling',
+                  clinicalPearl: 'Serratus anterior paralysis (long thoracic nerve injury) causes winging of the medial scapula border — cannot protract the shoulder. Test: wall push-up reveals medial scapular winging.'
+                },
+                {
+                  id: 4,
+                  title: 'Posterior Rotation of the Clavicle',
+                  subtitle: 'Axial Rotation Around the Long Axis of the Clavicle',
+                  whatItMeans: 'Posterior rotation (green curved arrow) is the spinning of the clavicle around its own long axis during full arm overhead elevation. This rotation is PASSIVE — it occurs automatically when the arm is raised above 90°.',
+                  whatItDoes: 'As the arm rises above 90°, the coracoclavicular ligaments pull the clavicle into posterior rotation (~30–50°), which repositions the acromial end and allows the scapula to upwardly rotate for the final degrees of arm elevation.',
+                  whyWeNeedIt: 'Without this passive clavicular rotation, the coracoclavicular ligaments would be too tight and block full scapular upward rotation — preventing full overhead arm elevation.',
+                  nerveSupply: 'Proprioceptive nerve endings of CC and AC joint capsule · Suprascapular Artery',
+                  relatedTopics: 'Frozen Shoulder (restricted clavicular rotation) · Shoulder Impingement · AC Joint Hypomobility · Clavicular Fracture Malunion Limiting Rotation',
+                  action: 'Passive Mechanism Enabling Full Overhead Elevation · Scapular Upward Rotation Coupling',
+                  clinicalPearl: 'Clavicular posterior rotation is passive and obligatory above 90° arm elevation. Loss of this motion (AC joint stiffness) limits full overhead reach even with an intact rotator cuff.'
+                },
+                {
+                  id: 5,
+                  title: 'Sternoclavicular (SC) Joint',
+                  subtitle: 'The Only True Joint Between Upper Limb & Axial Skeleton',
+                  whatItMeans: 'The sternoclavicular (SC) joint (shown at the medial end of the clavicle in the diagram) is where the clavicle articulates with the manubrium sterni and the first costal cartilage. It is a saddle-type synovial joint with an articular disc.',
+                  whatItDoes: 'Allows all clavicular movements: elevation/depression (30°/15°), protraction/retraction (15–30°), and axial rotation (up to 50°). The articular disc absorbs medial shock. Strong ligaments stabilize it against displacement.',
+                  whyWeNeedIt: 'The SC joint is the ONLY skeletal connection between the upper limb and the thorax. All forces from the arm are transmitted through this single joint to the axial skeleton.',
+                  nerveSupply: 'Medial Supraclavicular Nerve (C3–C4) · Internal Thoracic Artery · Subclavian Artery branches',
+                  relatedTopics: 'SC Joint Dislocation (anterior/posterior) · SC Joint Arthritis · Posterior SC Dislocation (emergency) · SC Joint Sprain · Articular Disc Tear',
+                  action: 'Axial Skeleton to Upper Limb Connection · All Clavicular Movements Pivot',
+                  clinicalPearl: 'Posterior SC joint dislocation can compress the trachea, esophagus, or great vessels — life-threatening emergency requiring urgent imaging (CT angiogram) and surgical reduction.'
+                }
+              ];
+            }
+
+            // Right Clavicle - Muscle Attachments (Superior & Inferior Surfaces)
+            if (fileUrl.includes('note-1790741296168') ||
+                (text.includes('clavicle') && (text.includes('muscle attachment') || text.includes('deltoid') || text.includes('pectoralis') || text.includes('sternocleidomastoid') || text.includes('subclavius') || text.includes('sternohyoid')))) {
+              return [
+                {
+                  id: 1,
+                  title: 'Deltoid (Insertion) & Pectoralis Major (Origin) — Superior Surface',
+                  subtitle: 'Lateral Deltoid Insertion (Blue) · Medial Pec Major Origin (Red)',
+                  whatItMeans: 'On the superior surface of the right clavicle: the Deltoid muscle INSERTS into the lateral third (shown in blue = insertion), while the clavicular head of Pectoralis Major ORIGINATES from the medial anterior surface (shown in red = origin).',
+                  whatItDoes: 'Deltoid (anterior fibres) flexes and internally rotates the arm. The clavicular head of Pectoralis Major adducts and flexes the arm across the chest. Together they control shoulder movement in the anterior plane.',
+                  whyWeNeedIt: 'These muscles are the primary movers for punching, pushing, throwing, and reaching forward. The clavicular pec major is specifically targeted in incline bench press and cable cross exercises.',
+                  nerveSupply: 'Axillary Nerve (C5–C6) for Deltoid · Medial & Lateral Pectoral Nerves (C5–T1) for Pectoralis Major',
+                  relatedTopics: 'Deltoid Tear · Pec Major Tear · AC Joint Injuries affecting Deltoid · Clavicular Stress Fracture from Repeated Muscular Pull',
+                  action: 'Arm Flexion · Shoulder Abduction (Deltoid) · Horizontal Adduction · Internal Rotation (Pec Major)',
+                  clinicalPearl: 'Pectoralis major rupture (at its humeral insertion) presents as a sudden pop during bench press, with visible anterior axillary fold asymmetry and reduced strength on resisted adduction/internal rotation.'
+                },
+                {
+                  id: 2,
+                  title: 'Sternocleidomastoid (Origin) — Medial Superior Surface',
+                  subtitle: 'SCM Clavicular Head Origin (Red) — Medial Sternal End',
+                  whatItMeans: 'The Sternocleidomastoid (SCM) muscle has two heads — the sternal and clavicular heads. The clavicular head ORIGINATES from the medial superior surface of the clavicle (shown in red = origin).',
+                  whatItDoes: 'Acting bilaterally: flexes the cervical spine forward (nodding). Acting unilaterally: laterally flexes the neck to the same side while rotating the head to the OPPOSITE side. Essential for head positioning and neck movement.',
+                  whyWeNeedIt: 'SCM is the most superficial and prominent neck muscle. It is active in breathing (accessory respiratory muscle) when working hard. Imbalance causes cervicogenic headaches and postural neck pain.',
+                  nerveSupply: 'Spinal Accessory Nerve (CN XI — motor) · Cervical Nerve Roots C2–C3 (sensory) · Occipital Artery · Superior Thyroid Artery',
+                  relatedTopics: 'Torticollis (SCM spasm or contracture) · Cervicogenic Headache · SCM Trigger Points · Birth-Related SCM Fibrosis · Spinal Accessory Nerve Palsy',
+                  action: 'Head Flexion · Ipsilateral Lateral Flexion · Contralateral Rotation · Accessory Inspiration',
+                  clinicalPearl: 'Spinal Accessory Nerve (CN XI) palsy from neck dissection surgery paralyzes SCM and Trapezius, causing shoulder droop and inability to shrug. Test by resisted head rotation and shoulder shrug.'
+                },
+                {
+                  id: 3,
+                  title: 'Subclavius (Origin & Insertion) — Inferior Surface',
+                  subtitle: 'Subclavius Origin (Red) at 1st Rib · Insertion (Blue) at Subclavian Groove',
+                  whatItMeans: 'Subclavius is a small cylindrical muscle running horizontally beneath the clavicle. It ORIGINATES from the junction of the 1st rib and its cartilage (origin = red on inferior view) and INSERTS into the subclavian groove on the inferior clavicular surface (blue).',
+                  whatItDoes: 'Depresses and stabilizes the clavicle against the sternoclavicular joint during arm loading. Creates a muscular cushion protecting the subclavian neurovascular bundle (artery, vein, brachial plexus) from clavicular compression.',
+                  whyWeNeedIt: 'Without subclavius, the clavicle would directly compress the subclavian vessels during arm loading — risking neurovascular injury. This muscle prevents SC joint instability.',
+                  nerveSupply: 'Nerve to Subclavius (C5–C6) · Clavipectoral Fascial Arteries',
+                  relatedTopics: 'Subclavius Hypertonicity (costoclavicular TOS) · Subclavian Vein Compression · Clavicular Fracture Disuse Wasting',
+                  action: 'Clavicular Depression & Stabilization · Neurovascular Bundle Protection',
+                  clinicalPearl: 'Subclavius hypertonicity compresses the costoclavicular space, trapping the brachial plexus — causing neurogenic arm pain, paresthesia, and weakness (costoclavicular TOS). Release via targeted stretching and dry needling.'
+                },
+                {
+                  id: 4,
+                  title: 'Coracoclavicular Ligaments (Conoid & Trapezoid Parts) — Inferior Lateral Surface',
+                  subtitle: 'Green = Ligament Attachments · Conoid (medial) & Trapezoid (lateral) Parts',
+                  whatItMeans: 'The green areas on the inferior clavicular surface represent LIGAMENT attachment zones (not muscles). The Coracoclavicular ligament has two parts: the Conoid (cone-shaped, posteromedial) and the Trapezoid (quadrilateral, anterolateral), both connecting the clavicle to the coracoid process of the scapula.',
+                  whatItDoes: 'These are the PRIMARY static restraints suspending the scapula from the clavicle. They prevent vertical displacement of the AC joint, keeping the arm from falling down from the clavicle.',
+                  whyWeNeedIt: 'All arm weight is borne by these ligaments at rest — they constantly prevent the scapula from dropping inferiorly. Rupture causes visible AC joint deformity.',
+                  nerveSupply: 'Proprioceptive mechanoreceptors within ligament fibres (C5–C6 dermatomal region)',
+                  relatedTopics: 'AC Joint Separation Grade III–VI (CC ligament rupture) · Coracoclavicular Screw Fixation · Hook Plate · CC Ligament Reconstruction with Tendon Graft',
+                  action: 'Primary Vertical Scapular Suspension · AC Joint Vertical Stability · Arm Weight Transmission to Clavicle',
+                  clinicalPearl: 'CC ligament rupture = "step-off" or "piano-key" sign at AC joint. CC distance >13 mm on X-ray (or >50% more than contralateral side) confirms complete rupture requiring surgical stabilization.'
+                },
+                {
+                  id: 5,
+                  title: 'Sternohyoid, Sternothyroid & Costoclavicular Ligament — Medial Inferior Surface',
+                  subtitle: 'Infrahyoid Muscles (Red = Origin) · Costoclavicular Ligament (Green)',
+                  whatItMeans: 'On the medial inferior clavicular surface: Sternohyoid and Sternothyroid muscles originate (red = origin). These are infrahyoid (strap) muscles that depress the hyoid and larynx. The Costoclavicular ligament (green = ligament) also attaches medially, binding the clavicle to the first rib cartilage.',
+                  whatItDoes: 'Sternohyoid depresses the hyoid after swallowing. Sternothyroid depresses the thyroid cartilage (larynx) after speaking. The Costoclavicular ligament prevents excessive elevation and protraction of the medial clavicle at the SC joint.',
+                  whyWeNeedIt: 'These structures control laryngeal position during swallowing and phonation. The costoclavicular ligament is the PRIMARY ANTERIOR restraint of the SC joint, preventing anterior SC joint dislocation.',
+                  nerveSupply: 'Ansa Cervicalis (C1–C3) for Sternohyoid & Sternothyroid · Internal Thoracic Artery',
+                  relatedTopics: 'SC Joint Sprain · Costoclavicular Ligament Disruption · Anterior SC Dislocation · Infrahyoid Muscle Contracture Post-Thyroid Surgery',
+                  action: 'Hyoid & Larynx Depression (Swallowing & Speech) · SC Joint Anterior Restraint · First Rib Clavicular Anchoring',
+                  clinicalPearl: 'Costoclavicular ligament is the strongest ligament of the SC joint. Anterior SC dislocation (from direct blow) is more common than posterior, but posterior is life-threatening due to proximity to great vessels.'
+                }
+              ];
+            }
+
+            // =====================================================================
+            // KEYWORD-BASED MATCHING (secondary — for new uploads with proper titles)
+            // =====================================================================
+
             // 1. HEAD, SKULL, BRAIN & CRANIAL NEUROLOGICAL SYSTEM
             if (text.includes('head') || text.includes('skull') || text.includes('brain') || text.includes('cerebr') || text.includes('cranium') || text.includes('cranial') || text.includes('cephalic') || text.includes('prefrontal') || text.includes('temporal lobe') || text.includes('occipital') || text.includes('parietal') || text.includes('cerebell') || text.includes('brainstem')) {
               return [
