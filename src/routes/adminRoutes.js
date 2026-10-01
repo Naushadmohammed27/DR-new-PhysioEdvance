@@ -230,6 +230,14 @@ router.post('/about-cms/milestones/:id/move-up', requirePermission('SETTINGS', '
 router.post('/about-cms/milestones/:id/move-down', requirePermission('SETTINGS', 'EDIT'), adminController.moveAboutMilestoneDown);
 
 // ==========================================
+// CONTACT PAGE CMS
+// ==========================================
+router.get('/contact-cms', requirePermission('SETTINGS', 'VIEW'), adminController.contactCmsIndex);
+router.post('/contact-cms', requirePermission('SETTINGS', 'EDIT'), adminController.updateContactCms);
+
+
+
+// ==========================================
 // SUBJECT INTERACTIVE HUB GRID CMS
 // ==========================================
 router.get('/subject-hub-grid', requirePermission('SETTINGS', 'VIEW'), adminController.subjectHubGridIndex);

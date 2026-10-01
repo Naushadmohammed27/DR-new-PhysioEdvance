@@ -844,6 +844,70 @@ const SiteSettings = {
     if (data.secondaryBtnIcon !== undefined) await this.set('cta_secondary_btn_icon', data.secondaryBtnIcon);
     if (data.noteText !== undefined) await this.set('cta_note_text', data.noteText);
     if (data.isEnabled !== undefined) await this.set('cta_section_enabled', data.isEnabled ? '1' : '0');
+  },
+
+  // ============ CONTACT PAGE CMS ============
+  async getContactSettings() {
+    return {
+      // Hero section
+      heroBadge:    await this.get('contact_hero_badge',    'Student & Academic Support'),
+      heroTitle:    await this.get('contact_hero_title',    "We'd Love to Hear From You"),
+      heroSubtitle: await this.get('contact_hero_subtitle', 'Have questions about BPT courses, curriculum notes, live workshops, or partnership opportunities? Reach out and our team will get back to you within 24 hours.'),
+      // Left column
+      sectionBadge: await this.get('contact_section_badge', 'Contact Channels'),
+      heading:      await this.get('contact_heading',       'Get Direct Guidance'),
+      description:  await this.get('contact_description',  'Whether you are a student looking for subject clarification or a faculty member interested in collaborating, we are just a message away.'),
+      // Contact details
+      email:        await this.get('contact_email',         'support@physioedvance.com'),
+      phone:        await this.get('contact_phone',         '+91 99643 81417'),
+      whatsappNum:  await this.get('contact_whatsapp_num',  '919964381417'),
+      locationName: await this.get('contact_location_name', 'PhysioEdvance Headquarters'),
+      locationCity: await this.get('contact_location_city', 'Bengaluru, Karnataka, India'),
+      // Response guarantee
+      guaranteeTitle: await this.get('contact_guarantee_title', 'Fast 24-Hour Response Guarantee'),
+      guaranteeText:  await this.get('contact_guarantee_text',  'Our academic advisors respond to all student and faculty inquiries within one business day.'),
+      // Bottom highlight cards
+      card1Icon:  await this.get('contact_card1_icon',  'ri-flash-element-line'),
+      card1Title: await this.get('contact_card1_title', 'Quick 1-Minute Setup'),
+      card1Text:  await this.get('contact_card1_text',  'Physiotherapy students can register and gain instant access to free subject notes.'),
+      card2Icon:  await this.get('contact_card2_icon',  'ri-user-star-line'),
+      card2Title: await this.get('contact_card2_title', 'Expert Faculty Guidance'),
+      card2Text:  await this.get('contact_card2_text',  'Mentorship and learning support provided directly by practicing BPT & MPT clinicians.'),
+      card3Icon:  await this.get('contact_card3_icon',  'ri-shield-check-line'),
+      card3Title: await this.get('contact_card3_title', '100% Free & Secure'),
+      card3Text:  await this.get('contact_card3_text',  'Free open learning platform built exclusively for physiotherapy students across India.'),
+      // Form section
+      formTitle:   await this.get('contact_form_title',   'Leave Your Details'),
+      formSubtext: await this.get('contact_form_subtext', "Fill out the quick form — we'll handle the rest."),
+      formBtnText: await this.get('contact_form_btn_text', 'Submit Request'),
+    };
+  },
+
+  async updateContactSettings(data) {
+    const fields = [
+      'heroBadge','heroTitle','heroSubtitle',
+      'sectionBadge','heading','description',
+      'email','phone','whatsappNum','locationName','locationCity',
+      'guaranteeTitle','guaranteeText',
+      'card1Icon','card1Title','card1Text',
+      'card2Icon','card2Title','card2Text',
+      'card3Icon','card3Title','card3Text',
+      'formTitle','formSubtext','formBtnText',
+    ];
+    const keyMap = {
+      heroBadge:'contact_hero_badge', heroTitle:'contact_hero_title', heroSubtitle:'contact_hero_subtitle',
+      sectionBadge:'contact_section_badge', heading:'contact_heading', description:'contact_description',
+      email:'contact_email', phone:'contact_phone', whatsappNum:'contact_whatsapp_num',
+      locationName:'contact_location_name', locationCity:'contact_location_city',
+      guaranteeTitle:'contact_guarantee_title', guaranteeText:'contact_guarantee_text',
+      card1Icon:'contact_card1_icon', card1Title:'contact_card1_title', card1Text:'contact_card1_text',
+      card2Icon:'contact_card2_icon', card2Title:'contact_card2_title', card2Text:'contact_card2_text',
+      card3Icon:'contact_card3_icon', card3Title:'contact_card3_title', card3Text:'contact_card3_text',
+      formTitle:'contact_form_title', formSubtext:'contact_form_subtext', formBtnText:'contact_form_btn_text',
+    };
+    for (const field of fields) {
+      if (data[field] !== undefined) await this.set(keyMap[field], data[field]);
+    }
   }
 };
 

@@ -1798,6 +1798,69 @@ exports.updateCta = async (req, res) => {
 };
 
 // ==========================================
+// CONTACT PAGE CMS
+// ==========================================
+
+exports.contactCmsIndex = async (req, res) => {
+  try {
+    const contactSettings = await SiteSettings.getContactSettings();
+    res.render('admin/contact-cms', {
+      title: 'Contact Page CMS',
+      layout: 'layouts/admin',
+      contactSettings,
+      currentPath: '/admin/contact-cms'
+    });
+  } catch (err) {
+    req.flash('error', `Failed to load Contact CMS: ${err.message}`);
+    res.redirect('/admin/dashboard');
+  }
+};
+
+exports.updateContactCms = async (req, res) => {
+  try {
+    const {
+      heroBadge, heroTitle, heroSubtitle,
+      sectionBadge, heading, description,
+      email, phone, whatsappNum, locationName, locationCity,
+      guaranteeTitle, guaranteeText,
+      card1Icon, card1Title, card1Text,
+      card2Icon, card2Title, card2Text,
+      card3Icon, card3Title, card3Text,
+      formTitle, formSubtext, formBtnText,
+    } = req.body;
+
+    await SiteSettings.updateContactSettings({
+      heroBadge:    (heroBadge || '').trim(),
+      heroTitle:    (heroTitle || '').trim(),
+      heroSubtitle: (heroSubtitle || '').trim(),
+      sectionBadge: (sectionBadge || '').trim(),
+      heading:      (heading || '').trim(),
+      description:  (description || '').trim(),
+      email:        (email || '').trim(),
+      phone:        (phone || '').trim(),
+      whatsappNum:  (whatsappNum || '').replace(/\D/g, ''),
+      locationName: (locationName || '').trim(),
+      locationCity: (locationCity || '').trim(),
+      guaranteeTitle: (guaranteeTitle || '').trim(),
+      guaranteeText:  (guaranteeText || '').trim(),
+      card1Icon:  (card1Icon || '').trim(),  card1Title: (card1Title || '').trim(), card1Text: (card1Text || '').trim(),
+      card2Icon:  (card2Icon || '').trim(),  card2Title: (card2Title || '').trim(), card2Text: (card2Text || '').trim(),
+      card3Icon:  (card3Icon || '').trim(),  card3Title: (card3Title || '').trim(), card3Text: (card3Text || '').trim(),
+      formTitle:   (formTitle || '').trim(),
+      formSubtext: (formSubtext || '').trim(),
+      formBtnText: (formBtnText || '').trim(),
+    });
+
+    req.flash('success', 'Contact page updated successfully.');
+  } catch (err) {
+    req.flash('error', `Failed to update Contact page: ${err.message}`);
+  }
+  res.redirect('/admin/contact-cms');
+};
+
+
+
+// ==========================================
 // SUPER ADMIN & RBAC MANAGEMENT CONTROLLERS
 // ==========================================
 

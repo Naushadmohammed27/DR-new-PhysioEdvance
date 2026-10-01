@@ -474,8 +474,10 @@ exports.registerForSession = async (req, res) => {
   res.redirect('/live-sessions');
 };
 
-exports.contact = (req, res) => {
-  res.render('public/contact', { title: 'Contact Us' });
+exports.contact = async (req, res) => {
+  const { SiteSettings } = require('../models/Content');
+  const contactSettings = await SiteSettings.getContactSettings().catch(() => null);
+  res.render('public/contact', { title: 'Contact Us', contactSettings });
 };
 
 exports.submitContact = async (req, res) => {

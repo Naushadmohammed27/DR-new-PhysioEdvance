@@ -1,0 +1,267 @@
+<!-- ============ ADMIN CONTACT PAGE CMS ============ -->
+<div class="pe-page-head mb-4">
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+    <div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1.5 small text-muted">
+          <li class="breadcrumb-item"><a href="/admin/dashboard" class="text-decoration-none text-muted"><i class="ri-home-4-line me-1"></i>Dashboard</a></li>
+          <li class="breadcrumb-item active text-primary fw-semibold" aria-current="page">Contact Page CMS</li>
+        </ol>
+      </nav>
+      <div class="d-flex align-items-center gap-2.5 flex-wrap">
+        <h3 class="fw-bold text-dark mb-0 fs-4 d-flex align-items-center gap-2">
+          <span class="p-2 rounded-3 bg-primary text-white d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;">
+            <i class="ri-contacts-line fs-5"></i>
+          </span>
+          <span>Contact Page CMS</span>
+        </h3>
+        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-1.5 fw-semibold small">
+          <i class="ri-pencil-line me-1"></i> /contact page
+        </span>
+      </div>
+      <p class="text-muted small mt-1.5 mb-0">Edit every text, email, phone number, and card on the public Contact page.</p>
+    </div>
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <a href="/contact" target="_blank" class="btn btn-outline-primary rounded-pill px-3.5 py-2 fw-semibold d-inline-flex align-items-center gap-1.5 shadow-xs">
+        <i class="ri-external-link-line fs-5"></i>
+        <span>Preview Contact Page</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Flash messages -->
+<% if (successMessages && successMessages.length > 0) { %>
+  <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert">
+    <i class="ri-checkbox-circle-line me-2"></i><%= successMessages[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+<% } %>
+<% if (errorMessages && errorMessages.length > 0) { %>
+  <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-sm mb-4" role="alert">
+    <i class="ri-error-warning-line me-2"></i><%= errorMessages[0] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+<% } %>
+
+<!-- ============ LIVE PREVIEW ============ -->
+<div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4" style="background: linear-gradient(180deg, #0a5dc2 0%, #0369a1 100%); color: #fff;">
+  <div class="card-body p-4 text-center">
+    <span class="badge bg-warning text-dark fw-bold text-uppercase px-3.5 py-2 rounded-pill mb-3 shadow-sm d-inline-block" style="font-size: 0.8rem; letter-spacing: 0.05em;">
+      <i class="ri-headphone-fill me-1"></i>
+      <span id="prev_heroBadge"><%= contactSettings.heroBadge %></span>
+    </span>
+    <h2 class="text-white mb-2" id="prev_heroTitle" style="font-size: clamp(1.5rem,3vw,2.2rem); font-weight: 800;"><%= contactSettings.heroTitle %></h2>
+    <p class="mb-0" style="color: rgba(255,255,255,0.85); max-width: 600px; margin: 0 auto;" id="prev_heroSubtitle"><%= contactSettings.heroSubtitle %></p>
+  </div>
+</div>
+
+<form action="/admin/contact-cms" method="POST">
+  <div class="row g-4">
+
+    <!-- ===== LEFT COLUMN ===== -->
+    <div class="col-lg-7">
+
+      <!-- Hero Section -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+          <i class="ri-star-line text-warning"></i> Hero Section (Blue Banner)
+        </h5>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark small">Badge Text <span class="text-danger">*</span></label>
+            <input type="text" name="heroBadge" class="form-control" value="<%= contactSettings.heroBadge %>" required
+                   oninput="document.getElementById('prev_heroBadge').innerText = this.value">
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark small">Main Title <span class="text-danger">*</span></label>
+            <input type="text" name="heroTitle" class="form-control fw-bold" value="<%= contactSettings.heroTitle %>" required
+                   oninput="document.getElementById('prev_heroTitle').innerText = this.value">
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark small">Subtitle / Description</label>
+            <textarea name="heroSubtitle" rows="3" class="form-control"
+                      oninput="document.getElementById('prev_heroSubtitle').innerText = this.value"><%= contactSettings.heroSubtitle %></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Left Column Text -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+          <i class="ri-map-pin-user-line text-primary"></i> Left Column — Contact Info
+        </h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark small">Section Badge Label</label>
+            <input type="text" name="sectionBadge" class="form-control" value="<%= contactSettings.sectionBadge %>">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark small">Heading</label>
+            <input type="text" name="heading" class="form-control" value="<%= contactSettings.heading %>">
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark small">Description</label>
+            <textarea name="description" rows="2" class="form-control"><%= contactSettings.description %></textarea>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark small"><i class="ri-mail-send-fill text-primary me-1"></i>Official Email</label>
+            <input type="text" name="email" class="form-control" value="<%= contactSettings.email %>">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark small"><i class="ri-whatsapp-fill text-success me-1"></i>Phone / WhatsApp Display</label>
+            <input type="text" name="phone" class="form-control" value="<%= contactSettings.phone %>" placeholder="+91 XXXXX XXXXX">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark small">WhatsApp Number (digits only, for wa.me link)</label>
+            <input type="text" name="whatsappNum" class="form-control font-monospace" value="<%= contactSettings.whatsappNum %>" placeholder="919964381417">
+            <div class="form-text">Include country code, no spaces or dashes</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark small"><i class="ri-building-4-fill text-warning me-1"></i>Location Name</label>
+            <input type="text" name="locationName" class="form-control" value="<%= contactSettings.locationName %>">
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark small">Location City / Address</label>
+            <input type="text" name="locationCity" class="form-control" value="<%= contactSettings.locationCity %>">
+          </div>
+        </div>
+      </div>
+
+      <!-- Response Guarantee -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+          <i class="ri-shield-check-fill text-primary"></i> Response Guarantee Badge
+        </h5>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark small">Guarantee Title</label>
+            <input type="text" name="guaranteeTitle" class="form-control" value="<%= contactSettings.guaranteeTitle %>">
+          </div>
+          <div class="col-12">
+            <label class="form-label fw-bold text-dark small">Guarantee Description</label>
+            <textarea name="guaranteeText" rows="2" class="form-control"><%= contactSettings.guaranteeText %></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Section Labels -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+          <i class="ri-file-list-3-line text-primary"></i> Contact Form Labels
+        </h5>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark small">Form Card Title</label>
+            <input type="text" name="formTitle" class="form-control" value="<%= contactSettings.formTitle %>">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark small">Form Subtext</label>
+            <input type="text" name="formSubtext" class="form-control" value="<%= contactSettings.formSubtext %>">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label fw-bold text-dark small">Submit Button Text</label>
+            <input type="text" name="formBtnText" class="form-control" value="<%= contactSettings.formBtnText %>">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== RIGHT COLUMN ===== -->
+    <div class="col-lg-5">
+
+      <!-- Bottom Highlight Cards -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+        <h5 class="fw-bold text-dark mb-4 pb-2 border-bottom d-flex align-items-center gap-2">
+          <i class="ri-layout-3-line text-primary"></i> Bottom Highlight Cards (3 cards)
+        </h5>
+
+        <!-- Card 1 -->
+        <div class="p-3 rounded-3 mb-3" style="background: rgba(10,93,194,0.06); border: 1px solid rgba(10,93,194,0.12);">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="badge bg-primary text-white rounded-pill px-2 py-1 small">Card 1</span>
+            <span class="text-muted small">Blue Icon</span>
+          </div>
+          <div class="mb-2">
+            <label class="form-label fw-bold text-dark small">RemixIcon Class</label>
+            <div class="input-group input-group-sm">
+              <span class="input-group-text"><i id="c1icon" class="<%= contactSettings.card1Icon %>"></i></span>
+              <input type="text" name="card1Icon" class="form-control font-monospace" value="<%= contactSettings.card1Icon %>"
+                     oninput="document.getElementById('c1icon').className=this.value">
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label fw-bold text-dark small">Title</label>
+            <input type="text" name="card1Title" class="form-control form-control-sm" value="<%= contactSettings.card1Title %>">
+          </div>
+          <div class="mb-0">
+            <label class="form-label fw-bold text-dark small">Description</label>
+            <textarea name="card1Text" rows="2" class="form-control form-control-sm"><%= contactSettings.card1Text %></textarea>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="p-3 rounded-3 mb-3" style="background: rgba(16,185,129,0.06); border: 1px solid rgba(16,185,129,0.12);">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="badge bg-success text-white rounded-pill px-2 py-1 small">Card 2</span>
+            <span class="text-muted small">Green Icon</span>
+          </div>
+          <div class="mb-2">
+            <label class="form-label fw-bold text-dark small">RemixIcon Class</label>
+            <div class="input-group input-group-sm">
+              <span class="input-group-text"><i id="c2icon" class="<%= contactSettings.card2Icon %>"></i></span>
+              <input type="text" name="card2Icon" class="form-control font-monospace" value="<%= contactSettings.card2Icon %>"
+                     oninput="document.getElementById('c2icon').className=this.value">
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label fw-bold text-dark small">Title</label>
+            <input type="text" name="card2Title" class="form-control form-control-sm" value="<%= contactSettings.card2Title %>">
+          </div>
+          <div class="mb-0">
+            <label class="form-label fw-bold text-dark small">Description</label>
+            <textarea name="card2Text" rows="2" class="form-control form-control-sm"><%= contactSettings.card2Text %></textarea>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="p-3 rounded-3 mb-0" style="background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.12);">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="badge bg-warning text-dark rounded-pill px-2 py-1 small">Card 3</span>
+            <span class="text-muted small">Yellow Icon</span>
+          </div>
+          <div class="mb-2">
+            <label class="form-label fw-bold text-dark small">RemixIcon Class</label>
+            <div class="input-group input-group-sm">
+              <span class="input-group-text"><i id="c3icon" class="<%= contactSettings.card3Icon %>"></i></span>
+              <input type="text" name="card3Icon" class="form-control font-monospace" value="<%= contactSettings.card3Icon %>"
+                     oninput="document.getElementById('c3icon').className=this.value">
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="form-label fw-bold text-dark small">Title</label>
+            <input type="text" name="card3Title" class="form-control form-control-sm" value="<%= contactSettings.card3Title %>">
+          </div>
+          <div class="mb-0">
+            <label class="form-label fw-bold text-dark small">Description</label>
+            <textarea name="card3Text" rows="2" class="form-control form-control-sm"><%= contactSettings.card3Text %></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+        <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom d-flex align-items-center gap-2">
+          <i class="ri-save-line text-primary"></i> Save Changes
+        </h5>
+        <p class="text-muted small mb-3">All changes are saved to the database instantly and reflected on the public <a href="/contact" target="_blank">/contact</a> page.</p>
+        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2.5 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2" style="background: #0a5dc2; border:none;">
+          <i class="ri-save-line fs-5"></i>
+          <span>Save Contact Page</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</form>

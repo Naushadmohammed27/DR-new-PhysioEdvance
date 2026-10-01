@@ -99,6 +99,12 @@
         <% } %>
       <% } %>
 
+      <% if (isSuperAdmin || hasPermission('SETTINGS', 'VIEW')) { %>
+        <a href="/admin/contact-cms" class="pe-menu-link <%= currentPath==='/admin/contact-cms'?'active':'' %>">
+          <i class="ri-contacts-line pe-icon-cyan"></i><span>Contact Page CMS</span>
+        </a>
+      <% } %>
+
       <p class="pe-menu-label">Account</p>
       <a href="/admin/profile" class="pe-menu-link <%= currentPath==='/admin/profile'?'active':'' %>">
         <i class="ri-user-settings-line pe-icon-sky"></i><span>Profile</span>
