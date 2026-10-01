@@ -5,16 +5,18 @@ async function attachUser(req, res, next) {
   const user = req.session.user || null;
   res.locals.currentUser = user;
   res.locals.currentPath = req.path;
-  res.locals.isSuperAdmin = user && user.role === 'superadmin';
+  res.locals.isSuperAdmin = user && (user.role === 'superadmin' || user.role === 'admin');
   res.locals.isAdmin = user && (user.role === 'admin' || user.role === 'superadmin');
   res.locals.isInstructor = user && (user.role === 'instructor' || user.role === 'superadmin' || user.role === 'admin');
 
   // Helper available in EJS templates: hasPermission('COURSE', 'CREATE')
   res.locals.hasPermission = (resource, action) => {
+    if (user && (user.role === 'superadmin' || user.role === 'admin')) return true;
     return PermissionService.hasPermissionSync(user, resource, action);
   };
 
   res.locals.hasModulePermission = (moduleKey) => {
+    if (user && (user.role === 'superadmin' || user.role === 'admin')) return true;
     return PermissionService.hasModulePermissionSync(user, moduleKey);
   };
 
@@ -89,7 +91,7 @@ function requireSuperAdmin(req, res, next) {
     req.flash('error', 'Please log in to continue.');
     return res.redirect('/auth/login');
   }
-  if (req.session.user.role !== 'superadmin') {
+  if (!['superadmin', 'admin'].includes(req.session.user.role)) {
     if (req.xhr || req.headers.accept?.includes('json')) {
       return res.status(403).json({ success: false, message: "Only Super Admin is authorized to perform this operation." });
     }
@@ -113,8 +115,8 @@ function requirePermission(resource, action) {
 
     const user = req.session.user;
 
-    // Super Admin has full master bypass
-    if (user.role === 'superadmin') {
+    // Super Admin and Admin have full master bypass
+    if (user.role === 'superadmin' || user.role === 'admin') {
       return next();
     }
 
