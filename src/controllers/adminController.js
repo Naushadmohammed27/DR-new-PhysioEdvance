@@ -638,6 +638,10 @@ exports.toggleTeamGroups = async (req, res) => {
 exports.addTeamMember = async (req, res) => {
   try {
     const { name, role, designation, qualification, bio, group_name, display_order, show_on_about, statement, photo } = req.body;
+    // If a file was uploaded, use its path; otherwise fall back to the URL text field
+    const photoPath = req.file
+      ? `/uploads/team/${req.file.filename}`
+      : (photo || '/images/team/default-avatar.png');
     await Team.create({
       name,
       role: role || designation || 'Faculty',
@@ -648,7 +652,7 @@ exports.addTeamMember = async (req, res) => {
       display_order: parseInt(display_order) || 0,
       show_on_about: show_on_about === 'on' || show_on_about === '1' ? 1 : 0,
       statement: statement || '',
-      photo: photo || '/images/team/default-avatar.png'
+      photo: photoPath
     });
     req.flash('success', 'Team member / faculty added successfully.');
   } catch (err) {
@@ -670,6 +674,10 @@ exports.editTeamMember = async (req, res) => {
 exports.updateTeamMember = async (req, res) => {
   try {
     const { name, role, designation, qualification, bio, group_name, display_order, show_on_about, is_active, statement, photo } = req.body;
+    // If a new file was uploaded, use it; otherwise keep the existing URL
+    const photoPath = req.file
+      ? `/uploads/team/${req.file.filename}`
+      : (photo || '/images/team/default-avatar.png');
     await Team.update(req.params.id, {
       name,
       role: role || designation || 'Faculty',
@@ -681,7 +689,7 @@ exports.updateTeamMember = async (req, res) => {
       show_on_about: show_on_about === 'on' || show_on_about === '1' || show_on_about === 1 ? 1 : 0,
       is_active: is_active === 'on' || is_active === '1' || is_active === 1 ? 1 : 0,
       statement: statement || '',
-      photo: photo || '/images/team/default-avatar.png'
+      photo: photoPath
     });
     req.flash('success', 'Team member updated successfully.');
   } catch (err) {

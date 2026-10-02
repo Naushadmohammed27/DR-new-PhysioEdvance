@@ -108,4 +108,24 @@ const uploadDocFile = multer({
   limits: { fileSize: 100 * 1024 * 1024 }
 });
 
-module.exports = { uploadAvatar, uploadLessonVideo, uploadCourseThumbnail, uploadWizardFiles, uploadDocFile };
+// ── Team member photo upload ──────────────────────────────────────────────────
+const TEAM_DIR = path.join(__dirname, '..', '..', 'public', 'uploads', 'team');
+fs.mkdirSync(TEAM_DIR, { recursive: true });
+
+const teamPhotoStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, TEAM_DIR),
+  filename: (req, file, cb) => {
+    const ext = (path.extname(file.originalname) || '.jpg').toLowerCase();
+    const safeExt = ['.jpg', '.jpeg', '.png', '.webp', '.gif'].includes(ext) ? ext : '.jpg';
+    const id = req.params.id || 'new';
+    cb(null, `team-${id}-${Date.now()}${safeExt}`);
+  }
+});
+
+const uploadTeamPhoto = multer({
+  storage: teamPhotoStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+  fileFilter: imageFileFilter
+});
+
+module.exports = { uploadAvatar, uploadLessonVideo, uploadCourseThumbnail, uploadWizardFiles, uploadDocFile, uploadTeamPhoto };

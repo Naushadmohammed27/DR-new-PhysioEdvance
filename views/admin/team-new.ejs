@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<form action="/admin/team" method="POST">
+<form action="/admin/team" method="POST" enctype="multipart/form-data">
   <div class="row g-4">
     <!-- Left Column: Primary Details -->
     <div class="col-lg-7">
@@ -63,10 +63,44 @@
             </div>
 
             <div class="col-12">
-              <label class="form-label font-weight-bold">Photo URL (Optional)</label>
-              <input type="text" name="photo" class="form-control form-control-lg" placeholder="/images/team/default-avatar.png">
-              <small class="text-muted d-block mt-1">Leave empty to use standard avatar icon.</small>
+              <label class="form-label fw-bold">Profile Photo</label>
+
+              <!-- Live preview -->
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <img id="newPhotoPreview" src="/images/team/default-avatar.png"
+                     alt="Preview" class="rounded-circle border shadow-sm"
+                     style="width:80px;height:80px;object-fit:cover;"
+                     onerror="this.src='/images/team/default-avatar.png'">
+                <div>
+                  <span class="fw-bold d-block text-dark">Photo Preview</span>
+                  <span class="text-muted small" id="newPhotoLabel">No photo selected</span>
+                </div>
+              </div>
+
+              <!-- Upload file -->
+              <label class="form-label fw-semibold text-dark small">Upload Photo <span class="text-muted fw-normal">(JPG, PNG, WEBP — max 5 MB)</span></label>
+              <input type="file" name="photo_file" id="newPhotoFileInput" accept="image/*" class="form-control mb-2"
+                     onchange="previewNewTeamPhoto(this)">
+
+              <!-- OR enter URL manually -->
+              <label class="form-label fw-semibold text-dark small mt-1">Or enter photo URL manually</label>
+              <input type="text" name="photo" class="form-control" placeholder="/images/team/default-avatar.png"
+                     oninput="document.getElementById('newPhotoPreview').src=this.value||'/images/team/default-avatar.png';document.getElementById('newPhotoLabel').innerText=this.value||'No photo selected';">
+              <small class="text-muted">If you upload a file above, the URL field is ignored. Leave both empty to use the default avatar.</small>
             </div>
+
+            <script>
+              function previewNewTeamPhoto(input) {
+                if (input.files && input.files[0]) {
+                  const reader = new FileReader();
+                  reader.onload = e => {
+                    document.getElementById('newPhotoPreview').src = e.target.result;
+                    document.getElementById('newPhotoLabel').innerText = input.files[0].name;
+                  };
+                  reader.readAsDataURL(input.files[0]);
+                }
+              }
+            </script>
 
             <div class="col-12">
               <label class="form-label font-weight-bold">Bio / Responsibilities Overview</label>

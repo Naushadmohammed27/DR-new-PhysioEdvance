@@ -13,7 +13,7 @@
   </a>
 </div>
 
-<form action="/admin/team/<%= member.id %>/update" method="POST">
+<form action="/admin/team/<%= member.id %>/update" method="POST" enctype="multipart/form-data">
   <div class="row g-4">
     <!-- Left Column: Member Profile Details -->
     <div class="col-lg-7">
@@ -55,18 +55,46 @@
               <span class="text-muted small">1 = First, 2 = Second, 3 = Third...</span>
             </div>
             <div class="col-12">
-              <label class="form-label">Photo URL</label>
-              <div class="input-group">
-                <input type="text" name="photo" class="form-control" value="<%= member.photo || '/images/team/default-avatar.png' %>" id="photoUrlInput">
-              </div>
-              <div class="d-flex align-items-center gap-3 mt-3 p-3 bg-light rounded-3 border">
-                <img src="<%= member.photo || '/images/team/default-avatar.png' %>" alt="Preview" class="rounded-circle border" style="width: 54px; height: 54px; object-fit: cover;" onerror="this.src='/images/team/default-avatar.png'">
+              <label class="form-label fw-bold">Profile Photo</label>
+
+              <!-- Current photo preview -->
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <img id="photoPreview" src="<%= member.photo || '/images/team/default-avatar.png' %>"
+                     alt="Preview" class="rounded-circle border shadow-sm"
+                     style="width:80px;height:80px;object-fit:cover;"
+                     onerror="this.src='/images/team/default-avatar.png'">
                 <div>
-                  <span class="fw-bold d-block text-dark">Avatar Preview</span>
-                  <span class="text-muted small">Path: <%= member.photo || '/images/team/default-avatar.png' %></span>
+                  <span class="fw-bold d-block text-dark">Current Photo</span>
+                  <span class="text-muted small" id="photoPathLabel"><%= member.photo || '/images/team/default-avatar.png' %></span>
                 </div>
               </div>
+
+              <!-- Upload a new file -->
+              <label class="form-label fw-semibold text-dark small">Upload New Photo <span class="text-muted fw-normal">(JPG, PNG, WEBP — max 5 MB)</span></label>
+              <input type="file" name="photo_file" id="photoFileInput" accept="image/*" class="form-control mb-2"
+                     onchange="previewTeamPhoto(this)">
+
+              <!-- OR keep/change the URL manually -->
+              <label class="form-label fw-semibold text-dark small mt-1">Or enter photo URL manually</label>
+              <input type="text" name="photo" id="photoUrlInput" class="form-control"
+                     value="<%= member.photo || '/images/team/default-avatar.png' %>"
+                     placeholder="/images/team/default-avatar.png"
+                     oninput="document.getElementById('photoPreview').src=this.value||'/images/team/default-avatar.png';document.getElementById('photoPathLabel').innerText=this.value;">
+              <small class="text-muted">If you upload a file above, the URL field is ignored.</small>
             </div>
+
+            <script>
+              function previewTeamPhoto(input) {
+                if (input.files && input.files[0]) {
+                  const reader = new FileReader();
+                  reader.onload = e => {
+                    document.getElementById('photoPreview').src = e.target.result;
+                    document.getElementById('photoPathLabel').innerText = input.files[0].name + ' (new upload)';
+                  };
+                  reader.readAsDataURL(input.files[0]);
+                }
+              }
+            </script>
           </div>
         </div>
       </div>

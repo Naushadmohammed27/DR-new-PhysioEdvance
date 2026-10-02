@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
 const { requireAuth, requireRole, requireSuperAdmin, requirePermission } = require('../middleware/auth');
-const { uploadDocFile, uploadCourseThumbnail } = require('../middleware/upload');
+const { uploadDocFile, uploadCourseThumbnail, uploadTeamPhoto } = require('../middleware/upload');
 
 // Base admin access: role must be 'admin' or 'superadmin'
 router.use(requireAuth, requireRole('admin'));
@@ -202,9 +202,9 @@ router.post('/specialties/:id/delete', requirePermission('SETTINGS', 'EDIT'), ad
 router.get('/team', requirePermission('SETTINGS', 'VIEW'), adminController.teamIndex);
 router.get('/team/new', requirePermission('SETTINGS', 'EDIT'), adminController.newTeamMember);
 router.post('/team/toggle-groups', requirePermission('SETTINGS', 'EDIT'), adminController.toggleTeamGroups);
-router.post('/team', requirePermission('SETTINGS', 'EDIT'), adminController.addTeamMember);
+router.post('/team', requirePermission('SETTINGS', 'EDIT'), uploadTeamPhoto.single('photo_file'), adminController.addTeamMember);
 router.get('/team/:id/edit', requirePermission('SETTINGS', 'EDIT'), adminController.editTeamMember);
-router.post('/team/:id/update', requirePermission('SETTINGS', 'EDIT'), adminController.updateTeamMember);
+router.post('/team/:id/update', requirePermission('SETTINGS', 'EDIT'), uploadTeamPhoto.single('photo_file'), adminController.updateTeamMember);
 router.get('/team/:id/toggle-about', requirePermission('SETTINGS', 'EDIT'), adminController.toggleAboutShow);
 router.post('/team/:id/toggle-about', requirePermission('SETTINGS', 'EDIT'), adminController.toggleAboutShow);
 router.get('/team/:id/toggle-active', requirePermission('SETTINGS', 'EDIT'), adminController.toggleTeamMemberActive);
